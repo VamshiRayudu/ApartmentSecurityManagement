@@ -1,8 +1,6 @@
 package com.sprint.entities;
 
 import java.time.LocalDateTime;
-
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
