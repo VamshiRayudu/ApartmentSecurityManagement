@@ -1,5 +1,7 @@
 package com.sprint.entities;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +21,8 @@ public class SecurityAlert {
 	private String message;
 	
 	private String alert;
+	
+	private LocalDateTime dateTimeOfAlert;
 	
 	@ManyToOne
 	@JoinColumn(name = "guard_alerts")
@@ -67,26 +71,36 @@ public class SecurityAlert {
 	public void setAdmin(Admin admin) {
 		this.admin = admin;
 	}
+	
+	public LocalDateTime getDateTimeOfAlert() {
+		return dateTimeOfAlert;
+	}
 
-	public SecurityAlert(Long id, String message, String alert, Guard guard, Admin admin) {
+	public void setDateTimeOfAlert(LocalDateTime dateTimeOfAlert) {
+		this.dateTimeOfAlert = dateTimeOfAlert;
+	}
+
+  
+	public SecurityAlert(Long id, String message, String alert, LocalDateTime dateTimeOfAlert, Guard guard,
+			Admin admin) {
 		super();
 		this.id = id;
 		this.message = message;
 		this.alert = alert;
-		this.guard = guard;
-		this.admin = admin;
-	}
-	
-	public SecurityAlert(String message, String alert, Guard guard, Admin admin) {
-		super();
-		this.message = message;
-		this.alert = alert;
+		this.dateTimeOfAlert = dateTimeOfAlert;
 		this.guard = guard;
 		this.admin = admin;
 	}
 
-	
-	
+	public SecurityAlert(String message, String alert, LocalDateTime dateTimeOfAlert, Guard guard, Admin admin) {
+		super();
+		this.message = message;
+		this.alert = alert;
+		this.dateTimeOfAlert = dateTimeOfAlert;
+		this.guard = guard;
+		this.admin = admin;
+	}
+
 	public SecurityAlert() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -94,8 +108,10 @@ public class SecurityAlert {
 
 	@Override
 	public String toString() {
-		return "SecurityAlerts [id=" + id + ", message=" + message + ", alert=" + alert + ", guard=" + guard
-				+ ", admin=" + admin + "]";
+		return "SecurityAlert [id=" + id + ", message=" + message + ", alert=" + alert + ", dateTimeOfAlert="
+				+ dateTimeOfAlert + ", guard=" + guard + ", admin=" + admin + "]";
 	}
+
+	
 
 }

@@ -15,12 +15,6 @@ public class Admin extends User{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "admin", fetch = FetchType.LAZY)
 	private List<SecurityAlert> securityAlerts;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "admin", fetch = FetchType.LAZY)
-	private List<Owner> owners;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "admin", fetch = FetchType.LAZY)
-	private List<Guard> guards;
-
 	public List<SecurityAlert> getSecurityAlerts() {
 		return securityAlerts;
 	}
@@ -29,36 +23,24 @@ public class Admin extends User{
 		this.securityAlerts = securityAlerts;
 	}
 
-	public List<Owner> getOwners() {
-		return owners;
-	}
-
-	public void setOwners(List<Owner> owners) {
-		this.owners = owners;
-	}
-
-	public List<Guard> getGuards() {
-		return guards;
-	}
-
-	public void setGuards(List<Guard> guards) {
-		this.guards = guards;
-	}
 
 	public Admin(String userName, String name, Long mobileNumber, String emailId, String password, Role role,
-			List<SecurityAlert> securityAlerts, List<Owner> owners, List<Guard> guards) {
+			List<SecurityAlert> securityAlerts) {
 		super(userName, name, mobileNumber, emailId, password, role);
 		this.securityAlerts = securityAlerts;
-		this.owners = owners;
-		this.guards = guards;
 	}
 	
 	public Admin(Long id, String userName, String name, Long mobileNumber, String emailId, String password, Role role,
-			List<SecurityAlert> securityAlerts, List<Owner> owners, List<Guard> guards) {
+			List<SecurityAlert> securityAlerts) {
 		super(id, userName, name, mobileNumber, emailId, password, role);
 		this.securityAlerts = securityAlerts;
-		this.owners = owners;
-		this.guards = guards;
+	}
+	
+	
+
+	public Admin(List<SecurityAlert> securityAlerts, List<Owner> owners) {
+		super();
+		this.securityAlerts = securityAlerts;
 	}
 
 	public Admin(Long id, String userName, String name, Long mobileNumber, String emailId, String password, Role role) {
@@ -78,7 +60,7 @@ public class Admin extends User{
 
 	@Override
 	public String toString() {
-		return super.toString() + "Admin [securityAlerts=" + securityAlerts + ", owners=" + owners + ", guards=" + guards + "]";
+		return super.toString() + "Admin [securityAlerts=" + securityAlerts + "]";
 	}
 	
 	

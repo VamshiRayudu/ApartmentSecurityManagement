@@ -36,7 +36,7 @@ public class DomesticHelp {
 	
 	private String aadharId;
 	
-	private String mobileNumber;
+	private Long mobileNumber;
 	
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<FlatDetails> flatDetails;
@@ -81,11 +81,11 @@ public class DomesticHelp {
 		this.aadharId = aadharId;
 	}
 
-	public String getMobileNumber() {
+	public Long getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(String mobileNumber) {
+	public void setMobileNumber(Long mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
@@ -98,7 +98,7 @@ public class DomesticHelp {
 	}
 
 	public DomesticHelp(List<Attendance> attendance, DomesticHelpType helpType, String name, String aadharId,
-			String mobileNumber, List<FlatDetails> flatDetails) {
+			Long mobileNumber, List<FlatDetails> flatDetails) {
 		super();
 		this.attendance = attendance;
 		this.helpType = helpType;
@@ -109,7 +109,7 @@ public class DomesticHelp {
 	}
 
 	public DomesticHelp(Long id, List<Attendance> attendance, DomesticHelpType helpType, String name, String aadharId,
-			String mobileNumber, List<FlatDetails> flatDetails) {
+			Long mobileNumber, List<FlatDetails> flatDetails) {
 		super();
 		this.id = id;
 		this.attendance = attendance;

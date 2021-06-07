@@ -21,9 +21,6 @@ public class Owner extends User{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.LAZY)
 	private List<Vehicle> vehicleDetails;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "admin_owners")
-	private Admin admin;
 
 	public List<FlatDetails> getFlatDetails() {
 		return flatDetails;
@@ -41,29 +38,26 @@ public class Owner extends User{
 		this.vehicleDetails = vehicleDetails;
 	}
 
-	public Admin getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(Admin admin) {
-		this.admin = admin;
-	}
-
 	
 	public Owner(Long id, String userName, String name, Long mobileNumber, String emailId, String password, Role role,
-			List<FlatDetails> flatDetails, List<Vehicle> vehicleDetails, Admin admin) {
+			List<FlatDetails> flatDetails, List<Vehicle> vehicleDetails) {
 		super(id, userName, name, mobileNumber, emailId, password, role);
 		this.flatDetails = flatDetails;
 		this.vehicleDetails = vehicleDetails;
-		this.admin = admin;
 	}
 
 	public Owner(String userName, String name, Long mobileNumber, String emailId, String password, Role role,
-			List<FlatDetails> flatDetails, List<Vehicle> vehicleDetails, Admin admin) {
+			List<FlatDetails> flatDetails, List<Vehicle> vehicleDetails) {
 		super(userName, name, mobileNumber, emailId, password, role);
 		this.flatDetails = flatDetails;
 		this.vehicleDetails = vehicleDetails;
-		this.admin = admin;
+	}
+
+	
+	public Owner(List<FlatDetails> flatDetails, List<Vehicle> vehicleDetails) {
+		super();
+		this.flatDetails = flatDetails;
+		this.vehicleDetails = vehicleDetails;
 	}
 
 	public Owner() {
@@ -83,6 +77,6 @@ public class Owner extends User{
 
 	@Override
 	public String toString() {
-		return super.toString() + "Owner [flatDetails=" + flatDetails + ", vehicleDetails=" + vehicleDetails + ", admin=" + admin + "]";
+		return super.toString() + "Owner [flatDetails=" + flatDetails + ", vehicleDetails=" + vehicleDetails + "]";
 	}
 }

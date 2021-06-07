@@ -8,23 +8,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "vechile_upd_asm")
+@Table(name = "vehicle_upd_asm")
 public class VehicleUpdates {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long idLong;
+	private Long id;
 	
 	private LocalDateTime vehicleInTime;
 	
 	private LocalDateTime vehicleOutTime;
 
-	public Long getIdLong() {
-		return idLong;
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdLong(Long idLong) {
-		this.idLong = idLong;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public LocalDateTime getVehicleInTime() {
@@ -49,9 +49,9 @@ public class VehicleUpdates {
 		this.vehicleOutTime = vehicleOutTime;
 	}
 
-	public VehicleUpdates(Long idLong, LocalDateTime vehicleInTime, LocalDateTime vehicleOutTime) {
+	public VehicleUpdates(Long id, LocalDateTime vehicleInTime, LocalDateTime vehicleOutTime) {
 		super();
-		this.idLong = idLong;
+		this.id = id;
 		this.vehicleInTime = vehicleInTime;
 		this.vehicleOutTime = vehicleOutTime;
 	}
@@ -63,7 +63,7 @@ public class VehicleUpdates {
 
 	@Override
 	public String toString() {
-		return "VehicleUpdates [idLong=" + idLong + ", vehicleInTime=" + vehicleInTime + ", vehicleOutTime="
+		return "VehicleUpdates [id=" + id + ", vehicleInTime=" + vehicleInTime + ", vehicleOutTime="
 				+ vehicleOutTime + "]";
 	}
 
