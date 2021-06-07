@@ -1,5 +1,20 @@
 package com.sprint.services;
 
-public interface IDeliveryService {
+import java.util.List;
 
+import com.sprint.entities.Delivery;
+
+public interface IDeliveryService {
+    
+     public List<Delivery> getDeliveryList();
+    
+     public Delivery getDelivery(Long id);
+     
+     public Delivery addDelivery(Delivery delivery);
+          
+     public Delivery updateDeliveryList ();
+        
+     public Delivery  updateDelivery (Long id); 
+         
+    
 }
