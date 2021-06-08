@@ -8,7 +8,7 @@ public interface IUserService {
 	
 	public boolean LoginUser(String emailId,String password);
 	
-	public User addUser(User user);
+	public User registerUser(User user);
 	
 	public User deleteUserById(Long id);
 	

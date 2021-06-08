@@ -35,7 +35,7 @@ class UserTest {
 		user.setEmailId("sample@test");
 		
 		Mockito.when(userRepository.save(user)).thenReturn(user);
-		userService.addUser(user);
+		userService.registerUser(user);
 		verify(userRepository, times(1)).save(user);
 
 	} 
@@ -74,4 +74,6 @@ class UserTest {
         Mockito.when(userRepository.getById(user.getId())).thenReturn(user);
         assertEquals(user, userService.deleteUserById(user.getId()));
 	}
+	
+	
 }

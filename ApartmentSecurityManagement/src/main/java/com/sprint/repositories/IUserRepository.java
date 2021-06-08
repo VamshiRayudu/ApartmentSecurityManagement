@@ -6,4 +6,7 @@ import com.sprint.entities.User;
 
 public interface IUserRepository extends JpaRepository<User, Long>{
 
+	
+	public User findByEmailId(String emailId);
+	
 }

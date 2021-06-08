@@ -10,7 +10,7 @@ public interface IAdminService {
 	
 	public Admin updateAdmin(Admin admin);
 	
-	public Admin updateAdminById(Long id);
+	public Admin updateAdminById(Long id,String oldPassword,String newPassword);
 	
 	public List<Admin> getAllAdmins();
 	
@@ -19,7 +19,5 @@ public interface IAdminService {
 	public Admin deleteAdminById(Long id);
 	
 	public Admin deleteAdmin(Admin admin);
-		
-	public Boolean changePassword(Long id,String oldPassword,String newPassword);
 	
 }
