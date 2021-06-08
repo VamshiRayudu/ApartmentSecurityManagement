@@ -46,6 +46,9 @@ public class FlatDetails {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
 	private List<Delivery> deliveries;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
+	private List<Vehicle> flatdetails;
 
 	public Long getFlatNumber() {
 		return flatNumber;
@@ -95,12 +98,12 @@ public class FlatDetails {
 		this.visitors = visitors;
 	}
 
-	public List<DomesticHelp> getDomesticHelpList() {
+	public List<DomesticHelp> getdHelpList() {
 		return dHelpList;
 	}
 
-	public void setDomesticHelpList(List<DomesticHelp> domesticHelpList) {
-		this.dHelpList = domesticHelpList;
+	public void setdHelpList(List<DomesticHelp> dHelpList) {
+		this.dHelpList = dHelpList;
 	}
 
 	public List<Delivery> getDeliveries() {
@@ -111,8 +114,16 @@ public class FlatDetails {
 		this.deliveries = deliveries;
 	}
 
+	public List<Vehicle> getFlatdetails() {
+		return flatdetails;
+	}
+
+	public void setFlatdetails(List<Vehicle> flatdetails) {
+		this.flatdetails = flatdetails;
+	}
+
 	public FlatDetails(Long floorNumber, Boolean isRented, Owner owner, FlatRent flatRent, List<Visitor> visitors,
-			List<DomesticHelp> dHelpList, List<Delivery> deliveries) {
+			List<DomesticHelp> dHelpList, List<Delivery> deliveries, List<Vehicle> flatdetails) {
 		super();
 		this.floorNumber = floorNumber;
 		this.isRented = isRented;
@@ -121,10 +132,12 @@ public class FlatDetails {
 		this.visitors = visitors;
 		this.dHelpList = dHelpList;
 		this.deliveries = deliveries;
+		this.flatdetails = flatdetails;
 	}
 
 	public FlatDetails(Long flatNumber, Long floorNumber, Boolean isRented, Owner owner, FlatRent flatRent,
-			List<Visitor> visitors, List<DomesticHelp> dHelpList, List<Delivery> deliveries) {
+			List<Visitor> visitors, List<DomesticHelp> dHelpList, List<Delivery> deliveries,
+			List<Vehicle> flatdetails) {
 		super();
 		this.flatNumber = flatNumber;
 		this.floorNumber = floorNumber;
@@ -134,6 +147,7 @@ public class FlatDetails {
 		this.visitors = visitors;
 		this.dHelpList = dHelpList;
 		this.deliveries = deliveries;
+		this.flatdetails = flatdetails;
 	}
 
 	public FlatDetails() {
@@ -144,7 +158,10 @@ public class FlatDetails {
 	@Override
 	public String toString() {
 		return "FlatDetails [flatNumber=" + flatNumber + ", floorNumber=" + floorNumber + ", isRented=" + isRented
-				+ ", owner=" + owner + ", flatRent=" + flatRent + ", visitors=" + visitors + ", domesticHelpList="
-				+ dHelpList + ", deliveries=" + deliveries + "]";
+				+ ", owner=" + owner + ", flatRent=" + flatRent + ", visitors=" + visitors + ", dHelpList=" + dHelpList
+				+ ", deliveries=" + deliveries + ", flatdetails=" + flatdetails + "]";
 	}
+
+	
+	
 }

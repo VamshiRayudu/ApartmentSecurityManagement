@@ -1,31 +1,18 @@
 package com.sprint.entities;
 
 import java.time.LocalDateTime;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "vehicle_upd_asm")
+import javax.persistence.Embeddable;
+
+
+@Embeddable
 public class VehicleUpdates {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
+
 	private LocalDateTime vehicleInTime;
 	
 	private LocalDateTime vehicleOutTime;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
+	private Long updatedByGuardId;
 
 	public LocalDateTime getVehicleInTime() {
 		return vehicleInTime;
@@ -43,17 +30,19 @@ public class VehicleUpdates {
 		this.vehicleOutTime = vehicleOutTime;
 	}
 
-	public VehicleUpdates(LocalDateTime vehicleInTime, LocalDateTime vehicleOutTime) {
-		super();
-		this.vehicleInTime = vehicleInTime;
-		this.vehicleOutTime = vehicleOutTime;
+	public Long getUpdatedByGuardId() {
+		return updatedByGuardId;
 	}
 
-	public VehicleUpdates(Long id, LocalDateTime vehicleInTime, LocalDateTime vehicleOutTime) {
+	public void setUpdatedByGuardId(Long updatedByGuardId) {
+		this.updatedByGuardId = updatedByGuardId;
+	}
+
+	public VehicleUpdates(LocalDateTime vehicleInTime, LocalDateTime vehicleOutTime, Long updatedByGuardId) {
 		super();
-		this.id = id;
 		this.vehicleInTime = vehicleInTime;
 		this.vehicleOutTime = vehicleOutTime;
+		this.updatedByGuardId = updatedByGuardId;
 	}
 
 	public VehicleUpdates() {
@@ -63,8 +52,8 @@ public class VehicleUpdates {
 
 	@Override
 	public String toString() {
-		return "VehicleUpdates [id=" + id + ", vehicleInTime=" + vehicleInTime + ", vehicleOutTime="
-				+ vehicleOutTime + "]";
+		return "VehicleUpdates [vehicleInTime=" + vehicleInTime + ", vehicleOutTime=" + vehicleOutTime
+				+ ", updatedByGuardId=" + updatedByGuardId + "]";
 	}
-
+	
 }

@@ -31,13 +31,13 @@ public class DomesticHelpService implements IDomesticHelpService {
 	}
 
 	@Override
-	public List<DomesticHelp> updateDomesticHelpList() {
+	public DomesticHelp updateDomesticHelpById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public DomesticHelp updateDomesticHelpById(Long id) {
+	public DomesticHelp updateDomesticHelp(DomesticHelp domesticHelp) {
 		// TODO Auto-generated method stub
 		return null;
 	}

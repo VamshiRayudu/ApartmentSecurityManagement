@@ -5,8 +5,20 @@ import java.util.List;
 import com.sprint.entities.Owner;
 
 public interface IOwnerService {
+	
+	public Owner addOwner(Owner owner);
 
 	public Owner getOwnerById(Long id);
 	
-	public Owner getOwnerByFlatNo(Long flatNumber);
+	public List<Owner> getAllOwnerList();
+	
+	public Owner updateOwner(Owner owner);
+	
+	public Owner updateOwnerById(Long id);
+	
+	public Owner deleteOwnerById(Long id);
+	
+	public Owner deleteOwner(Owner owner);
+	
+	
 }

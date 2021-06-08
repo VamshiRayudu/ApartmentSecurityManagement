@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class UserServiceImpl implements IUserServiceImpl{
+public class UserServiceImpl implements IUserService{
 
 }

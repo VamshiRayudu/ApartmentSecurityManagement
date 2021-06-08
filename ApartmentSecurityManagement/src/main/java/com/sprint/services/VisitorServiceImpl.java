@@ -30,4 +30,28 @@ public class VisitorServiceImpl implements IVisitorService{
 		return null;
 	}
 
+	@Override
+	public Visitor getVisitorById(Long Id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Visitor updateVisitorById(Long Id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Visitor deleteVisitor(Visitor visitor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Visitor deleteVisitorById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

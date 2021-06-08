@@ -12,7 +12,7 @@ import com.sprint.entities.DomesticHelp;
       
      public DomesticHelp addDomesticHelp(DomesticHelp domesticHelp);
          
-     public List<DomesticHelp> updateDomesticHelpList();
+     public DomesticHelp updateDomesticHelp(DomesticHelp domesticHelp);
         
      public DomesticHelp updateDomesticHelpById(Long id);
       

@@ -6,38 +6,38 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.sprint.entities.VehicleUpdates;
+import com.sprint.entities.SecurityAlert;
 
 @Service
 @Transactional
-public class VehicleUpdatesServiceImpl implements IVehicleUpdatesService{
+public class SecurityAlertServiceImpl implements ISecurityAlertService{
 
 	@Override
-	public List<VehicleUpdates> getVehicleUpdateList() {
+	public SecurityAlert addSecurityAlert(SecurityAlert securityAlert) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public VehicleUpdates getVehicleUpdateList(Long id) {
+	public SecurityAlert updateSecurityAlert(SecurityAlert securityAlert) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public VehicleUpdates addVehicleUpdate(VehicleUpdates vehcileUpdates) {
+	public SecurityAlert updateSecurityAlertById(Long Id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public VehicleUpdates updateVehicleUpdatesById(Long id) {
+	public SecurityAlert getSecurityAlertById(Long Id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public VehicleUpdates updateVehicleUpdate(VehicleUpdates vehcileUpdates) {
+	public List<SecurityAlert> getSecurityAlertList() {
 		// TODO Auto-generated method stub
 		return null;
 	}

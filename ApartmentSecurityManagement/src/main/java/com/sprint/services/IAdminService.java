@@ -10,9 +10,11 @@ public interface IAdminService {
 	
 	public Admin updateAdmin(Admin admin);
 	
-	public List<Admin> listAllAdmins();
+	public Admin updateAdminById(Long id);
 	
-	public Admin listAdminById(Long id);
+	public List<Admin> getAllAdmins();
+	
+	public Admin getAdminById(Long id);
 	
 	public Admin deleteAdminById(Long id);
 	

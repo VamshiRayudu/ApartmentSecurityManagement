@@ -31,13 +31,13 @@ public class DeliveryServiceImpl implements IDeliveryService{
 	}
 
 	@Override
-	public Delivery updateDeliveryList() {
+	public Delivery updateDelivery(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Delivery updateDelivery(Long id) {
+	public Delivery updateDelivery(Delivery delivery) {
 		// TODO Auto-generated method stub
 		return null;
 	}

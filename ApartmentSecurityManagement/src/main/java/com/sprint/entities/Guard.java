@@ -52,10 +52,10 @@ public class Guard extends User{
 	
 	
 	//@ManyToMany(cascade = CascadeType.ALL)
-	@ElementCollection(fetch = FetchType.LAZY)
-	@CollectionTable(name="guard_vehicleupd",joinColumns = @JoinColumn(name = "guard_id"))
-	@Column(name = "vehiclesUpdates")
-	private List<VehicleUpdates> vehicleUpdates = new ArrayList<VehicleUpdates>();
+//	@ElementCollection(fetch = FetchType.LAZY)
+//	@CollectionTable(name="guard_vehicleupd",joinColumns = @JoinColumn(name = "guard_id"))
+//	@Column(name = "vehiclesUpdates")
+//	private List<VehicleUpdates> vehicleUpdates = new ArrayList<VehicleUpdates>();
 	
 	
 	
@@ -133,20 +133,6 @@ public class Guard extends User{
 		this.visitors = visitors;
 	}
 
-
-
-	public List<VehicleUpdates> getVehicleUpdates() {
-		return vehicleUpdates;
-	}
-
-
-
-	public void setVehicleUpdates(List<VehicleUpdates> vehicleUpdates) {
-		this.vehicleUpdates = vehicleUpdates;
-	}
-
-
-
 	public List<Delivery> getDeliveries() {
 		return deliveries;
 	}
@@ -161,8 +147,7 @@ public class Guard extends User{
 
 	public Guard(String userName, String name, Long mobileNumber, String emailId, String password, Role role,
 			Boolean isTrained, GuardShift guardShifts, List<GuardSalary> guardSalaries,
-			List<SecurityAlert> securityAlerts, List<Attendance> guardAttendances, List<Visitor> visitors,
-			List<VehicleUpdates> vehicleUpdates, List<Delivery> deliveries) {
+			List<SecurityAlert> securityAlerts, List<Attendance> guardAttendances, List<Visitor> visitors, List<Delivery> deliveries) {
 		super(userName, name, mobileNumber, emailId, password, role);
 		this.isTrained = isTrained;
 		this.guardShifts = guardShifts;
@@ -170,7 +155,6 @@ public class Guard extends User{
 		this.securityAlerts = securityAlerts;
 		this.guardAttendances = guardAttendances;
 		this.visitors = visitors;
-		this.vehicleUpdates = vehicleUpdates;
 		this.deliveries = deliveries;
 	}
 
@@ -179,7 +163,7 @@ public class Guard extends User{
 	public Guard(Long id, String userName, String name, Long mobileNumber, String emailId, String password, Role role,
 			Boolean isTrained, GuardShift guardShifts, List<GuardSalary> guardSalaries,
 			List<SecurityAlert> securityAlerts, List<Attendance> guardAttendances, List<Visitor> visitors,
-			List<VehicleUpdates> vehicleUpdates, List<Delivery> deliveries) {
+			List<Delivery> deliveries) {
 		super(id, userName, name, mobileNumber, emailId, password, role);
 		this.isTrained = isTrained;
 		this.guardShifts = guardShifts;
@@ -187,7 +171,6 @@ public class Guard extends User{
 		this.securityAlerts = securityAlerts;
 		this.guardAttendances = guardAttendances;
 		this.visitors = visitors;
-		this.vehicleUpdates = vehicleUpdates;
 		this.deliveries = deliveries;
 	}
 
@@ -195,7 +178,7 @@ public class Guard extends User{
 
 	public Guard(Boolean isTrained, GuardShift guardShifts, List<GuardSalary> guardSalaries,
 			List<SecurityAlert> securityAlerts, List<Attendance> guardAttendances, List<Visitor> visitors,
-			List<VehicleUpdates> vehicleUpdates, List<Delivery> deliveries) {
+			List<Delivery> deliveries) {
 		super();
 		this.isTrained = isTrained;
 		this.guardShifts = guardShifts;
@@ -203,7 +186,6 @@ public class Guard extends User{
 		this.securityAlerts = securityAlerts;
 		this.guardAttendances = guardAttendances;
 		this.visitors = visitors;
-		this.vehicleUpdates = vehicleUpdates;
 		this.deliveries = deliveries;
 	}
 
@@ -234,7 +216,7 @@ public class Guard extends User{
 	public String toString() {
 		return "Guard [isTrained=" + isTrained + ", guardShifts=" + guardShifts + ", guardSalaries=" + guardSalaries
 				+ ", securityAlerts=" + securityAlerts + ", guardAttendances=" + guardAttendances + ", visitors="
-				+ visitors + ", vehicleUpdates=" + vehicleUpdates + ", deliveries=" + deliveries + "]";
+				+ visitors + ", deliveries=" + deliveries + "]";
 	}
 
 	//to create a method ,register domestic help through guard service

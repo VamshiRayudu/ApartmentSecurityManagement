@@ -33,6 +33,10 @@ public class Vehicle {
 	@ManyToOne
 	@JoinColumn(name = "owner_vehicle")
 	private Owner owner;
+	
+	@ManyToOne
+	@JoinColumn(name = "flat_vehicle")
+	private FlatDetails flatDetails;
 
 	public Long getId() {
 		return id;
@@ -73,23 +77,34 @@ public class Vehicle {
 	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
+	
+	public FlatDetails getFlatDetails() {
+		return flatDetails;
+	}
 
-	public Vehicle(String numberPlate, String vehicleColour, List<VehicleUpdates> vehicleUpdates, Owner owner) {
+	public void setFlatdetails(FlatDetails flatDetails) {
+		this.flatDetails = flatDetails;
+	}
+
+	public Vehicle(String numberPlate, String vehicleColour, List<VehicleUpdates> vehicleUpdates, Owner owner,
+			FlatDetails flatDetails) {
 		super();
 		this.numberPlate = numberPlate;
 		this.vehicleColour = vehicleColour;
 		this.vehicleUpdates = vehicleUpdates;
 		this.owner = owner;
+		this.flatDetails = flatDetails;
 	}
 
-	public Vehicle(Long id, String numberPlate, String vehicleColour, List<VehicleUpdates> vehicleUpdates,
-			Owner owner) {
+	public Vehicle(Long id, String numberPlate, String vehicleColour, List<VehicleUpdates> vehicleUpdates, Owner owner,
+			FlatDetails flatDetails) {
 		super();
 		this.id = id;
 		this.numberPlate = numberPlate;
 		this.vehicleColour = vehicleColour;
 		this.vehicleUpdates = vehicleUpdates;
 		this.owner = owner;
+		this.flatDetails = flatDetails;
 	}
 
 	public Vehicle() {
@@ -100,7 +115,6 @@ public class Vehicle {
 	@Override
 	public String toString() {
 		return "Vehicle [id=" + id + ", numberPlate=" + numberPlate + ", vehicleColour=" + vehicleColour
-				+ ", vehicleUpdates=" + vehicleUpdates + ", owner=" + owner + "]";
+				+ ", vehicleUpdates=" + vehicleUpdates + ", owner=" + owner + ", flatDetails=" + flatDetails + "]";
 	}
-
 }

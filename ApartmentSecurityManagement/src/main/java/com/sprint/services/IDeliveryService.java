@@ -12,9 +12,8 @@ public interface IDeliveryService {
      
      public Delivery addDelivery(Delivery delivery);
           
-     public Delivery updateDeliveryList ();
+     public Delivery updateDelivery(Delivery delivery);
         
-     public Delivery  updateDelivery (Long id); 
+     public Delivery updateDelivery(Long id); 
          
-    
 }

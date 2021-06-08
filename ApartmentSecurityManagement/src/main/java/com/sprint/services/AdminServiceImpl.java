@@ -26,13 +26,19 @@ public class AdminServiceImpl implements IAdminService{
 	}
 
 	@Override
-	public List<Admin> listAllAdmins() {
+	public Admin updateAdminById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Admin listAdminById(Long id) {
+	public List<Admin> getAllAdmins() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Admin getAdminById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -60,5 +66,6 @@ public class AdminServiceImpl implements IAdminService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
