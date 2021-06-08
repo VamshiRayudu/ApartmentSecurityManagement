@@ -14,7 +14,7 @@ public interface IVisitorService {
 
 	public Visitor getVisitorById(Long Id);
 	
-	public Visitor updateVisitorById(Long Id);
+	public Visitor updateVisitorById(Long Id,String visitorname,String mobilenumber);
 	
 	public Visitor deleteVisitor(Visitor visitor);
 	

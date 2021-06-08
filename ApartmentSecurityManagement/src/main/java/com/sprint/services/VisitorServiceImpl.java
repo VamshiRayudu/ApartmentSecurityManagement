@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+
+import com.sprint.entities.Vehicle;
 import com.sprint.entities.Visitor;
 import com.sprint.repositories.IVisitorRepository;
 
@@ -15,43 +17,62 @@ public class VisitorServiceImpl implements IVisitorService{
 	@Override
 	public Visitor addVisitor(Visitor visitor) {
 		// TODO Auto-generated method stub
-		return null;
+		return visitorRepository.save(visitor);
 	}
 
 	@Override
 	public List<Visitor> getVisitorList() {
 		// TODO Auto-generated method stub
-		return null;
+		return visitorRepository.findAll();
 	}
 
 	@Override
 	public Visitor updateVisitor(Visitor visitor) {
 		// TODO Auto-generated method stub
-		return null;
+		return visitorRepository.saveAndFlush(visitor);
 	}
 
 	@Override
 	public Visitor getVisitorById(Long Id) {
 		// TODO Auto-generated method stub
-		return null;
+		return  visitorRepository.getById(Id) ;
 	}
 
 	@Override
-	public Visitor updateVisitorById(Long Id) {
+	public Visitor updateVisitorById(Long Id,String visitorname,String mobilenumber) {
 		// TODO Auto-generated method stub
-		return null;
+		Visitor visitor=visitorRepository.findById(Id).get();
+		visitor.setVisitorName(visitorname);
+		visitor.setMobileNumber(mobilenumber);
+		
+		return visitorRepository.saveAndFlush(visitor);
+		
 	}
 
 	@Override
 	public Visitor deleteVisitor(Visitor visitor) {
 		// TODO Auto-generated method stub
-		return null;
+		Visitor visitorDb = visitorRepository.findById(visitor.getId()).get();
+		
+		
+		visitorRepository.delete(visitor);
+		
+		
+		return visitorDb;
+
 	}
 
 	@Override
 	public Visitor deleteVisitorById(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+
+		Visitor visitor= visitorRepository .findById(id).get();
+			visitorRepository.deleteById(id);
+		
+	
+		return visitor;
+
+		
 	}
 
 }
