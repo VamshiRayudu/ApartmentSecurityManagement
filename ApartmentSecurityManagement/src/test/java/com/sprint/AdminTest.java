@@ -1,17 +1,16 @@
 package com.sprint;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sprint.entities.Admin;
 import com.sprint.entities.Role;
@@ -20,41 +19,90 @@ import com.sprint.services.AdminServiceImpl;
 
 class AdminTest {
 	
-	@Autowired
-	private AdminServiceImpl adminServiceImpl; 
-	
 	@Mock
 
 	IAdminRepository adminRepository= org.mockito.Mockito.mock(IAdminRepository.class);
 
 	@InjectMocks
-
 	AdminServiceImpl adminService = new AdminServiceImpl();
 
 	@Test
+	public void testAddAdmin() {
+		Admin admin = new Admin();
+		admin.setMobileNumber(123L);
+		admin.setEmailId("sampleTest@asp.com");
+		admin.setRole(Role.ADMIN);
+		admin.setName("test");
+		admin.setUserName("demo");
+		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
+		adminService.addAdmin(admin);
+		verify(adminRepository, times(1)).save(admin);
+	}
+	
+	
+	@Test
+	public void testGetAdminById() {
 
-	public void addAdminTest() {
+		Admin admin = new Admin();
+		admin.setMobileNumber(123L);
+		admin.setEmailId("sampleTest@asp.com");
+		admin.setRole(Role.ADMIN);
+		admin.setName("test");
+		admin.setUserName("demo");
+		Mockito.when(adminRepository.getById(admin.getId())).thenReturn(admin);
+		Admin a = adminService.getAdminById(admin.getId());
+	    assertEquals(a,admin);
+	    verify(adminRepository, times(1)).getById(admin.getId());
+	}
+	
+	
+	@Test
+	public void deleteAdmin() {
+		Admin admin = new Admin();
+		admin.setMobileNumber(123L);
+		admin.setEmailId("sampleTest@asp.com");
+		admin.setRole(Role.ADMIN);
+		admin.setName("test");
+        Mockito.when(adminRepository.getById(admin.getId())).thenReturn(admin);
+        assertEquals(admin, adminService.deleteAdminById(admin.getId()));
+	}
+    
+	
+	@Test
+	public void testNotAddAdmin() {
+		Admin admin1 = new Admin();
+		admin1.setMobileNumber(123L);
+		admin1.setEmailId("sampleTest@asp.com");
+		admin1.setRole(Role.ADMIN);
+		admin1.setName("test");
+
+		Admin admin2 = new Admin();
+		admin2.setMobileNumber(123L);
+		admin2.setEmailId("sampleTest@asp.com");
+		admin2.setRole(Role.ADMIN);
+		admin2.setName("test");
 		
-    Admin a = new Admin();
-    
-    Admin a2 = new Admin();
-    
-    a.setMobileNumber(123L);
-    a.setEmailId("sampleTest@asp.com");
-    a.setRole(Role.ADMIN);
-    a.setName("test");
-    
-    a2.setMobileNumber(123L);
-    a2.setEmailId("sampleTest@asp.com");
-    a2.setRole(Role.ADMIN);
-    a2.setName("test");
-    
-    Mockito.when(adminRepository.save(a2)).thenReturn(a2);
-    
-  //  adminService.addAdmin(a2);
-    
-    assertEquals(a,adminService.addAdmin(a));
-    
-    //verify(adminRepository.save(a),times(1));
+		Mockito.when(adminRepository.save(admin1)).thenReturn(admin1);
+		assertEquals(admin1, adminService.addAdmin(admin2));
+	}
+	
+	@Test
+	void testGetAllAdmins() {
+		List<Admin>list = new ArrayList<>();
+		Admin admin1 = new Admin();
+		admin1.setMobileNumber(123L);
+		admin1.setEmailId("sampleTest@asp.com");
+		admin1.setRole(Role.ADMIN);
+		admin1.setName("test");
+		
+		Admin admin2 = new Admin();
+		admin2.setMobileNumber(123L);
+		admin2.setEmailId("sampleTest@asp.com");
+		admin2.setRole(Role.ADMIN);
+		admin2.setName("test");
+		list.add(admin1);
+		list.add(admin2);
+		Mockito.when(adminRepository.findAll()).thenReturn(list);
+		assertEquals(list.size(), adminService.getAllAdmins().size());
 	}
 }

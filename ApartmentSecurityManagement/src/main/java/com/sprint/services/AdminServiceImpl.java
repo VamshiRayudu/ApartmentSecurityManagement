@@ -56,16 +56,9 @@ public class AdminServiceImpl implements IAdminService{
 	}
 
 	@Override
-	public List<Admin> findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Boolean changePassword(Long id, String oldPassword, String newPassword) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

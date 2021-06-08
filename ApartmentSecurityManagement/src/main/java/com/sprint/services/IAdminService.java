@@ -19,9 +19,7 @@ public interface IAdminService {
 	public Admin deleteAdminById(Long id);
 	
 	public Admin deleteAdmin(Admin admin);
-	
-	public List<Admin> findByName(String name);
-	
+		
 	public Boolean changePassword(Long id,String oldPassword,String newPassword);
 	
 }
