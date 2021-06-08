@@ -15,4 +15,6 @@ public interface ISecurityAlertService {
 	
 	public List<SecurityAlert> getSecurityAlertList();
 	
+	 public SecurityAlert deleteSecurityAlertById(Long  id);
 }
+

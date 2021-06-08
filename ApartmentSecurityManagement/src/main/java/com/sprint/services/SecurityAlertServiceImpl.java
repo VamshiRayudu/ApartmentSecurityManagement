@@ -42,4 +42,10 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService{
 		return null;
 	}
 
+	@Override
+	public SecurityAlert deleteSecurityAlertById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
