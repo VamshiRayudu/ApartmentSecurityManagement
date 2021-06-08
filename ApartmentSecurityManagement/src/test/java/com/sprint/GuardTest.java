@@ -38,8 +38,9 @@ class GuardTest {
 	        guard.setRole(Role.GUARD);
 	        guard.setName("test");
 	        Mockito.when(guardRepository.save(guard)).thenReturn(guard);
-	        assertEquals(guard, guardService.addGuard(guard));
+	        assertEquals(guard,guardService.addGuard(guard));
 	    }
+}
 	 
 	 @Test
 	    public void deleteGuard() {
@@ -67,7 +68,7 @@ class GuardTest {
 	        guard2.setName("test");
 	        
 	        Mockito.when(guardRepository.save(guard1)).thenReturn(guard1);
-	        assertEquals(guard1, guardService.addGuard(guard2));
+	        assertEquals(guard1,guardService.addGuard(guard2));
 	    }
 	    
 	    @Test
@@ -87,6 +88,6 @@ class GuardTest {
 	        list.add(guard1);
 	        list.add(guard2);
 	        Mockito.when(guardRepository.findAll()).thenReturn(list);
-	        assertEquals(list.size(), guardService.getAllGuards().size());
+	        assertEquals(list.size(),guardService.getAllGuards().size());
 	    }
 }

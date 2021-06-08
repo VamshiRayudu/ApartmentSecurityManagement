@@ -17,9 +17,9 @@ public interface IGuardService {
 	
 	public Guard deleteGuardById(Long id);
 	
-	public Guard updateGuardById(Long id);
-	
 	public Guard updateGuard(Guard guard);
 	
 	public Guard updateGuardAttendance(Long id, LocalDateTime inTime, LocalDateTime outTime);
+
+	public Guard updateGuardById(Long id, Long MobileNumber);
 }
