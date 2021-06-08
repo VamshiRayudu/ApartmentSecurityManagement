@@ -40,7 +40,7 @@ class GuardTest {
 	        Mockito.when(guardRepository.save(guard)).thenReturn(guard);
 	        assertEquals(guard,guardService.addGuard(guard));
 	    }
-}
+
 	 
 	 @Test
 	    public void deleteGuard() {
