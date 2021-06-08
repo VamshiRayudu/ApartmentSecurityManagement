@@ -9,7 +9,7 @@ public interface ISecurityAlertService {
 	
 	public SecurityAlert updateSecurityAlert(SecurityAlert securityAlert);
 	
-    public SecurityAlert updateSecurityAlertById(Long Id);
+    public SecurityAlert updateSecurityAlertById(Long Id,String oldMessage,String newMessage);
     
 	public SecurityAlert getSecurityAlertById(Long Id);
 	

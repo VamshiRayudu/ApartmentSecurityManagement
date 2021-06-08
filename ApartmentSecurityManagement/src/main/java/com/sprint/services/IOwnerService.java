@@ -14,7 +14,7 @@ public interface IOwnerService {
 	
 	public Owner updateOwner(Owner owner);
 	
-	public Owner updateOwnerById(Long id);
+	public Owner updateOwnerById(Long id,String oldName,String newName);
 	
 	public Owner deleteOwnerById(Long id);
 	
