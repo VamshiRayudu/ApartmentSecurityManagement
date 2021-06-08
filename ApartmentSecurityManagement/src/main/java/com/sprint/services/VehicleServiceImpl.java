@@ -31,4 +31,11 @@ public class VehicleServiceImpl implements IVehicleService{
 		return null;
 	}
 
+
+	@Override
+	public List<Vehicle> getAllVehicles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
