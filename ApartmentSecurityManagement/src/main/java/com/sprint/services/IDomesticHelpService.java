@@ -3,6 +3,7 @@ package com.sprint.services;
 import java.util.List;
 
 import com.sprint.entities.DomesticHelp;
+import com.sprint.entities.DomesticHelpType;
 
      public interface IDomesticHelpService {
     
@@ -14,6 +15,6 @@ import com.sprint.entities.DomesticHelp;
          
      public DomesticHelp updateDomesticHelp(DomesticHelp domesticHelp);
         
-     public DomesticHelp updateDomesticHelpById(Long id);
+     public DomesticHelp updateDomesticHelpById(Long id, DomesticHelpType oldHelpType , DomesticHelpType newHelpType);
       
 }

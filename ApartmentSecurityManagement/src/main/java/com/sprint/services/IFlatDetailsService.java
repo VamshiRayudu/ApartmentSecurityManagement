@@ -12,7 +12,7 @@ public interface IFlatDetailsService {
 	
 	public List<FlatDetails> listAllFlatDetails();
 	
-	public FlatDetails updateFlatDetails(Long flatNumber);
+	public FlatDetails updateFlatDetails(Long flatNumber,String oldName,String newName);
 	
 	
 }
