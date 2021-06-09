@@ -1,25 +1,22 @@
 package com.sprint;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.Guard;
 import com.sprint.entities.Role;
 import com.sprint.repositories.IGuardRepository;
 import com.sprint.services.GuardServiceImpl;
 
+@SpringBootTest
 class GuardTest {
 		
 	@Mock
@@ -30,30 +27,25 @@ class GuardTest {
 
 	GuardServiceImpl guardService = new GuardServiceImpl();
 
-	 @Test
-	    public void testAddGuard() {
-	        Guard guard = new Guard();
-	        guard.setMobileNumber(123L);
-	        guard.setEmailId("sampleTest@asp.com");
-	        guard.setRole(Role.GUARD);
-	        guard.setName("test");
-	        Mockito.when(guardRepository.save(guard)).thenReturn(guard);
-	        assertEquals(guard,guardService.addGuard(guard));
-	    }
 
-	 
-	 @Test
-	    public void deleteGuard() {
-		 Guard guard = new Guard();
-		 	guard.setMobileNumber(123L);
-		    guard.setEmailId("sampleTest@asp.com");
-		    guard.setRole(Role.GUARD);
-		    guard.setName("test");
-	        Mockito.when(guardRepository.getById(guard.getId())).thenReturn(guard);
-	        assertEquals(guard, guardService.deleteGuardById(guard.getId()));
-	    }
+	@Test
+	public void testAddGuard() 
+	{
+		Guard guard = new Guard("shubham","dwivedi",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+		Mockito.when(guardRepository.save(guard)).thenReturn(guard);
+		guardService.addGuard(guard);
+		assertEquals("shubham",guard.getUserName());
+		assertEquals("password",guard.getPassword());
+	}
+		@Test
+		public void deleteGuard() {
+			
+			Guard guard = new Guard(15L,"shubham","dwivedi",12223L,"sampleTest@asp.com","password",Role.GUARD);
+	    	Mockito.when(guardRepository.findById(guard.getId())).thenReturn(Optional.of(guard));
+	        assertEquals(guard, guardService.deleteGuard(guard));
+		}
 	   
-	    @Test
+	/*    @Test
 	    public void testNotAddGuard() {
 	        Guard guard1 = new Guard();
 	        guard1.setMobileNumber(123L);
@@ -69,7 +61,7 @@ class GuardTest {
 	        
 	        Mockito.when(guardRepository.save(guard1)).thenReturn(guard1);
 	        assertEquals(guard1,guardService.addGuard(guard2));
-	    }
+	    }*/
 	    
 	    @Test
 	    void testGetAllGaurds() {

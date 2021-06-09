@@ -99,6 +99,13 @@ public class Delivery {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Delivery(FlatDetails flatDetails, LocalDateTime deliveryDateTime, DeliveryStatus status) {
+		super();
+		this.flatDetails = flatDetails;
+		this.deliveryDateTime = deliveryDateTime;
+		this.status = status;
+	}
+	
 	@Override
 	public String toString() {
 		return "Delivery [deliveryId=" + deliveryId + ", flatDetails=" + flatDetails + ", deliveryDateTime="

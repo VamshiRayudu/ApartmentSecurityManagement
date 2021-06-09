@@ -106,6 +106,7 @@ public class SecurityAlert {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	@Override
 	public String toString() {
 		return "SecurityAlert [id=" + id + ", message=" + message + ", alert=" + alert + ", dateTimeOfAlert="

@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sprint.entities.Vehicle;
+import com.sprint.entities.VehicleUpdates;
 import com.sprint.repositories.IVehicleRepository;
 
 @Service
 @Transactional
 public class VehicleServiceImpl implements IVehicleService{
-	
+
 	@Autowired
 	private IVehicleRepository vehicleRepository;
 
@@ -45,5 +46,17 @@ public class VehicleServiceImpl implements IVehicleService{
 		// TODO Auto-generated method stub
 		return vehicleRepository.findAll() ;
 	}
+
+
+	@Override
+	public Vehicle updateVehicleUpdate(Long vehicleId, VehicleUpdates vUpdate) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		Vehicle v= vehicleRepository.getById(vehicleId);
+		v.getVehicleUpdates().add(vUpdate);
+		return vehicleRepository.save(v);
+	}
+
+
 
 }

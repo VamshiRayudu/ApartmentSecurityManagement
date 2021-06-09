@@ -1,5 +1,4 @@
 package com.sprint.services;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import com.sprint.repositories.IGuardRepository;
 
 @Service
 @Transactional
-public class GuardServiceImpl implements IGuardService{
+public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 
 	@Autowired
 	private IGuardRepository guardRepository;
@@ -90,9 +89,6 @@ public class GuardServiceImpl implements IGuardService{
 		guard.getGuardAttendances().add(a);
 		return guardRepository.saveAndFlush(guard);
 	}
-
-
-
 }
 
 

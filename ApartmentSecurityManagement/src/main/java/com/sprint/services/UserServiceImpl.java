@@ -9,76 +9,106 @@ import org.springframework.stereotype.Service;
 
 import com.sprint.entities.Admin;
 import com.sprint.entities.Guard;
+import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IGuardRepository;
-import com.sprint.repositories.IUserRepository;
+import com.sprint.repositories.IOwnerRepository;
 
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService{
 	
 	@Autowired
-	private IUserRepository userRepository;
-	
-	@Autowired
 	private IAdminRepository adminRepository;
 	
 	@Autowired
 	private IGuardRepository guardRepository;
-
-	@Override
-	public boolean LoginUser(String emailId, String password) {
-		// TODO Auto-generated method stub
-		User user = userRepository.findByEmailId(emailId);
-		if(user.getPassword() == password)
-		{
-			return true;
-		}
-		else
-			return false;
-	}
+	
+	@Autowired
+	private IOwnerRepository ownerRepository;
 
 	@Override
 	public User registerUser(User user) {
 		// TODO Auto-generated method stub
-		User userDb = userRepository.saveAndFlush(user);
-		if(userDb.getRole() == Role.ADMIN)
+		if(user.getRole() == Role.ADMIN)
 		{
-			Admin admin = adminRepository.saveAndFlush((Admin)userDb);
+			Admin adm = new Admin();
+			adm.setEmailId(user.getEmailId());
+			adm.setMobileNumber(user.getMobileNumber());
+			adm.setName(user.getUserName());
+			adm.setPassword(user.getPassword());
+			adm.setRole(user.getRole());
+			adm.setPassword(user.getName());
+			adm = adminRepository.save(adm);
 		}
-		else if(userDb.getRole() == Role.GUARD)
+		else if(user.getRole() == Role.GUARD)
 		{
-			Guard guard = guardRepository.saveAndFlush((Guard)userDb);
+			Guard gd = new Guard();
+			gd.setEmailId(user.getEmailId());
+			gd.setMobileNumber(user.getMobileNumber());
+			gd.setName(user.getUserName());
+			gd.setPassword(user.getPassword());
+			gd.setRole(user.getRole());
+			gd.setPassword(user.getName());
+			gd = guardRepository.save(gd);
 		}
-		else if(userDb.getRole() == Role.FLATOWNER)
+		else if(user.getRole() == Role.FLATOWNER)
 		{
-			Admin a = adminRepository.saveAndFlush((Admin)user);
+			Owner owner = new Owner();
+			owner.setEmailId(user.getEmailId());
+			owner.setMobileNumber(user.getMobileNumber());
+			owner.setName(user.getUserName());
+			owner.setPassword(user.getPassword());
+			owner.setRole(user.getRole());
+			owner.setPassword(user.getName());
+			owner = ownerRepository.save(owner);
 		}
-		return userDb;
-	}
-
-	@Override
-	public User deleteUserById(Long id) {
-		// TODO Auto-generated method stub
-		User user = adminRepository.findById(id).get();
-		
-		//performing a delete operation  on this id 
-		userRepository.deleteById(id);
-		
 		return user;
 	}
 
+
 	@Override
-	public User getUserById(Long id) {
+	public User Login(String emailId, String password, Role role) {
 		// TODO Auto-generated method stub
-		return userRepository.getById(id);
+
+		if(role == Role.ADMIN)
+		{
+			Admin admin = (Admin) adminRepository.findByEmailId(emailId);
+			return admin;
+		}
+		else if(role == Role.GUARD)
+		{
+			Guard guard = guardRepository.findByEmailId(emailId);
+			return guard;
+		}
+		else if(role == Role.FLATOWNER)
+		{
+			Owner owner = ownerRepository.findByEmailId(emailId);
+			return owner;
+		}
+		return null;
 	}
 
 	@Override
-	public List<User> getUserList() {
+	public User Logout(String emailId, String password, Role role) {
 		// TODO Auto-generated method stub
-		return userRepository.findAll();
+		if(role == Role.ADMIN)
+		{
+			Admin admin = (Admin) adminRepository.findByEmailId(emailId);
+			return admin;
+		}
+		else if(role == Role.GUARD)
+		{
+			Guard guard = guardRepository.findByEmailId(emailId);
+			return guard;
+		}
+		else if(role == Role.FLATOWNER)
+		{
+			Owner owner = ownerRepository.findByEmailId(emailId);
+			return owner;
+		}
+		return null;
 	}
 }

@@ -1,27 +1,34 @@
 package com.sprint;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.Attendance;
+import com.sprint.entities.DeliveryStatus;
 import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.DomesticHelpType;
-import com.sprint.entities.Role;
+import com.sprint.entities.FlatDetails;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IDomesticHelpRepository;
 import com.sprint.services.AdminServiceImpl;
 import com.sprint.services.DomesticHelpService;
 
+@SpringBootTest
 class DomesticHelpTest {
 
 	
@@ -36,61 +43,99 @@ class DomesticHelpTest {
 	@Test
 	void getDomesticHelpListTest() {
 		
-		List<Attendance> l1 = new ArrayList<>();
-		Attendance a1 = new Attendance();
-		a1.setDateOfAttendance(LocalDate.parse("2021-06-06"));
-		a1.setInTime(LocalDateTime.parse("2021-06-06T12:12:00"));
-		a1.setOutTime(LocalDateTime.parse("2021-06-06T12:16:00"));
-		l1.add(a1);
+		List<Attendance> attendanceList = new ArrayList<>();
+		Attendance attendance = new Attendance(LocalDate.parse("2021-06-06") , LocalDateTime.parse("2021-06-06T12:12:00") , 
+							LocalDateTime.parse("2021-06-06T12:16:00") , 1L , true);
+		attendanceList.add(attendance);
+		
+		List<FlatDetails> flatDetailsList = new ArrayList<>();
+		FlatDetails fDetails1 = new FlatDetails(606L , 6L);
+		FlatDetails fDetails2 = new FlatDetails(506L , 5L);
+		flatDetailsList.add(fDetails1);
+		flatDetailsList.add(fDetails2);
+		
+		List<DomesticHelp> domesticHelpList = new ArrayList<>();
+		DomesticHelp domesticHelp1 = new DomesticHelp(attendanceList , DomesticHelpType.COOKING, "Raju" , "123456" , 12345L , flatDetailsList);
+		DomesticHelp domesticHelp2 = new DomesticHelp(attendanceList , DomesticHelpType.PLUMBING, "Rakesh" , "1234" , 1234L , flatDetailsList);
+		domesticHelpList.add(domesticHelp1);
+		domesticHelpList.add(domesticHelp2);
 		
 		
-		List<DomesticHelp> list = new ArrayList<>();
-		DomesticHelp domesticHelp1 = new DomesticHelp();
-		domesticHelp1.setName("Ravi");
-		domesticHelp1.setAadharId("123456789123");
-		domesticHelp1.setMobileNumber(123L);
-		domesticHelp1.setHelpType(DomesticHelpType.COOKING);
-		domesticHelp1.setAttendance(l1);
+		Mockito.when(domesticHelpRepository.findAll()).thenReturn(domesticHelpList);
+		assertEquals(domesticHelpList.size(), domesticService.getDomesticHelpList().size());
 		
-		DomesticHelp domesticHelp2 = new DomesticHelp();
-		domesticHelp2.setName("Ravi");
-		domesticHelp2.setAadharId("123456789123");
-		domesticHelp2.setMobileNumber(123L);
-		domesticHelp2.setHelpType(DomesticHelpType.COOKING);
-		domesticHelp2.setAttendance(l1);
-		
-		list.add(domesticHelp1);
-		list.add(domesticHelp2);
-		Mockito.when(domesticHelpRepository.findAll()).thenReturn(list);
-		assertEquals(list.size(), domesticService.getDomesticHelpList().size());
 	}
 	
 	
 	@Test
 	void getDomesticHelpByIdTest() {
-		DomesticHelp domesticHelp1 = new DomesticHelp();
-		domesticHelp1.setId(1L);
-		domesticHelp1.setName("Ravi");
-		domesticHelp1.setAadharId("123456789123");
-		domesticHelp1.setMobileNumber(123L);
-		domesticHelp1.setHelpType(DomesticHelpType.COOKING);
 		
-		Mockito.when(domesticHelpRepository.getById(1L)).thenReturn(domesticHelp1);
-		assertEquals(domesticHelp1, domesticService.getDomesticHelpById(1L));
+		List<Attendance> attendanceList = new ArrayList<>();
+		Attendance attendance = new Attendance(LocalDate.parse("2021-06-06") , LocalDateTime.parse("2021-06-06T12:12:00") , 
+							LocalDateTime.parse("2021-06-06T12:16:00") , 1L , true);
+		attendanceList.add(attendance);
+		
+		List<FlatDetails> flatDetailsList = new ArrayList<>();
+		FlatDetails fDetails1 = new FlatDetails(606L , 6L);
+		FlatDetails fDetails2 = new FlatDetails(506L , 5L);
+		flatDetailsList.add(fDetails1);
+		flatDetailsList.add(fDetails2);
+		
+		DomesticHelp domesticHelp = new DomesticHelp(attendanceList , DomesticHelpType.COOKING, "Raju" , "123456" , 12345L , flatDetailsList);
+		
+		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
+		domesticService.addDomesticHelp(domesticHelp);
+		Mockito.when(domesticHelpRepository.getById(domesticHelp.getId())).thenReturn(domesticHelp);
+		DomesticHelp dh = domesticService.getDomesticHelpById(domesticHelp.getId());
+		assertEquals(dh,domesticHelp);
+		verify(domesticHelpRepository , times(1)).getById(domesticHelp.getId());
 		
 	}
 	
 	
 	@Test
 	void addDomesticHelpTest() {
-		DomesticHelp domesticHelp1 = new DomesticHelp();
-		domesticHelp1.setName("Ravi");
-		domesticHelp1.setAadharId("123456789123");
-		domesticHelp1.setMobileNumber(123L);
-		domesticHelp1.setHelpType(DomesticHelpType.COOKING);
 		
-		Mockito.when(domesticHelpRepository.save(domesticHelp1)).thenReturn(domesticHelp1);
-		assertEquals(domesticHelp1, domesticService.addDomesticHelp(domesticHelp1));
+		List<Attendance> attendanceList = new ArrayList<>();
+		Attendance attendance = new Attendance(LocalDate.parse("2021-05-06") , LocalDateTime.parse("2021-05-06T12:13:00") , 
+							LocalDateTime.parse("2021-05-06T12:16:00") , 6L , true);
+		attendanceList.add(attendance);
+		
+		List<FlatDetails> flatDetailsList = new ArrayList<>();
+		FlatDetails fDetails1 = new FlatDetails(106L , 1L);
+		FlatDetails fDetails2 = new FlatDetails(206L , 2L);
+		flatDetailsList.add(fDetails1);
+		flatDetailsList.add(fDetails2);
+		
+		DomesticHelp domesticHelp = new DomesticHelp(attendanceList , DomesticHelpType.HOUSEKEEPING, "Raghu" , "12345678" , 12345678L , flatDetailsList);
+		
+		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
+		domesticService.addDomesticHelp(domesticHelp);
+		assertEquals("Raghu" , domesticHelp.getName());
+		
+	}
+	
+	
+	@Test
+	void updateDomesticHelpTest() {
+		
+		List<Attendance> attendanceList = new ArrayList<>();
+		Attendance attendance = new Attendance(LocalDate.parse("2021-03-06") , LocalDateTime.parse("2021-03-06T12:13:00") , 
+							LocalDateTime.parse("2021-03-06T12:16:00") , 3L , true);
+		attendanceList.add(attendance);
+		
+		List<FlatDetails> flatDetailsList = new ArrayList<>();
+		FlatDetails fDetails1 = new FlatDetails(603L , 6L);
+		FlatDetails fDetails2 = new FlatDetails(503L , 5L);
+		flatDetailsList.add(fDetails1);
+		flatDetailsList.add(fDetails2);
+		
+		DomesticHelp domesticHelp = new DomesticHelp(attendanceList , DomesticHelpType.COOKING, "Ravi" , "123" , 123L , flatDetailsList);
+		
+		domesticHelp.setName("Rakesh");
+		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
+		domesticService.updateDomesticHelp(domesticHelp);
+		assertEquals("Rakesh" , domesticHelp.getName());
 		
 	}
 	
@@ -98,39 +143,34 @@ class DomesticHelpTest {
 	@Test
 	void updateDomesticHelpByIdTest() {
 		
-		List<Attendance> l1 = new ArrayList<>();
-		Attendance a1 = new Attendance();
-		a1.setDateOfAttendance(LocalDate.parse("2021-06-06"));
-		a1.setInTime(LocalDateTime.parse("2021-06-06T12:12:00"));
-		a1.setOutTime(LocalDateTime.parse("2021-06-06T12:16:00"));
-		l1.add(a1);
+		List<Attendance> attendanceList = new ArrayList<>();
+		Attendance attendance = new Attendance(LocalDate.parse("2021-04-06") , LocalDateTime.parse("2021-04-06T12:13:00") , 
+							LocalDateTime.parse("2021-04-06T12:16:00") , 6L , true);
+		attendanceList.add(attendance);
 		
-		DomesticHelp domesticHelp1 = new DomesticHelp();
-		domesticHelp1.setId(1L);
-		domesticHelp1.setName("Ravi");
-		domesticHelp1.setAadharId("123456789123");
-		domesticHelp1.setMobileNumber(123L);
-		domesticHelp1.setHelpType(DomesticHelpType.COOKING);
-		domesticHelp1.setAttendance(l1);
+		List<FlatDetails> flatDetailsList = new ArrayList<>();
+		FlatDetails fDetails1 = new FlatDetails(306L , 3L);
+		FlatDetails fDetails2 = new FlatDetails(406L , 4L);
+		flatDetailsList.add(fDetails1);
+		flatDetailsList.add(fDetails2);
 		
-		Mockito.when(domesticHelpRepository.getById(1L)).thenReturn(domesticHelp1);
+		DomesticHelp domesticHelp = new DomesticHelp(1L,attendanceList , DomesticHelpType.HOUSEKEEPING, "Rakesh" , "123456789" , 123456789L , flatDetailsList);
 		
-		domesticHelp1.setMobileNumber(456L);
 		
-		Attendance a2 = new Attendance();
-		a2.setDateOfAttendance(LocalDate.parse("2021-05-06"));
-		a2.setInTime(LocalDateTime.parse("2021-05-06T12:12:00"));
-		a2.setOutTime(LocalDateTime.parse("2021-05-06T12:16:00"));
+		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
+		domesticService.addDomesticHelp(domesticHelp);
+		Mockito.when(domesticHelpRepository.findById(domesticHelp.getId())).thenReturn(Optional.of(domesticHelp));
 		
-		domesticHelp1.getAttendance().add(a2);
+		domesticHelp.setHelpType(DomesticHelpType.WASHING);
+		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
+		assertThat(domesticService.updateDomesticHelpById(domesticHelp.getId(), DomesticHelpType.WASHING, DomesticHelpType.HOUSEKEEPING)).isEqualTo(domesticHelp);
 		
-		Mockito.when(domesticHelpRepository.save(domesticHelp1)).thenReturn(domesticHelp1);
-		
-		assertEquals(domesticHelp1, domesticService.updateDomesticHelpById(1L));
-		
-	}
+		 
+		}
 	
 	
-
+	
+	
+	
 	
 }

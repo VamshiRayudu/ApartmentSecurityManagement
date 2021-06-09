@@ -154,6 +154,21 @@ public class FlatDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public FlatDetails(Long flatNumber, Long floorNumber, Boolean isRented, Owner owner) {
+		super();
+		this.flatNumber = flatNumber;
+		this.floorNumber = floorNumber;
+		this.isRented = isRented;
+		this.owner = owner;
+		
+	}
+	
+	public FlatDetails(Long flatNumber, Long floorNumber) {
+		super();
+		this.flatNumber = flatNumber;
+		this.floorNumber = floorNumber;
+	}
 
 	@Override
 	public String toString() {

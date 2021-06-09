@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.sprint.entities.Guard;
 
-public interface IGuardService {
+public interface IGuardService extends IUserService{
 	
 	public Guard addGuard(Guard guard);
 

@@ -12,7 +12,7 @@ import com.sprint.repositories.IOwnerRepository;
 
 @Service
 @Transactional
-public class OwnerServiceImpl implements IOwnerService{
+public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 
 	@Autowired
 	private IOwnerRepository ownerRepository;
@@ -64,9 +64,6 @@ public class OwnerServiceImpl implements IOwnerService{
 
 		//returning owner which is deleted
 		return owner;
-
-
-
 	}
 
 	@Override
@@ -74,9 +71,4 @@ public class OwnerServiceImpl implements IOwnerService{
 		// TODO Auto-generated method stub
 		return ownerRepository.saveAndFlush(owner);
 	}
-
-
-
-
-
 }

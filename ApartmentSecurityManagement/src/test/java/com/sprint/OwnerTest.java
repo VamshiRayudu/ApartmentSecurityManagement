@@ -8,7 +8,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,9 +28,9 @@ import com.sprint.services.AdminServiceImpl;
 import com.sprint.services.OwnerServiceImpl;
 
 @SpringBootTest
- public class OwnerTest {
-	
-	
+public class OwnerTest {
+
+
 	@Mock
 
 	IOwnerRepository ownerRepository= org.mockito.Mockito.mock(IOwnerRepository.class);
@@ -37,22 +39,17 @@ import com.sprint.services.OwnerServiceImpl;
 
 	OwnerServiceImpl ownerService = new OwnerServiceImpl();
 
-	
-
 	@Test
 	public void testAddOwner() {
-		Owner owner = new Owner();
-		owner.setMobileNumber(123L);
-		owner.setEmailId("sampleTest@asp.com");
-		owner.setRole(Role.FLATOWNER);
-		owner.setName("test");
-		owner.setUserName("demo");
+
+		Owner owner = new Owner("reddy","harsha",12223L,"farakhan@gmail.com","password",Role.FLATOWNER);
 		Mockito.when(ownerRepository.save(owner)).thenReturn(owner);
 		ownerService.addOwner(owner);
-		verify(ownerRepository, times(1)).save(owner);
+		assertEquals("reddy",owner.getUserName());
+		assertEquals("password",owner.getPassword());
 	}
-	
-	
+
+
 	@Test
 	public void testGetOwnerById() {
 
@@ -62,48 +59,29 @@ import com.sprint.services.OwnerServiceImpl;
 		owner.setRole(Role.FLATOWNER);
 		owner.setName("test");
 		owner.setUserName("demo");
-		
+
 
 		Mockito.when(ownerRepository.getById(owner.getId())).thenReturn(owner);
 
 		Owner a = ownerService.getOwnerById(owner.getId());
-		
-	    assertEquals(a,owner);
-	    
-	   verify(ownerRepository, times(1)).getById(owner.getId());
+
+		assertEquals(a,owner);
+
+		verify(ownerRepository, times(1)).getById(owner.getId());
 	}
-	
-	
+
+
 	@Test
 	public void deleteOwner() {
-		Owner owner = new Owner();
-		owner.setMobileNumber(123L);
-		owner.setEmailId("sampleTest@asp.com");
-		owner.setRole(Role.FLATOWNER);
-		owner.setName("test");
-        Mockito.when(ownerRepository.getById(owner.getId())).thenReturn(owner);
-        assertEquals(owner, ownerService.deleteOwnerById(owner.getId()));
-	}
-    
 	
-	@Test
-	public void testNotAddOwner() {
-		Owner owner1 = new Owner();
-		owner1.setMobileNumber(123L);
-		owner1.setEmailId("sampleTest@asp.com");
-		owner1.setRole(Role.FLATOWNER);
-		owner1.setName("test");
-		
-		Owner owner2 = new Owner();
-		owner2.setMobileNumber(123L);
-		owner2.setEmailId("sampleTest@asp.com");
-		owner2.setRole(Role.FLATOWNER);
-		owner2.setName("test");
-		
-		Mockito.when(ownerRepository.save(owner1)).thenReturn(owner1);
-		assertEquals(owner1, ownerService.addOwner(owner2));
+		Owner owner = new Owner(15L,"pabba","vivek",12223L,"farakhan@gmail.com","password",Role.FLATOWNER);
+		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
+		assertEquals(owner,  ownerService.deleteOwner(owner));
 	}
+
+
 	
+
 	@Test
 	void testGetAllOwner() {
 		List<Owner>list = new ArrayList<>();
@@ -112,7 +90,7 @@ import com.sprint.services.OwnerServiceImpl;
 		owner1.setEmailId("sampleTest@asp.com");
 		owner1.setRole(Role.FLATOWNER);
 		owner1.setName("test");
-		
+
 		Owner owner2 = new Owner();
 		owner2.setMobileNumber(123L);
 		owner2.setEmailId("sampleTest@asp.com");
@@ -123,5 +101,5 @@ import com.sprint.services.OwnerServiceImpl;
 		Mockito.when(ownerRepository.findAll()).thenReturn(list);
 		assertEquals(list.size(), ownerService.getAllOwnerList().size());
 	}
-		
+
 }

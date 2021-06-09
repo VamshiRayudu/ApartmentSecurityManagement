@@ -9,12 +9,12 @@ public interface IDeliveryService {
     
      public List<Delivery> getDeliveryList();
     
-     public Delivery getDelivery(Long id);
+     public Delivery getDeliveryById(Long id);
      
      public Delivery addDelivery(Delivery delivery);
           
      public Delivery updateDelivery(Delivery delivery);
         
-     public Delivery updateDelivery(Long id, DeliveryStatus oldStatus, DeliveryStatus newStatus); 
+     public Delivery updateDeliveryById(Long id, DeliveryStatus oldStatus, DeliveryStatus newStatus);
          
 }

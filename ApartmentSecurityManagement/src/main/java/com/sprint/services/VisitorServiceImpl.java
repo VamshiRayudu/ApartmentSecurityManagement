@@ -2,13 +2,16 @@ package com.sprint.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
-import com.sprint.entities.Vehicle;
 import com.sprint.entities.Visitor;
 import com.sprint.repositories.IVisitorRepository;
 
+@Service
+@Transactional
 public class VisitorServiceImpl implements IVisitorService{
 
 	@Autowired

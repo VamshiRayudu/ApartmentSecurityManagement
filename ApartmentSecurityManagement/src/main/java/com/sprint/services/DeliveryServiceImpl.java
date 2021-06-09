@@ -24,7 +24,7 @@ public class DeliveryServiceImpl implements IDeliveryService{
 	}
 
 	@Override
-	public Delivery getDelivery(Long id) {
+	public Delivery getDeliveryById(Long id) {
 		// TODO Auto-generated method stub
 		return deliveryRepository.getById(id);
 	}
@@ -42,7 +42,7 @@ public class DeliveryServiceImpl implements IDeliveryService{
 	}
 
 	@Override
-	public Delivery updateDelivery(Long id, DeliveryStatus oldStatus, DeliveryStatus newStatus) {
+	public Delivery updateDeliveryById(Long id, DeliveryStatus oldStatus, DeliveryStatus newStatus) {
 		// TODO Auto-generated method stub
 		Delivery delivery = deliveryRepository.findById(id).get();
 		

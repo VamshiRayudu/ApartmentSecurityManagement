@@ -1,31 +1,35 @@
 package com.sprint.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sprint.entities.Admin;
+import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 
 
 @Service
 @Transactional
-public class AdminServiceImpl implements IAdminService{
+public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 
 	@Autowired
 	private IAdminRepository adminRepository;
 	
+	
 	@Override
 	public Admin addAdmin(Admin admin) {
 		// TODO Auto-generated method stub
-		return adminRepository.saveAndFlush(admin);
+		return adminRepository.save(admin);
 	}
 
-	//USed for put
+	//Used for put
 	@Override
 	public Admin updateAdmin(Admin admin) {
 		// TODO Auto-generated method stub
-		return adminRepository.saveAndFlush(admin);
+		return adminRepository.save(admin);
 	}
 
 	//Patch Update
@@ -37,7 +41,7 @@ public class AdminServiceImpl implements IAdminService{
 		if(admin.getPassword() == oldPassword)
 		{
 			admin.setPassword(newPassword);
-			adminRepository.saveAndFlush(admin);
+			adminRepository.save(admin);
 		}
 		else 
 		{
@@ -53,20 +57,30 @@ public class AdminServiceImpl implements IAdminService{
 	}
 
 	@Override
-	public Admin getAdminById(Long id) {
+	public Admin getAdminById(Long id) throws UserNotFoundException {
 		// TODO Auto-generated method stub
-		return adminRepository.getById(id);
+	      Optional<Admin> admin =  adminRepository.findById(id);
+	      
+	      if(admin != null)
+	      {
+	    	  return admin.get();
+	      }
+	      else
+	      {
+	    	  throw new UserNotFoundException();
+	      }
+	      
 	}
 
 	@Override
 	public Admin deleteAdminById(Long id) {
 		// TODO Auto-generated method stub
-		Admin admin = adminRepository.findById(id).get();
+		Admin deleteAdmin = adminRepository.findById(id).get();
 		
 		//performing a delete operation  on this id 
 		adminRepository.deleteById(id);
 		
-		return admin;
+		return deleteAdmin;
 	}
 
 	@Override
@@ -77,6 +91,6 @@ public class AdminServiceImpl implements IAdminService{
 		//performing a delete operation  on the entity directly
 		adminRepository.delete(adminData);
 
-		return adminData;
+		return admin;
 	}
 }

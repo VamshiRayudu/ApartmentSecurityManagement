@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.sprint.entities.Owner;
 
-public interface IOwnerService {
+public interface IOwnerService extends IUserService{
 	
 	public Owner addOwner(Owner owner);
 

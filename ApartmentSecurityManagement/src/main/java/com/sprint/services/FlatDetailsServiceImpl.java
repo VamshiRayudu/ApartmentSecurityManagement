@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sprint.entities.FlatDetails;
+import com.sprint.entities.Owner;
 import com.sprint.repositories.IFlatDetailsRepository;
 
 @Service
@@ -37,15 +38,18 @@ public class FlatDetailsServiceImpl implements IFlatDetailsService{
 	}
 
 	@Override
-	public FlatDetails updateFlatDetails(Long flatNumber,String oldName,String newName) {
+	public FlatDetails updateFlatDetails(Long flatNumber, Owner ownerDetails) {
 		// TODO Auto-generated method stub
 		FlatDetails flatDetails=flatDetailsRepository.findById(flatNumber).get();
-		if(flatDetails.getOwner().getName()==oldName)
-		{
-			flatDetails.getOwner().setName(newName);
-			flatDetailsRepository.saveAndFlush(flatDetails);
-			
-		}
+	
+		flatDetails.getOwner().setEmailId(ownerDetails.getEmailId());
+		
+		flatDetails.getOwner().setPassword(ownerDetails.getPassword());
+		
+		flatDetails.getOwner().setEmailId(ownerDetails.getEmailId());
+		
+		flatDetailsRepository.save(flatDetails);
+		
 		return flatDetails;
 	}
 

@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.entities.Attendance;
 import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.DomesticHelpType;
 import com.sprint.repositories.IDomesticHelpRepository;
@@ -58,4 +59,11 @@ public class DomesticHelpService implements IDomesticHelpService {
 		return domesticHelpRepository.saveAndFlush(domesticHelp);
 	}
 
+	@Override
+	public DomesticHelp updateAttendance(Long domesticHelpId, Attendance attendance) {
+		// TODO Auto-generated method stub
+		DomesticHelp d = domesticHelpRepository.getById(domesticHelpId);
+		d.getAttendance().add(attendance);
+		return domesticHelpRepository.save(d);
+	}
 }

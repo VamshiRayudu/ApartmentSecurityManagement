@@ -2,18 +2,18 @@ package com.sprint;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Owner;
@@ -24,12 +24,12 @@ import com.sprint.services.IVehicleService;
 import com.sprint.services.VehicleServiceImpl;
 
 
-
+@SpringBootTest
 class VehicleTest {
-
+ 
 
 	@Autowired
-	private   VehicleServiceImpl  vehicleServiceImpl;
+	private  VehicleServiceImpl  vehicleServiceImpl;
 
 	@Mock
 
@@ -72,16 +72,12 @@ class VehicleTest {
 
 		a.setFlatdetails(fd);
 
-
-
-
 		Mockito.when(IVehicleRepository.save(a)).thenReturn(a);
-
-
-
-		assertEquals(a,vehicleService.addVehicle(a));
-
-
+    
+		vehicleService.addVehicle(a);
+		
+		verify(IVehicleRepository, times(1)).save(a);
+	
 	}
 
 
@@ -117,22 +113,11 @@ class VehicleTest {
 		a3.setOwner(owner1);	
 
 		a3.setFlatdetails(fd);
+		
+		Mockito.when(IVehicleRepository.findById(a3.getId())).thenReturn(Optional.of(a3));
 
+		assertEquals(a3,vehicleService.deleteVehicleById(a3.getId()));
 
-
-
-		IVehicleRepository.save(a3);
-
-
-		assertThat(IVehicleRepository.findAll())
-		.hasSize(1)
-		.first()
-		.isEqualToComparingFieldByField(a3);
-
-
-		IVehicleRepository.deleteById(a3.getId());
-
-		assertThat(IVehicleRepository.count()).isZero();                                                  
 	}
 
 	@Test
@@ -218,9 +203,6 @@ class VehicleTest {
 		a1.setOwner(owner1);
 
 		a1.setFlatdetails(fd);
-
-
-
 
 		Mockito.when(IVehicleRepository.getById(a1.getId())).thenReturn(a1);
 		Vehicle a = vehicleService .getVehiclesById(a1.getId());

@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.sprint.entities.Admin;
 
 @Repository
-public interface IAdminRepository extends JpaRepository<Admin, Long> {
-
+public interface IAdminRepository extends JpaRepository<Admin,Long> {
+	
+	public Admin findByEmailId(String emailId);
+	
 	public List<Admin> findByName(String name);
-
 }

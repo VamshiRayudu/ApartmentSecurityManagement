@@ -3,8 +3,9 @@ package com.sprint.services;
 import java.util.List;
 
 import com.sprint.entities.Admin;
+import com.sprint.exceptions.UserNotFoundException;
 
-public interface IAdminService {
+public interface IAdminService extends IUserService {
 
 	public Admin addAdmin(Admin admin);
 	
@@ -14,7 +15,7 @@ public interface IAdminService {
 	
 	public List<Admin> getAllAdmins();
 	
-	public Admin getAdminById(Long id);
+	public Admin getAdminById(Long id) throws UserNotFoundException;
 	
 	public Admin deleteAdminById(Long id);
 	

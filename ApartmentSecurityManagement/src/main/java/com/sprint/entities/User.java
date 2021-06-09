@@ -104,6 +104,13 @@ public class User {
 		this.role = role;
 	}
 
+	public User(String emailId, String password, Role role) {
+		super();
+		this.emailId = emailId;
+		this.password = password;
+		this.role = role;
+	}
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub

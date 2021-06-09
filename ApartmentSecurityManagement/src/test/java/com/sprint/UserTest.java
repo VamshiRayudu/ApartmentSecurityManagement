@@ -4,16 +4,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import com.sprint.entities.Admin;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
+import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IUserRepository;
+import com.sprint.services.AdminServiceImpl;
 import com.sprint.services.UserServiceImpl;
 
+@SpringBootTest
 class UserTest {
 
 	@Mock
@@ -21,59 +28,42 @@ class UserTest {
 	IUserRepository userRepository= org.mockito.Mockito.mock(IUserRepository.class);
 
 	@InjectMocks
-	UserServiceImpl userService = new UserServiceImpl();
+	UserServiceImpl userService;
+	
+	@Mock
+
+	IAdminRepository adminRepository= org.mockito.Mockito.mock(IAdminRepository.class);
+
+	@InjectMocks
+
+	AdminServiceImpl adminService;
 
 	@Test
 	public void addUser() {
 		
 		User user = new User();
 		user.setName("Demo");
-		user.setId(12L);
 		user.setMobileNumber(1232L);
 		user.setPassword("Demo@12");
 		user.setRole(Role.ADMIN);
 		user.setEmailId("sample@test");
 		
-		Mockito.when(userRepository.save(user)).thenReturn(user);
-		userService.registerUser(user);
-		verify(userRepository, times(1)).save(user);
+		User u = userService.registerUser(user);
+		
+		assertEquals(u, user);
 
 	} 
 
-	@Test
-	public void testGetUserById() {
-
-		User user = new User();
-		user.setName("Demo");
-		user.setId(12L);
-		user.setMobileNumber(1232L);
-		user.setPassword("Demo@12");
-		user.setRole(Role.ADMIN);
-		user.setEmailId("sample@test");
-		
-		Mockito.when(userRepository.getById(user.getId())).thenReturn(user);
-
-		User u = userService.getUserById(user.getId());
-		
-	    assertEquals(u,user);
-	    
-	    verify(userRepository, times(1)).getById(u.getId());
-	}
-	
 	
 	@Test
-	public void deleteAdmin() {
-		User user = new User();
-		user.setName("Demo");
-		user.setId(12L);
-		user.setMobileNumber(1232L);
-		user.setPassword("Demo@12");
-		user.setRole(Role.ADMIN);
-		user.setEmailId("sample@test");
+	public void loginUser() {
 		
-        Mockito.when(userRepository.getById(user.getId())).thenReturn(user);
-        assertEquals(user, userService.deleteUserById(user.getId()));
-	}
-	
-	
+		Admin admin = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
+		adminService.addAdmin(admin);
+		Admin login = (Admin) adminService.Login(admin.getEmailId(), admin.getPassword(), admin.getRole());
+		assertEquals("vamshi",login.getEmailId());
+		assertEquals("password",login.getPassword());
+	} 
+		
 }
