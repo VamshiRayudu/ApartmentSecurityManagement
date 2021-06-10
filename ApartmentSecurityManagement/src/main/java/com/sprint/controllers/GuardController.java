@@ -27,6 +27,9 @@ import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.VehicleUpdates;
 import com.sprint.entities.Visitor;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.RecordNotFoundException;
+import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IVehicleRepository;
 import com.sprint.services.IDeliveryService;
 import com.sprint.services.IDomesticHelpService;
@@ -61,16 +64,16 @@ public class GuardController {
 	@Autowired
 	private IVehicleRepository vehicleRepository;
 	
-	@PatchMapping("guard/Attendance")
-	public ResponseEntity<Guard>updateGuardAttendance(@PathVariable Long id,@RequestParam LocalDateTime inTime,@RequestParam LocalDateTime outTime) 
+	@PatchMapping("guard/{id}/Attendance")
+	public ResponseEntity<Guard>updateGuardAttendance(@PathVariable Long id,@RequestParam LocalDateTime inTime,@RequestParam LocalDateTime outTime) throws UserNotFoundException 
 	{
 		return new ResponseEntity<Guard>(guardService.updateGuardAttendance(id, inTime, outTime),HttpStatus.OK);
 	}
 
 	@PatchMapping("guard/Id")
-	public ResponseEntity<Guard>updateGuardById(@PathVariable Long id,@PathVariable Long mobilenumber)
+	public ResponseEntity<Guard>updateGuardById(@PathVariable Long id,@RequestParam Long oldMobilenumber,@RequestParam Long newMobilenumber) throws UserNotFoundException
 	{
-		return new ResponseEntity<Guard>(guardService.updateGuardById(id, mobilenumber),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardById(id,oldMobilenumber, newMobilenumber),HttpStatus.OK);
 	}
 
 	//////////////////////--------------------SECURITY ALERTS----------------------------///////////////////
@@ -82,26 +85,26 @@ public class GuardController {
 	}
 
 	@GetMapping("guard/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> getSecurityAlertById(@PathVariable Long id)
+	public ResponseEntity<SecurityAlert> getSecurityAlertById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.getSecurityAlertById(id),HttpStatus.OK);
 	}
 
 	@PostMapping("guard/securityAlert")
-	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert)
+	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert) throws DuplicateRecordException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),HttpStatus.CREATED);
 	}
 
 
 	@PatchMapping("guard/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@PathVariable Long id, @RequestParam String oldMessage, @RequestParam String newMessage)
+	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@PathVariable Long id, @RequestParam String oldMessage, @RequestParam String newMessage) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlertById(id, oldMessage, newMessage),HttpStatus.OK);
 	}
 
 	@PutMapping("guard/securityAlert")
-	public ResponseEntity<SecurityAlert> updateSecurityAlert(@RequestBody SecurityAlert securityAlert)
+	public ResponseEntity<SecurityAlert> updateSecurityAlert(@RequestBody SecurityAlert securityAlert) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlert(securityAlert),HttpStatus.OK);
 	}
@@ -114,25 +117,25 @@ public class GuardController {
 	}
 
 	@GetMapping("guard/delivery/{id}")
-	public ResponseEntity<Delivery> getDeliveryById(@PathVariable Long id)
+	public ResponseEntity<Delivery> getDeliveryById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id),HttpStatus.OK);
 	}
 
 	@PostMapping("guard/delivery")
-	public ResponseEntity<Delivery> addDelivery(@RequestBody Delivery delivery)
+	public ResponseEntity<Delivery> addDelivery(@RequestBody Delivery delivery) throws DuplicateRecordException
 	{
 		return new ResponseEntity<Delivery>(deliveryService.addDelivery(delivery),HttpStatus.CREATED);
 	}
 
 	@PutMapping("guard/delivery")
-	public ResponseEntity<Delivery> updateDelivery(@RequestBody Delivery delivery)
+	public ResponseEntity<Delivery> updateDelivery(@RequestBody Delivery delivery) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Delivery>(deliveryService.updateDelivery(delivery),HttpStatus.OK);
 	}
 
 	@PatchMapping("guard/delivery/{id}")
-	public ResponseEntity<Delivery> updateDeliveryStatusById(@PathVariable Long id, @RequestParam DeliveryStatus oldStatus, @RequestParam DeliveryStatus newStatus)
+	public ResponseEntity<Delivery> updateDeliveryStatusById(@PathVariable Long id, @RequestParam DeliveryStatus oldStatus, @RequestParam DeliveryStatus newStatus) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Delivery>(deliveryService.updateDeliveryById(id, oldStatus, newStatus),HttpStatus.OK);
 	}
@@ -148,7 +151,7 @@ public class GuardController {
 
 	//get domesticHelp by id
 	@GetMapping("guard/domesticHelps/{id}")
-	public ResponseEntity<DomesticHelp> getDomesticHelpById(@PathVariable("id") Long id) {
+	public ResponseEntity<DomesticHelp> getDomesticHelpById(@PathVariable("id") Long id) throws UserNotFoundException {
 
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
 	}
@@ -156,7 +159,7 @@ public class GuardController {
 
 	//add domesticHelp
 	@PostMapping("guard/domesticHelps")
-	public ResponseEntity<DomesticHelp> addDomesticHelp(@RequestBody DomesticHelp domsticHelp) {
+	public ResponseEntity<DomesticHelp> addDomesticHelp(@RequestBody DomesticHelp domsticHelp) throws DuplicateRecordException {
 
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.addDomesticHelp(domsticHelp),HttpStatus.CREATED);
 	}
@@ -164,7 +167,7 @@ public class GuardController {
 
 	//update domesticHelp
 	@PutMapping("guard/domesticHelps")
-	public ResponseEntity<DomesticHelp> updateDomesticHelp(@RequestBody DomesticHelp domsticHelp) {
+	public ResponseEntity<DomesticHelp> updateDomesticHelp(@RequestBody DomesticHelp domsticHelp) throws UserNotFoundException {
 
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.updateDomesticHelp(domsticHelp),HttpStatus.OK);
 	}
@@ -172,14 +175,14 @@ public class GuardController {
 
 	//update domesticHelp by id
 	@PatchMapping("guard/domesticHelps/{id}")
-	public ResponseEntity<DomesticHelp> updateDomesticHelpById(@PathVariable("id") Long id,@RequestParam DomesticHelpType oldHelpType,@RequestParam DomesticHelpType newHelpType) {
+	public ResponseEntity<DomesticHelp> updateDomesticHelpById(@PathVariable("id") Long id,@RequestParam DomesticHelpType oldHelpType,@RequestParam DomesticHelpType newHelpType) throws UserNotFoundException {
 
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.updateDomesticHelpById(id,oldHelpType,newHelpType),HttpStatus.OK);
 	}
 
 	//update domestichelp attendance
 	@PostMapping("guard/domesticHelps/{id}/{domesticHelpId}")
-	public ResponseEntity<DomesticHelp> updateAttendance(@PathVariable("domesticHelpId") Long domesticHelpId,@RequestBody Attendance attendance) {
+	public ResponseEntity<DomesticHelp> updateAttendance(@PathVariable("domesticHelpId") Long domesticHelpId,@RequestBody Attendance attendance) throws UserNotFoundException {
 
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.updateAttendance(domesticHelpId,attendance),HttpStatus.OK);
 	}
@@ -199,32 +202,32 @@ public class GuardController {
 	}
 
 	@PutMapping("guard/visitor")
-	public ResponseEntity<Visitor>updateVisitor(@RequestBody Visitor visitor )
+	public ResponseEntity<Visitor>updateVisitor(@RequestBody Visitor visitor ) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Visitor>(visitorService.updateVisitor(visitor),HttpStatus.OK);
 	}
 
 	@GetMapping("guard/visitor/{id}")
-	public ResponseEntity<Visitor>getvisitorById(@PathVariable Long id)
+	public ResponseEntity<Visitor>getvisitorById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Visitor>(visitorService.getVisitorById(id),HttpStatus.OK);
 	}
 
 	@PatchMapping("guard/visitor/{id}")
-	public ResponseEntity<Visitor>updateVisitorById(@PathVariable Long id,@RequestParam String visitorname,String mobilenumber)
+	public ResponseEntity<Visitor>updateVisitorById(@PathVariable Long id,@RequestParam String visitorname,String mobilenumber) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Visitor>(visitorService.updateVisitorById(id, visitorname, mobilenumber),HttpStatus.OK);
 	}
 
 	@DeleteMapping("guard/visitor")
-	public ResponseEntity<Visitor>deleteVisitor(@RequestBody Visitor visitor)
+	public ResponseEntity<Visitor>deleteVisitor(@RequestBody Visitor visitor) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Visitor>(visitorService.deleteVisitor(visitor),HttpStatus.OK);
 	}
 
 
 	@DeleteMapping("guard/visitor/{id}")
-	public ResponseEntity<Visitor>deleteVisitorById(@PathVariable Long id)
+	public ResponseEntity<Visitor>deleteVisitorById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Visitor>(visitorService.deleteVisitorById(id),HttpStatus.OK);	
 	}
@@ -239,7 +242,7 @@ public class GuardController {
 	//////////////////////------------------------------VEHICLE UPDATES----------------------------------------///////////
 
 	@PostMapping("guard/vehicleUpdates/{vehicleId}")
-	public ResponseEntity<Vehicle> updateVehicleUpdate(@PathVariable("vehicleId") Long vehicleId,@RequestBody VehicleUpdates vUpdate) {
+	public ResponseEntity<Vehicle> updateVehicleUpdate(@PathVariable("vehicleId") Long vehicleId,@RequestBody VehicleUpdates vUpdate) throws RecordNotFoundException {
 
 		return new ResponseEntity<Vehicle>(vehicleService.updateVehicleUpdate(vehicleId,vUpdate),HttpStatus.OK);
 	}
@@ -253,7 +256,7 @@ public class GuardController {
 
 	//get vehicles by id
 	@GetMapping("guard/vehicles/{id}")
-	public ResponseEntity<Vehicle> getVehiclesById(@PathVariable("id") Long id) {
+	public ResponseEntity<Vehicle> getVehiclesById(@PathVariable("id") Long id) throws RecordNotFoundException {
 
 		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
 	}

@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.sprint.entities.SecurityAlert;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.ISecurityAlertRepository;
 
 import com.sprint.services.SecurityAlertServiceImpl;
@@ -32,7 +34,7 @@ class SecurityAlertTest {
 
 
 	@Test
-	public void testGetSecurityAlertById() {
+	public void testGetSecurityAlertById() throws RecordNotFoundException {
 
 		SecurityAlert securityalert = new SecurityAlert();
 
@@ -49,7 +51,7 @@ class SecurityAlertTest {
 		verify(securityalertRepository, times(1)).getById(securityalert.getId());
 	}
 	@Test
-	public void testAddSecurityAlert() {
+	public void testAddSecurityAlert() throws DuplicateRecordException {
 		SecurityAlert  securityalert1 = new SecurityAlert();
 
 		securityalert1.setMessage("just joking ");
@@ -87,7 +89,7 @@ class SecurityAlertTest {
 	}
 
 	@Test
-	public void testdeleteById() {
+	public void testdeleteById() throws RecordNotFoundException {
 
 		SecurityAlert securityalert = new SecurityAlert();
 		securityalert.setMessage("all members alert");

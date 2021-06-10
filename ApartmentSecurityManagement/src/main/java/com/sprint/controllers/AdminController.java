@@ -25,6 +25,8 @@ import com.sprint.entities.Owner;
 import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.Visitor;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IGuardRepository;
@@ -76,7 +78,7 @@ public class AdminController {
 	private IVehicleService vehicleService;
 
 	@PostMapping("admin")
-	public ResponseEntity<Admin> addAdmin(@RequestBody Admin admin)
+	public ResponseEntity<Admin> addAdmin(@RequestBody Admin admin) throws DuplicateRecordException
 	{
 		return new ResponseEntity<Admin>(adminService.addAdmin(admin),HttpStatus.CREATED);
 	}
@@ -106,25 +108,25 @@ public class AdminController {
 	}
 
 	@DeleteMapping("admin/{id}")
-	public ResponseEntity<Admin> deleteAdminById(@PathVariable Long id)
+	public ResponseEntity<Admin> deleteAdminById(@PathVariable Long id) throws UserNotFoundException
 	{
 		return new ResponseEntity<Admin>(adminService.deleteAdminById(id),HttpStatus.OK);
 	}
 
 	@DeleteMapping("admin")
-	public ResponseEntity<Admin> deleteAdmin(@RequestBody Admin admin)
+	public ResponseEntity<Admin> deleteAdmin(@RequestBody Admin admin) throws UserNotFoundException
 	{
 		return new ResponseEntity<Admin>(adminService.deleteAdmin(admin),HttpStatus.OK);
 	}
 
 	@PutMapping("admin")
-	public ResponseEntity<Admin> updateAdmin(@RequestBody Admin admin)
+	public ResponseEntity<Admin> updateAdmin(@RequestBody Admin admin) throws UserNotFoundException
 	{
 		return new ResponseEntity<Admin>(adminService.updateAdmin(admin),HttpStatus.OK);
 	}
 
 	@PatchMapping("admin/{id}")
-	public ResponseEntity<Admin> updateAdminPassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword)
+	public ResponseEntity<Admin> updateAdminPassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) throws UserNotFoundException
 	{
 		return new ResponseEntity<Admin>(adminService.updateAdminById(id, oldPassword, newPassword),HttpStatus.OK);
 	}
@@ -134,7 +136,7 @@ public class AdminController {
 
 
 	@PostMapping("admin/guard")
-	public ResponseEntity<Guard> addGuard(@RequestBody Guard guard)
+	public ResponseEntity<Guard> addGuard(@RequestBody Guard guard) throws DuplicateRecordException
 	{
 		return new ResponseEntity<Guard>(guardService.addGuard(guard),HttpStatus.CREATED);
 	}
@@ -146,7 +148,7 @@ public class AdminController {
 	}
 
 	@GetMapping ("admin/guard/{id}")
-	public ResponseEntity<Guard> getGuardById(@PathVariable Long id)
+	public ResponseEntity<Guard> getGuardById(@PathVariable Long id) throws UserNotFoundException
 	{
 		return new ResponseEntity<Guard>(guardService.getGuardById(id),HttpStatus.OK);
 	}
@@ -158,27 +160,27 @@ public class AdminController {
 	}
 
 	@DeleteMapping("admin/guard")
-	public ResponseEntity<Guard> deleteGuard(@RequestBody Guard guard)
+	public ResponseEntity<Guard> deleteGuard(@RequestBody Guard guard) throws UserNotFoundException
 	{
 		return new ResponseEntity<Guard>(guardService.deleteGuard(guard),HttpStatus.OK);
 	}
 
 	@DeleteMapping("admin/guard/{id}")
-	public ResponseEntity<Guard> deleteGuardById(@PathVariable Long id)
+	public ResponseEntity<Guard> deleteGuardById(@PathVariable Long id) throws UserNotFoundException
 	{
 		return new ResponseEntity<Guard>(guardService.deleteGuardById(id),HttpStatus.OK);	
 	}
 
 	@PutMapping("admin/guard")
-	public ResponseEntity<Guard> updateGuard(@RequestBody Guard guard)
+	public ResponseEntity<Guard> updateGuard(@RequestBody Guard guard) throws UserNotFoundException
 	{
 		return new ResponseEntity<Guard>(guardService.updateGuard(guard),HttpStatus.OK);
 	}
 
 	@PatchMapping("admin/guard/{id}")
-	public ResponseEntity<Guard> updateGuardById(@PathVariable Long id, @RequestParam Long mobilenumber)
+	public ResponseEntity<Guard> updateGuardById(@PathVariable Long id,@RequestParam Long oldMobilenumber, @RequestParam Long newMobileNumber) throws UserNotFoundException
 	{
-		return new ResponseEntity<Guard>(guardService.updateGuardById(id, mobilenumber),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardById(id, oldMobilenumber, newMobileNumber),HttpStatus.OK);
 	}
 
 	/////////////////////////-----------------VISITOR----------------------------//////////////////////////
@@ -192,7 +194,7 @@ public class AdminController {
 	/////////////////////////---------------------SECURITY ALERTS ------------------------------/////////
 
 	@PostMapping("admin/{id}/securityAlert") ///Add To adminRepo
-	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert)
+	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert) throws DuplicateRecordException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),HttpStatus.CREATED);
 	}
@@ -204,25 +206,25 @@ public class AdminController {
 	}
 
 	@GetMapping("admin/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> getSecurityAlertById(@PathVariable Long id)
+	public ResponseEntity<SecurityAlert> getSecurityAlertById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.getSecurityAlertById(id),HttpStatus.OK);
 	}
 
 	@DeleteMapping("admin/{id}/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> deleteSecurityAlertById(@PathVariable Long id)
+	public ResponseEntity<SecurityAlert> deleteSecurityAlertById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.deleteSecurityAlertById(id),HttpStatus.OK);
 	}
 
 	@PatchMapping("admin/{id}/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@PathVariable Long id, @RequestParam String oldMessage, @RequestParam String newMessage)
+	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@PathVariable Long id, @RequestParam String oldMessage, @RequestParam String newMessage) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlertById(id, oldMessage, newMessage),HttpStatus.OK);
 	}
 
 	@PutMapping("admin/{id}/securityAlert")
-	public ResponseEntity<SecurityAlert> updateSecurityAlert(@RequestBody SecurityAlert securityAlert)
+	public ResponseEntity<SecurityAlert> updateSecurityAlert(@RequestBody SecurityAlert securityAlert) throws RecordNotFoundException
 	{
 		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlert(securityAlert),HttpStatus.OK);
 	}
@@ -236,7 +238,7 @@ public class AdminController {
 	}
 
 	@GetMapping("admin/delivery/{id}")
-	public ResponseEntity<Delivery> getDeliveryById(@PathVariable Long id)
+	public ResponseEntity<Delivery> getDeliveryById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id),HttpStatus.OK);
 	}
@@ -251,7 +253,7 @@ public class AdminController {
 
 	//get domesticHelp by id
 	@GetMapping("admin/domesticHelps/{id}")
-	public ResponseEntity<DomesticHelp> getDomesticHelpById(@PathVariable("id") Long id) {
+	public ResponseEntity<DomesticHelp> getDomesticHelpById(@PathVariable("id") Long id) throws UserNotFoundException {
 
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
 	}
@@ -259,14 +261,14 @@ public class AdminController {
 	/////////////////////////////////////////------FLATDETAILS-------------------------------------------
 
 	@PostMapping("admin/flatDetails")
-	public ResponseEntity<FlatDetails> addFlatDetails(@RequestBody FlatDetails flatDetails){
+	public ResponseEntity<FlatDetails> addFlatDetails(@RequestBody FlatDetails flatDetails) throws DuplicateRecordException{
 
 		FlatDetails flat = flatDetailsService.addFlatDetails(flatDetails);
 		return new ResponseEntity<FlatDetails>(flat,HttpStatus.CREATED);
 	}
 
 	@GetMapping("admin/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> getFlatDetails(@PathVariable("flatNumber") Long flatNumber)
+	public ResponseEntity<FlatDetails> getFlatDetails(@PathVariable("flatNumber") Long flatNumber) throws RecordNotFoundException
 	{
 		FlatDetails flat = flatDetailsService.getFlatDetailsById(flatNumber);
 		return new ResponseEntity<FlatDetails>(flat,HttpStatus.OK);
@@ -281,20 +283,20 @@ public class AdminController {
 
 
 	@PatchMapping("admin/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> updateFlatDetails(@PathVariable("flatNumber") Long flatNumber,@RequestParam Owner ownerDetails)
+	public ResponseEntity<FlatDetails> updateFlatDetails(@PathVariable("flatNumber") Long flatNumber,@RequestParam Owner ownerDetails) throws RecordNotFoundException
 	{
 		return new ResponseEntity<FlatDetails>(flatDetailsService.updateFlatDetails(flatNumber,ownerDetails),HttpStatus.OK);		
 	}
 
 	///////////////////////////////---------------------ONWER DETAILS----------------
 	@PostMapping("admin/{id}/owner")
-	public ResponseEntity<Owner> addOwner(@RequestBody 	Owner owner)
+	public ResponseEntity<Owner> addOwner(@RequestBody 	Owner owner) throws DuplicateRecordException
 	{
 		return new ResponseEntity<Owner>(ownerService.addOwner(owner),HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("admin/{id}/owner/{id}")
-	public ResponseEntity<Owner> deleteData1(@PathVariable("id") Long id){
+	public ResponseEntity<Owner> deleteData1(@PathVariable("id") Long id) throws UserNotFoundException{
 
 		Owner owner = ownerService.deleteOwnerById(id);
 		owner = ownerService.deleteOwner(owner);
@@ -302,7 +304,7 @@ public class AdminController {
 	}
 
 	@PutMapping("admin/{id}/owner")
-	public ResponseEntity<Owner> updateOwner(@RequestBody Owner owner)
+	public ResponseEntity<Owner> updateOwner(@RequestBody Owner owner) throws UserNotFoundException
 	{
 		return new ResponseEntity<Owner>(ownerService.updateOwner( owner),HttpStatus.OK);
 	}
@@ -310,7 +312,7 @@ public class AdminController {
 	///////////////////////////////-------------------------VEHICLE------------------------------------------------
 	//get vehicles by id
 	@GetMapping("admin/vehicles/{id}")
-	public ResponseEntity<Vehicle> getVehiclesById(@PathVariable("id") Long id) {
+	public ResponseEntity<Vehicle> getVehiclesById(@PathVariable("id") Long id) throws RecordNotFoundException {
 
 		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
 	}

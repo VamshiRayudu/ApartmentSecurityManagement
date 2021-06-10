@@ -3,6 +3,7 @@ package com.sprint.services;
 import java.util.List;
 
 import com.sprint.entities.Visitor;
+import com.sprint.exceptions.RecordNotFoundException;
 
 public interface IVisitorService {
 	
@@ -10,14 +11,14 @@ public interface IVisitorService {
 	
 	public Visitor addVisitor(Visitor visitor);
 	
-	public Visitor updateVisitor (Visitor visitor);
+	public Visitor updateVisitor (Visitor visitor) throws RecordNotFoundException;
 
-	public Visitor getVisitorById(Long Id);
+	public Visitor getVisitorById(Long Id) throws RecordNotFoundException;
 	
-	public Visitor updateVisitorById(Long Id,String visitorname,String mobilenumber);
+	public Visitor updateVisitorById(Long Id,String visitorname,String mobilenumber) throws RecordNotFoundException;
 	
-	public Visitor deleteVisitor(Visitor visitor);
+	public Visitor deleteVisitor(Visitor visitor) throws RecordNotFoundException;
 	
-	public Visitor deleteVisitorById(Long id);
+	public Visitor deleteVisitorById(Long id) throws RecordNotFoundException;
 	
 }

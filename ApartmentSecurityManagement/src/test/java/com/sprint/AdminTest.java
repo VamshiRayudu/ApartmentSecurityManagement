@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.sprint.entities.Admin;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
+import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.services.AdminServiceImpl;
@@ -32,7 +33,7 @@ class AdminTest {
 	AdminServiceImpl adminService;
 	
 	@Test
-	public void testAddAdmin() 
+	public void testAddAdmin() throws DuplicateRecordException 
 	{
 		Admin admin = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
 		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
@@ -45,20 +46,19 @@ class AdminTest {
 	
 
 	@Test
-	public void testGetAdminById() throws UserNotFoundException {
+	public void testGetAdminById() throws UserNotFoundException, DuplicateRecordException {
 
 		Admin admin = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
 		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
 		adminService.addAdmin(admin);
-		Mockito.when(adminRepository.getById(admin.getId())).thenReturn(admin);
+		Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
 		Admin a = adminService.getAdminById(admin.getId());
 	    assertEquals(a,admin);
-	    verify(adminRepository, times(1)).getById(admin.getId());
 	}
 
 	
 	@Test
-	public void deleteAdmin() {
+	public void deleteAdmin() throws UserNotFoundException {
 		
 		Admin admin = new Admin(15L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
     	Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
@@ -66,7 +66,7 @@ class AdminTest {
 	}
 
 	@Test
-    public void testDeleteById() {
+    public void testDeleteById() throws UserNotFoundException {
     	Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
     	Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
         assertEquals(admin, adminService.deleteAdminById(admin.getId()));
@@ -74,7 +74,7 @@ class AdminTest {
     
     
 	@Test
-	void testUpdateAdmin() {
+	void testUpdateAdmin() throws UserNotFoundException {
 		Admin admin = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
 		admin.setUserName("John");
 		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
@@ -82,6 +82,14 @@ class AdminTest {
 		assertEquals("John", admin.getUserName());
 	}
 	
+	
+	@Test
+	void testUpdateAdminById() throws UserNotFoundException {
+		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+    	Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+		Admin upPass = adminService.updateAdminById(admin.getId(), admin.getPassword(), "password2");
+		assertEquals("password2", upPass.getPassword());
+	}
 	@Test
 	void testGetAllAdmins() {
 		

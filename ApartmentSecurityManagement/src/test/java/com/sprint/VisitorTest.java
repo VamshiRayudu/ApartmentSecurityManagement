@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.Visitor;
+import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.entities.FlatDetails;
 import com.sprint.repositories.IVisitorRepository;
 import com.sprint.services.VisitorServiceImpl;
@@ -60,7 +61,7 @@ class VisitorTest {
 	} 
 
 	@Test
-	public void testGetUserById() {
+	public void testGetUserById() throws RecordNotFoundException {
 
 		FlatDetails fd = new FlatDetails();
 		
@@ -97,7 +98,7 @@ class VisitorTest {
 	
 	
 	@Test
-	public void deleteVisitor() {
+	public void deleteVisitor() throws RecordNotFoundException {
 		FlatDetails fd = new FlatDetails();
 		
 		fd.setFlatNumber(123L);
@@ -119,7 +120,6 @@ class VisitorTest {
 		visitor.setVisitorName("Test");
 		
         Mockito.when(visitorRepository.findById(visitor.getId())).thenReturn(Optional.of(visitor));
-        
         
         assertEquals(visitor, visitorService.deleteVisitorById(visitor.getId()));
 	}

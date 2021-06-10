@@ -22,6 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.sprint.entities.Admin;
 import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IOwnerRepository;
 import com.sprint.services.AdminServiceImpl;
@@ -40,7 +42,7 @@ public class OwnerTest {
 	OwnerServiceImpl ownerService = new OwnerServiceImpl();
 
 	@Test
-	public void testAddOwner() {
+	public void testAddOwner() throws DuplicateRecordException {
 
 		Owner owner = new Owner("reddy","harsha",12223L,"farakhan@gmail.com","password",Role.FLATOWNER);
 		Mockito.when(ownerRepository.save(owner)).thenReturn(owner);
@@ -51,7 +53,7 @@ public class OwnerTest {
 
 
 	@Test
-	public void testGetOwnerById() {
+	public void testGetOwnerById() throws UserNotFoundException {
 
 		Owner owner = new Owner();
 		owner.setMobileNumber(123L);
@@ -72,15 +74,12 @@ public class OwnerTest {
 
 
 	@Test
-	public void deleteOwner() {
+	public void deleteOwner() throws UserNotFoundException {
 	
 		Owner owner = new Owner(15L,"pabba","vivek",12223L,"farakhan@gmail.com","password",Role.FLATOWNER);
 		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
 		assertEquals(owner,  ownerService.deleteOwner(owner));
 	}
-
-
-	
 
 	@Test
 	void testGetAllOwner() {

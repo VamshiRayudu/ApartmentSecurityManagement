@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Visitor;
 
 @Repository
@@ -22,7 +21,7 @@ public interface IVisitorRepository extends JpaRepository<Visitor, Long>{
 	@Query("select v FROM Visitor v WHERE v.inTime = ?1 and v.outTime = ?2")
 	public List<Visitor> getVisitorByTimings(LocalDateTime inTime, LocalDateTime outTime);
 	
-//	@Query("") //Join Query
-//	public List<FlatDetails> getVisitorByFlatNumber();
+	@Query("select a FROM Visitor a WHERE a.flatDetails.id =?1")
+	public List<Visitor> getAllVistiorsByFlatId(Long id);
 	
 }

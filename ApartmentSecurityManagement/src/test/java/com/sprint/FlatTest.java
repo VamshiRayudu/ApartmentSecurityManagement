@@ -1,4 +1,5 @@
 package com.sprint;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IFlatDetailsRepository;
 import com.sprint.services.FlatDetailsServiceImpl;
 @SpringBootTest
@@ -34,7 +37,7 @@ class FlatTest {
 	FlatDetailsServiceImpl flatDetailsService = new FlatDetailsServiceImpl();
 	
 	@Test
-	public void addFlatDetailsTest()
+	public void addFlatDetailsTest() throws DuplicateRecordException
 	{
 		Owner owner1=new Owner("havi","haviuser",90909090L,"havi@gmail.com","havi123",Role.GUARD);
 		FlatDetails flat1 = new FlatDetails(101L,1L,true,owner1);
@@ -44,13 +47,13 @@ class FlatTest {
 	 }
 	
 	@Test
-	public void getFlatDetailsByIdTest()
+	public void getFlatDetailsByIdTest() throws DuplicateRecordException, RecordNotFoundException
 	{
 		Owner owner1=new Owner("iyan","iyanuser",10909090L,"iyan@gmail.com","iyan123",Role.ADMIN);
 		FlatDetails flat1 = new  FlatDetails(101L,1L,true,owner1);
 		Mockito.when(flatDetailsRepository.save(flat1)).thenReturn(flat1);
 		flatDetailsService.addFlatDetails(flat1);
-		Mockito.when(flatDetailsRepository.findById(flat1.getFlatNumber())).thenReturn(Optional.of(flat1));
+		Mockito.when(flatDetailsRepository.getById(flat1.getFlatNumber())).thenReturn(flat1);
 		FlatDetails f = flatDetailsService.getFlatDetailsById(flat1.getFlatNumber());
 		assertEquals(f,flat1);
 		verify(flatDetailsRepository, times(1)).getById(flat1.getFlatNumber()); 		
@@ -76,13 +79,20 @@ class FlatTest {
 	}
     
 	@Test
-	public void updateFlatDetailsTest()
+	public void updateFlatDetailsTest() throws RecordNotFoundException, DuplicateRecordException
 	{
 		Owner owner1=new Owner("iyan","iyanuser",10909090L,"iyan@gmail.com","iyan123",Role.ADMIN);
+		Owner owner2=new Owner("riyan","riyanuser",20909090L,"riyan@gmail.com","riyan123",Role.GUARD);
+		
+
 		FlatDetails flat1 = new FlatDetails(101L,1L,true,owner1);
 		Mockito.when(flatDetailsRepository.save(flat1)).thenReturn(flat1);
 		flatDetailsService.addFlatDetails(flat1);
 		Mockito.when(flatDetailsRepository.findById(flat1.getFlatNumber())).thenReturn(Optional.of(flat1));
+		flat1.setOwner(owner2);
+		Mockito.when(flatDetailsRepository.save(flat1)).thenReturn(flat1);
+		assertThat(flatDetailsService.updateFlatDetails(flat1.getFlatNumber(), owner1)).isEqualTo(flat1);
+		
 		
 	}
 }

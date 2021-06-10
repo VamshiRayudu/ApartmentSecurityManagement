@@ -19,6 +19,7 @@ import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
 import com.sprint.entities.Vehicle;
+import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IVehicleRepository;
 import com.sprint.services.IVehicleService;
 import com.sprint.services.VehicleServiceImpl;
@@ -82,7 +83,7 @@ class VehicleTest {
 
 
 	@Test
-	public void deleteVehicleById()
+	public void deleteVehicleById() throws RecordNotFoundException
 	{
 
 		Vehicle a3 = new Vehicle();
@@ -173,7 +174,7 @@ class VehicleTest {
 	}
 
 	@Test
-	void testGetVehiclesById() {
+	void testGetVehiclesById() throws RecordNotFoundException {
 
 		FlatDetails fd = new FlatDetails();
 
@@ -209,8 +210,5 @@ class VehicleTest {
 		assertEquals(a,a1);
 		verify(IVehicleRepository, times(1)).getById(a1.getId());
 
-
 	}
-
-
 }

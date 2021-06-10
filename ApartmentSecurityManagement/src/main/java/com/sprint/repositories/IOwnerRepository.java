@@ -13,7 +13,6 @@ public interface IOwnerRepository extends JpaRepository<Owner,Long>{
 	public List<Owner> findByName(String name);
 	
 	
-	
 //	@Query("select g from Owner ") //Join Query
 //	public Owner getOwnerByFlatNumber(Long flatNumber);
 //	

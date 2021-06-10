@@ -4,16 +4,17 @@ import java.util.List;
 
 import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Owner;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.RecordNotFoundException;
 
 public interface IFlatDetailsService {
 	
-	public FlatDetails addFlatDetails(FlatDetails flatDetails);
+	public FlatDetails addFlatDetails(FlatDetails flatDetails)throws DuplicateRecordException;
 	
-	public FlatDetails getFlatDetailsById(Long flatNumber);
+	public FlatDetails getFlatDetailsById(Long flatNumber) throws RecordNotFoundException;
 	
 	public List<FlatDetails> listAllFlatDetails();
 	
-	public FlatDetails updateFlatDetails(Long flatNumber, Owner ownerDetails);
-	
-	
+	public FlatDetails updateFlatDetails(Long flatNumber, Owner ownerDetails) throws RecordNotFoundException;
+
 }

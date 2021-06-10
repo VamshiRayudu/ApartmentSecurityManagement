@@ -72,21 +72,29 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public User Login(String emailId, String password, Role role) {
 		// TODO Auto-generated method stub
-
 		if(role == Role.ADMIN)
 		{
 			Admin admin = (Admin) adminRepository.findByEmailId(emailId);
-			return admin;
+			if(admin.getPassword() == password)
+			{
+				return admin;
+			}
 		}
 		else if(role == Role.GUARD)
 		{
 			Guard guard = guardRepository.findByEmailId(emailId);
-			return guard;
+			if(guard.getPassword() == password)
+			{
+				return guard;
+			}
 		}
 		else if(role == Role.FLATOWNER)
 		{
 			Owner owner = ownerRepository.findByEmailId(emailId);
-			return owner;
+			if(owner.getPassword() == password)
+			{
+				return owner;
+			}
 		}
 		return null;
 	}

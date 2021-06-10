@@ -23,6 +23,8 @@ import com.sprint.entities.DeliveryStatus;
 import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.DomesticHelpType;
 import com.sprint.entities.FlatDetails;
+import com.sprint.exceptions.DuplicateRecordException;
+import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IDomesticHelpRepository;
 import com.sprint.services.AdminServiceImpl;
@@ -68,7 +70,7 @@ class DomesticHelpTest {
 	
 	
 	@Test
-	void getDomesticHelpByIdTest() {
+	void getDomesticHelpByIdTest() throws DuplicateRecordException, UserNotFoundException {
 		
 		List<Attendance> attendanceList = new ArrayList<>();
 		Attendance attendance = new Attendance(LocalDate.parse("2021-06-06") , LocalDateTime.parse("2021-06-06T12:12:00") , 
@@ -94,7 +96,7 @@ class DomesticHelpTest {
 	
 	
 	@Test
-	void addDomesticHelpTest() {
+	void addDomesticHelpTest() throws DuplicateRecordException {
 		
 		List<Attendance> attendanceList = new ArrayList<>();
 		Attendance attendance = new Attendance(LocalDate.parse("2021-05-06") , LocalDateTime.parse("2021-05-06T12:13:00") , 
@@ -117,7 +119,7 @@ class DomesticHelpTest {
 	
 	
 	@Test
-	void updateDomesticHelpTest() {
+	void updateDomesticHelpTest() throws UserNotFoundException {
 		
 		List<Attendance> attendanceList = new ArrayList<>();
 		Attendance attendance = new Attendance(LocalDate.parse("2021-03-06") , LocalDateTime.parse("2021-03-06T12:13:00") , 
@@ -141,7 +143,7 @@ class DomesticHelpTest {
 	
 	
 	@Test
-	void updateDomesticHelpByIdTest() {
+	void updateDomesticHelpByIdTest() throws DuplicateRecordException, UserNotFoundException {
 		
 		List<Attendance> attendanceList = new ArrayList<>();
 		Attendance attendance = new Attendance(LocalDate.parse("2021-04-06") , LocalDateTime.parse("2021-04-06T12:13:00") , 

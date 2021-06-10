@@ -9,9 +9,10 @@ import com.sprint.entities.SecurityAlert;
 
 public interface ISecurityAlertRepository extends JpaRepository<SecurityAlert, Long>{
 
-//	@Query("Select a FROM ")//Use JOins
-//	public List<SecurityAlert> getSecurityAlertsByAdminId();
+	@Query("select a FROM SecurityAlert a WHERE a.admin.id =?1")
+	public List<SecurityAlert> getAdminSecurityAlertsById(Long id);
 	
-	
-	
+	@Query("select a FROM SecurityAlert a WHERE a.guard.id =?1")
+	public List<SecurityAlert> getGuardSecurityAlertsById(Long id);
+
 }

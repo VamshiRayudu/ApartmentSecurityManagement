@@ -2,14 +2,17 @@ package com.sprint.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sprint.entities.Attendance;
 import com.sprint.entities.Guard;
+import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IGuardRepository;
 
 @Service
@@ -26,9 +29,18 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 	}
 
 	@Override
-	public Guard getGuardById(Long id) {
+	public Guard getGuardById(Long id) throws UserNotFoundException{
 		// TODO Auto-generated method stub
-		return guardRepository.getById(id);
+		Optional<Guard> guard = guardRepository.findById(id);
+		if(guard!=null)
+		{
+			return guardRepository.getById(id);
+		}
+		else
+		{
+			throw new UserNotFoundException("UserNotFound");
+
+		}
 	}
 
 	@Override
@@ -38,58 +50,88 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 	}
 
 	@Override
-	public Guard deleteGuard(Guard guard) {
+	public Guard deleteGuard(Guard guard) throws UserNotFoundException{
 		// TODO Auto-generated method stub
-		Guard g= guardRepository.findById(guard.getId()).get();
-
-		//performing a delete operation  on the entity directly
-		guardRepository.delete(guard);
-
-		//returning Product which is deleted
-		return g;
-	}
-
-	@Override
-	public Guard deleteGuardById(Long id) {
-		// TODO Auto-generated method stub
-		Guard g = guardRepository.findById(id).get();
-
-		//performing a delete operation  on this id
-		guardRepository.deleteById(id);
-
-		//returning Product which is deleted
-		return g;
-	}
-
-	@Override
-	public Guard updateGuardById(Long id,Long MobileNumber) {
-		// TODO Auto-generated method stub	
-		Guard guard = guardRepository.findById(id).get();
-		guard.setMobileNumber(MobileNumber);
-
+		Optional<Guard> gData =guardRepository.findById(guard.getId());
+		if(gData != null)
+		{
+			guardRepository.delete(guard);
+		}
+		else
+		{
+			throw new UserNotFoundException("UserNotFound");
+		}
 		return guard;
 	}
 
 	@Override
-	public Guard updateGuard(Guard guard) {
+	public Guard deleteGuardById(Long id) throws UserNotFoundException{
 		// TODO Auto-generated method stub
-		return guardRepository.saveAndFlush(guard);
+		Optional<Guard> guard=guardRepository.findById(id);
+		if(guard!=null)
+		{
+			guardRepository.delete(guard.get());
+			return guard.get();
+		}
+		else
+		{
+			throw new UserNotFoundException("UserNotFound");
+		}
 	}
 
 	@Override
-	public Guard updateGuardAttendance(Long id, LocalDateTime inTime, LocalDateTime outTime) {
+	public Guard updateGuardById(Long id,Long oldMobileNumber, Long newMobileNumber) throws UserNotFoundException {
+		// TODO Auto-generated method stub	
+		Optional<Guard> guard =guardRepository.findById(id);
+		if(guard!=null)
+		{
+			if(guard.get().getMobileNumber()== oldMobileNumber) {
+				guard.get().setMobileNumber(newMobileNumber);
+				return guardRepository.save(guard.get());
+
+			}
+			else
+				throw new ValidationException("Invalid MobileNumber");
+		}
+		else
+		{
+			throw new UserNotFoundException("UserNotFound");
+		}
+
+	}	
+
+	@Override
+	public Guard updateGuard(Guard guard) throws UserNotFoundException{
 		// TODO Auto-generated method stub
-		Guard guard = guardRepository.findById(id).get();
-		List<Attendance> attendanceList = new ArrayList();
-		Attendance a = new Attendance();
-		a.setInTime(inTime);
-		a.setOutTime(outTime);
-		a.setUpdatedByGuardId(id);
-		attendanceList.add(a);
-		guard.getGuardAttendances().add(a);
-		return guardRepository.saveAndFlush(guard);
+		Optional<Guard> user=guardRepository.findById(guard.getId());
+		if(user!=null)
+		{
+			return guardRepository.save(guard);
+		}
+		else
+		{
+			throw new UserNotFoundException("UserNotFound");
+		}
+	}
+
+	@Override
+	public Guard updateGuardAttendance(Long id, LocalDateTime inTime, LocalDateTime outTime) throws UserNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Guard> guard = guardRepository.findById(id);
+		
+		if(guard != null)
+		{
+			Attendance a = new Attendance();
+			a.setInTime(inTime);
+			a.setOutTime(outTime);
+			a.setUpdatedByGuardId(id);
+			guard.get().getGuardAttendances().add(a);
+
+			return guardRepository.save(guard.get());
+		}
+		else
+		{
+			throw new UserNotFoundException("User Not Found");
+		}
 	}
 }
-
-
-

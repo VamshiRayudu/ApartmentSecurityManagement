@@ -13,11 +13,16 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.Admin;
+import com.sprint.entities.Guard;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
 import com.sprint.repositories.IAdminRepository;
+import com.sprint.repositories.IGuardRepository;
+import com.sprint.repositories.IOwnerRepository;
 import com.sprint.repositories.IUserRepository;
 import com.sprint.services.AdminServiceImpl;
+import com.sprint.services.GuardServiceImpl;
+import com.sprint.services.OwnerServiceImpl;
 import com.sprint.services.UserServiceImpl;
 
 @SpringBootTest
@@ -31,13 +36,20 @@ class UserTest {
 	UserServiceImpl userService;
 	
 	@Mock
-
 	IAdminRepository adminRepository= org.mockito.Mockito.mock(IAdminRepository.class);
-
 	@InjectMocks
-
 	AdminServiceImpl adminService;
 
+	@Mock
+	IGuardRepository guardRepository= org.mockito.Mockito.mock(IGuardRepository.class);
+	@InjectMocks
+	GuardServiceImpl guardService;
+	
+	@Mock
+	IOwnerRepository ownerRepository= org.mockito.Mockito.mock(IOwnerRepository.class);
+	@InjectMocks
+	OwnerServiceImpl ownerService;
+	
 	@Test
 	public void addUser() {
 		
@@ -47,23 +59,44 @@ class UserTest {
 		user.setPassword("Demo@12");
 		user.setRole(Role.ADMIN);
 		user.setEmailId("sample@test");
-		
 		User u = userService.registerUser(user);
-		
 		assertEquals(u, user);
 
 	} 
-
 	
 	@Test
-	public void loginUser() {
-		
-		Admin admin = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
-		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
-		adminService.addAdmin(admin);
-		Admin login = (Admin) adminService.Login(admin.getEmailId(), admin.getPassword(), admin.getRole());
-		assertEquals("vamshi",login.getEmailId());
-		assertEquals("password",login.getPassword());
-	} 
-		
+	public void loginUserAdmin() {
+		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+		Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+		assertEquals("sampleTest@asp.com",admin.getEmailId());
+		assertEquals("password",admin.getPassword());
+	}
+	
+	
+	@Test
+	public void loginAdminWithWrongPassword() {
+		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+		Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+		assertEquals("sampleTest@asp.com",admin.getEmailId());
+		assertNotEquals("password1",admin.getPassword());
+	}
+	
+	
+	@Test
+	public void loginGuardUser() {
+
+		Guard guard = new Guard(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.GUARD);
+		Mockito.when(guardRepository.findById(guard.getId())).thenReturn(Optional.of(guard));
+		assertEquals("sampleguard@asp.com",guard.getEmailId());
+		assertEquals("password",guard.getPassword());
+	}
+	
+	
+	@Test
+	public void loginGuardWithWrongPassword() {
+		Guard guard = new Guard(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.GUARD);
+		Mockito.when(guardRepository.findById(guard.getId())).thenReturn(Optional.of(guard));;
+		assertEquals("sampleguard@asp.com",guard.getEmailId());
+		assertNotEquals("password1",guard.getPassword());
+	}
 }

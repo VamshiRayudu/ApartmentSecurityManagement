@@ -24,6 +24,7 @@ import com.sprint.entities.Guard;
 import com.sprint.entities.Owner;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.Visitor;
+import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IGuardRepository;
@@ -81,7 +82,7 @@ public class OwnerController {
 	/////////////////////--------------FLAT--------------
 	
 	@GetMapping("owner/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> getFlatDetails(@PathVariable("flatNumber") Long flatNumber)
+	public ResponseEntity<FlatDetails> getFlatDetails(@PathVariable("flatNumber") Long flatNumber) throws RecordNotFoundException
 	{
 		FlatDetails flat = flatDetailsService.getFlatDetailsById(flatNumber);
 		return new ResponseEntity<FlatDetails>(flat,HttpStatus.OK);
@@ -95,7 +96,7 @@ public class OwnerController {
 	}
 	
 	@PatchMapping("owner/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> updateFlatDetails(@PathVariable("flatNumber") Long flatNumber,@RequestParam Owner ownerDetails)
+	public ResponseEntity<FlatDetails> updateFlatDetails(@PathVariable("flatNumber") Long flatNumber,@RequestParam Owner ownerDetails) throws RecordNotFoundException
 	{
 		return new ResponseEntity<FlatDetails>(flatDetailsService.updateFlatDetails(flatNumber,ownerDetails),HttpStatus.OK);		
 	}
@@ -123,7 +124,7 @@ public class OwnerController {
 	////////////////////////////---------------DELIVERIES-------------------------------------------------
 
 	@GetMapping("owner/delivery/{id}")
-	public ResponseEntity<Delivery> getDeliveryById(@PathVariable Long id)
+	public ResponseEntity<Delivery> getDeliveryById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id),HttpStatus.OK);
 	}
@@ -131,7 +132,7 @@ public class OwnerController {
 	////////////////////////////////------------------VEHICLES----------------------------------------------
 	//get vehicles by id
 	@GetMapping("owner/vehicles/{id}")
-	public ResponseEntity<Vehicle> getVehiclesById(@PathVariable("id") Long id) {
+	public ResponseEntity<Vehicle> getVehiclesById(@PathVariable("id") Long id) throws RecordNotFoundException {
 		
 		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
 	}
@@ -147,7 +148,7 @@ public class OwnerController {
 	
 	//delete vehicle
 	@DeleteMapping("owner/vehicles/{id}")
-	public ResponseEntity<Vehicle> deleteVehicleById(@PathVariable("id") Long id) {
+	public ResponseEntity<Vehicle> deleteVehicleById(@PathVariable("id") Long id) throws RecordNotFoundException {
 		
 		return new ResponseEntity<Vehicle>(vehicleService.deleteVehicleById(id),HttpStatus.OK);
 	}
@@ -161,7 +162,7 @@ public class OwnerController {
 
 	
 	@GetMapping("owner/visitor/{id}")
-	public ResponseEntity<Visitor>getvisitorById(@PathVariable Long id)
+	public ResponseEntity<Visitor>getvisitorById(@PathVariable Long id) throws RecordNotFoundException
 	{
 		return new ResponseEntity<Visitor>(visitorService.getVisitorById(id),HttpStatus.OK);
 	}
@@ -176,7 +177,7 @@ public class OwnerController {
 	}
 	
 	@GetMapping ("owner/guard/{id}")
-	public ResponseEntity<Guard> getGuardById(@PathVariable Long id)
+	public ResponseEntity<Guard> getGuardById(@PathVariable Long id) throws UserNotFoundException
 	{
 		return new ResponseEntity<Guard>(guardService.getGuardById(id),HttpStatus.OK);
 	}
@@ -191,7 +192,7 @@ public class OwnerController {
 
 	//get domesticHelp by id
 	@GetMapping("owner/domesticHelps/{id}")
-	public ResponseEntity<DomesticHelp> getDomesticHelpById(@PathVariable("id") Long id) {
+	public ResponseEntity<DomesticHelp> getDomesticHelpById(@PathVariable("id") Long id) throws UserNotFoundException {
 		
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
 	}

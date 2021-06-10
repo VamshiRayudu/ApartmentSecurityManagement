@@ -232,7 +232,7 @@ public class Guard extends User{
 
 	@Override
 	public String toString() {
-		return "Guard [isTrained=" + isTrained + ", guardShifts=" + guardShifts + ", guardSalaries=" + guardSalaries
+		return super.toString() + "Guard [isTrained=" + isTrained + ", guardShifts=" + guardShifts + ", guardSalaries=" + guardSalaries
 				+ ", securityAlerts=" + securityAlerts + ", guardAttendances=" + guardAttendances + ", visitors="
 				+ visitors + ", vehicleUpdates=" + vehicleUpdates + ", deliveries=" + deliveries + "]";
 	}

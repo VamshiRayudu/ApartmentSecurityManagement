@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sprint.entities.Admin;
+import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 
@@ -20,34 +23,55 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 	
 	
 	@Override
-	public Admin addAdmin(Admin admin) {
+	public Admin addAdmin(Admin admin) throws DuplicateRecordException {
 		// TODO Auto-generated method stub
-		return adminRepository.save(admin);
+		Admin user =  adminRepository.findByEmailId(admin.getEmailId());
+		if(user != null)
+		{
+			return adminRepository.save(admin);
+		}
+		else
+		{
+			throw new DuplicateRecordException("User Already Exists");
+		}
 	}
 
 	//Used for put
 	@Override
-	public Admin updateAdmin(Admin admin) {
+	public Admin updateAdmin(Admin admin) throws UserNotFoundException {
 		// TODO Auto-generated method stub
-		return adminRepository.save(admin);
+		Optional<Admin> user =  adminRepository.findById(admin.getId());
+		if(user != null)
+		{
+			return adminRepository.save(admin);
+		}
+		else
+		{
+			throw new UserNotFoundException("User Not Found");
+		}
 	}
 
 	//Patch Update
 	@Override
-	public Admin updateAdminById(Long id,String oldPassword,String newPassword) {
+	public Admin updateAdminById(Long id,String oldPassword,String newPassword) throws UserNotFoundException {
 		// TODO Auto-generated method stub
-		Admin admin = adminRepository.findById(id).get();
-		
-		if(admin.getPassword() == oldPassword)
+		Optional<Admin> admin = adminRepository.findById(id);
+		if(admin != null)
 		{
-			admin.setPassword(newPassword);
-			adminRepository.save(admin);
+			if(admin.get().getPassword() == oldPassword)
+			{
+				admin.get().setPassword(newPassword);
+				return adminRepository.save(admin.get());
+			}
+			else 
+			{
+				throw new ValidationException("Incorrect Password");
+			}
 		}
-		else 
+		else
 		{
-			//throw exception
+			throw new UserNotFoundException("User Not Found");
 		}
-		return admin;
 	}
 
 	@Override
@@ -67,30 +91,37 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 	      }
 	      else
 	      {
-	    	  throw new UserNotFoundException();
+	    	  throw new UserNotFoundException("User Not Found");
 	      }
-	      
 	}
 
 	@Override
-	public Admin deleteAdminById(Long id) {
+	public Admin deleteAdminById(Long id) throws UserNotFoundException {
 		// TODO Auto-generated method stub
-		Admin deleteAdmin = adminRepository.findById(id).get();
-		
-		//performing a delete operation  on this id 
-		adminRepository.deleteById(id);
-		
-		return deleteAdmin;
+		  Optional<Admin> deleteAdmin = adminRepository.findById(id);
+	      if(deleteAdmin.get() != null)
+	      {
+	    	  adminRepository.deleteById(id);
+	      }
+	      else
+	      {
+	    	  throw new UserNotFoundException("User Not Found");
+	      }
+		return deleteAdmin.get();
 	}
 
 	@Override
-	public Admin deleteAdmin(Admin admin) {
+	public Admin deleteAdmin(Admin admin) throws UserNotFoundException {
 		// TODO Auto-generated method stub
-		Admin adminData = adminRepository.findById(admin.getId()).get();
-		
-		//performing a delete operation  on the entity directly
-		adminRepository.delete(adminData);
-
+		Optional<Admin> adminData = adminRepository.findById(admin.getId());
+		  if(adminData.get() != null)
+	      {
+				adminRepository.delete(admin);
+	      }
+	      else
+	      {
+	    	  throw new UserNotFoundException("User Not Found");
+	      }
 		return admin;
 	}
 }
