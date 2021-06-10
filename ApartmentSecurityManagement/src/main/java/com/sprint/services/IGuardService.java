@@ -23,5 +23,5 @@ public interface IGuardService extends IUserService{
 	
 	public Guard updateGuardAttendance(Long id, LocalDateTime inTime, LocalDateTime outTime) throws UserNotFoundException;
 
-	public Guard updateGuardById(Long id,Long oldMobileNumber, Long newMobileNumber) throws UserNotFoundException;
+	public Guard updateGuardById(Long id,Long oldPassword, Long newPassword) throws UserNotFoundException;
 }

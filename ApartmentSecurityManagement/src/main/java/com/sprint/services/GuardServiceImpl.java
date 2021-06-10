@@ -91,13 +91,13 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 	}
 
 	@Override
-	public Guard updateGuardById(Long id,Long oldMobileNumber, Long newMobileNumber) throws UserNotFoundException {
+	public Guard updateGuardById(Long id,Long oldPassword, Long newPassword) throws UserNotFoundException {
 		// TODO Auto-generated method stub	
 		Optional<Guard> guard =guardRepository.findById(id);
 		if(guard!=null)
 		{
-			if(guard.get().getMobileNumber()== oldMobileNumber) {
-				guard.get().setMobileNumber(newMobileNumber);
+			if(guard.get().getMobileNumber()== oldPassword) {
+				guard.get().setMobileNumber(newPassword);
 				return guardRepository.save(guard.get());
 
 			}

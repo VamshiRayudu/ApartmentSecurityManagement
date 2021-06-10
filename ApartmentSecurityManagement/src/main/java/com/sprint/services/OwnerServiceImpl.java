@@ -72,14 +72,14 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 	}
 
 	@Override
-	public Owner updateOwnerById(Long id,String oldName,String newName) throws UserNotFoundException {
+	public Owner updateOwnerById(Long id,String oldPassword ,String newPassword) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 		Optional<Owner> owner = ownerRepository.findById(id);
 		if(owner != null)
 		{
-			if(owner.get().getName() == oldName)
+			if(owner.get().getPassword() == oldPassword)
 			{
-				owner.get().setName(newName);
+				owner.get().setName(newPassword);
 				return ownerRepository.save(owner.get());
 			}
 			else

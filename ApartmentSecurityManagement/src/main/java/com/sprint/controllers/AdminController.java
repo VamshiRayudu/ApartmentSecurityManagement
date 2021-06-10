@@ -178,9 +178,9 @@ public class AdminController {
 	}
 
 	@PatchMapping("admin/guard/{id}")
-	public ResponseEntity<Guard> updateGuardById(@PathVariable Long id,@RequestParam Long oldMobilenumber, @RequestParam Long newMobileNumber) throws UserNotFoundException
+	public ResponseEntity<Guard> updateGuardById(@PathVariable Long id,@RequestParam Long oldPassword, @RequestParam Long newPassword) throws UserNotFoundException
 	{
-		return new ResponseEntity<Guard>(guardService.updateGuardById(id, oldMobilenumber, newMobileNumber),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardById(id, oldPassword, newPassword),HttpStatus.OK);
 	}
 
 	/////////////////////////-----------------VISITOR----------------------------//////////////////////////
@@ -296,10 +296,9 @@ public class AdminController {
 	}
 
 	@DeleteMapping("admin/{id}/owner/{id}")
-	public ResponseEntity<Owner> deleteData1(@PathVariable("id") Long id) throws UserNotFoundException{
+	public ResponseEntity<Owner> deleteOwnerById(@PathVariable("id") Long id) throws UserNotFoundException{
 
 		Owner owner = ownerService.deleteOwnerById(id);
-		owner = ownerService.deleteOwner(owner);
 		return new ResponseEntity<Owner>(owner,HttpStatus.OK);
 	}
 

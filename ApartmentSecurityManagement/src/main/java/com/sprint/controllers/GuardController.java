@@ -71,9 +71,9 @@ public class GuardController {
 	}
 
 	@PatchMapping("guard/Id")
-	public ResponseEntity<Guard>updateGuardById(@PathVariable Long id,@RequestParam Long oldMobilenumber,@RequestParam Long newMobilenumber) throws UserNotFoundException
+	public ResponseEntity<Guard>updateGuardById(@PathVariable Long id,@RequestParam Long oldPassword,@RequestParam Long newPassword) throws UserNotFoundException
 	{
-		return new ResponseEntity<Guard>(guardService.updateGuardById(id,oldMobilenumber, newMobilenumber),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardById(id,oldPassword, newPassword),HttpStatus.OK);
 	}
 
 	//////////////////////--------------------SECURITY ALERTS----------------------------///////////////////
