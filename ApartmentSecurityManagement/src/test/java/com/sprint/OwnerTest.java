@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.Admin;
+import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
 import com.sprint.exceptions.DuplicateRecordException;
@@ -39,7 +40,9 @@ public class OwnerTest {
 
 	@InjectMocks
 
-	OwnerServiceImpl ownerService = new OwnerServiceImpl();
+	OwnerServiceImpl ownerService; 
+
+
 
 	@Test
 	public void testAddOwner() throws DuplicateRecordException {
@@ -74,12 +77,17 @@ public class OwnerTest {
 
 
 	@Test
-	public void deleteOwner() throws UserNotFoundException {
-	
-		Owner owner = new Owner(15L,"pabba","vivek",12223L,"farakhan@gmail.com","password",Role.FLATOWNER);
+	public void deleteOwnertest() throws DuplicateRecordException, UserNotFoundException {
+
+		Owner owner = new Owner(15L,"simha","harsha",12223L,"pabbavivek@gmail.com","password",Role.FLATOWNER);
 		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
-		assertEquals(owner,  ownerService.deleteOwner(owner));
+		ownerService.addOwner(owner);
+		assertEquals(owner,ownerService.deleteOwner(owner));
 	}
+
+
+
+
 
 	@Test
 	void testGetAllOwner() {
@@ -99,6 +107,33 @@ public class OwnerTest {
 		list.add(owner2);
 		Mockito.when(ownerRepository.findAll()).thenReturn(list);
 		assertEquals(list.size(), ownerService.getAllOwnerList().size());
+	}
+
+	@Test
+	public void updateOwnerTest() throws DuplicateRecordException
+	{
+		Owner owner1=new Owner("iyan","iyanuser",10909090L,"iyan@gmail.com","iyan123",Role.FLATOWNER);
+		Owner owner  = new 	Owner();
+		Mockito.when(ownerRepository.save(owner)).thenReturn(owner);
+		ownerService.addOwner(owner);
+		Mockito.when(ownerRepository.findById(owner.getMobileNumber())).thenReturn(Optional.of(owner));
+
+	}
+	@Test
+	void testUpdateOwnerById() throws UserNotFoundException {
+		Owner owner = new Owner(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.FLATOWNER);
+		Mockito.when(ownerRepository.findById( owner.getId())).thenReturn(Optional.of( owner));
+		Owner upPass =  ownerService. updateOwnerById( owner.getId(),  owner.getPassword(), "password2");
+		assertEquals("password2", upPass.getPassword());
+	}
+
+
+
+	@Test
+	public void testDeleteById() throws UserNotFoundException {
+		Owner owner = new Owner(1L,"harsha","simha",12223L,"pabba@gmail.com","password",Role.FLATOWNER);
+		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
+		assertEquals(owner,  ownerService.deleteOwnerById(owner.getId()));
 	}
 
 }
