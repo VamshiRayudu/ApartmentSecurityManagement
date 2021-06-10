@@ -9,7 +9,7 @@ import com.sprint.exceptions.UserNotFoundException;
 
 public interface IGuardService extends IUserService{
 	
-	public Guard addGuard(Guard guard);
+	public Guard addGuard(Guard guard) throws DuplicateRecordException;
 
 	public Guard getGuardById(Long id) throws UserNotFoundException;
 	

@@ -24,15 +24,9 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService{
 	private ISecurityAlertRepository securityAlertRepository;
 
 	@Override
-	public SecurityAlert addSecurityAlert(SecurityAlert securityAlert) throws DuplicateRecordException {
+	public SecurityAlert addSecurityAlert(SecurityAlert securityAlert) {
 		// TODO Auto-generated method stub
-		Optional<SecurityAlert> sAlert = securityAlertRepository.findById(securityAlert.getId());
-		if(sAlert == null)
-		{
-			return securityAlertRepository.save(securityAlert);
-		}
-		else
-			throw new DuplicateRecordException("Record Already Exists");
+		return securityAlertRepository.save(securityAlert);
 	}
 
 	@Override

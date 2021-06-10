@@ -23,18 +23,9 @@ public class FlatDetailsServiceImpl implements IFlatDetailsService{
 	private IFlatDetailsRepository flatDetailsRepository;
 	
 	@Override
-	public FlatDetails addFlatDetails(FlatDetails flatDetails)throws DuplicateRecordException {
+	public FlatDetails addFlatDetails(FlatDetails flatDetails) {
 		// TODO Auto-generated method stub
-		Optional<FlatDetails> flatDetails1=flatDetailsRepository.findById(flatDetails.getFlatNumber());
-		if(flatDetails1 == null)
-		{
-			return flatDetailsRepository.save(flatDetails);
-		}
-		else
-		{
-			throw new DuplicateRecordException("FlatNumber Already Exists");
-		}
-		
+		return flatDetailsRepository.save(flatDetails);	
 	}
 
 	@Override

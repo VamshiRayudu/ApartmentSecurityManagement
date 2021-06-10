@@ -10,8 +10,10 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.entities.Admin;
 import com.sprint.entities.Attendance;
 import com.sprint.entities.Guard;
+import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IGuardRepository;
 
@@ -23,9 +25,18 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 	private IGuardRepository guardRepository;
 
 	@Override
-	public Guard addGuard(Guard guard) {
+	public Guard addGuard(Guard guard) throws DuplicateRecordException {
 		// TODO Auto-generated method stub
-		return guardRepository.saveAndFlush(guard);
+		Guard user =  guardRepository.findByEmailId(guard.getEmailId());
+		if(user == null)
+		{
+			return guardRepository.saveAndFlush(guard);
+		}
+		else
+		{
+			throw new DuplicateRecordException("User Already Exists");
+		}
+
 	}
 
 	@Override

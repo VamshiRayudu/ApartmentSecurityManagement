@@ -9,7 +9,7 @@ import com.sprint.exceptions.RecordNotFoundException;
 
 public interface IFlatDetailsService {
 	
-	public FlatDetails addFlatDetails(FlatDetails flatDetails)throws DuplicateRecordException;
+	public FlatDetails addFlatDetails(FlatDetails flatDetails);
 	
 	public FlatDetails getFlatDetailsById(Long flatNumber) throws RecordNotFoundException;
 	

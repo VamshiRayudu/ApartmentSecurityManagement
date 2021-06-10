@@ -13,7 +13,7 @@ public interface IDeliveryService {
     
     public Delivery getDeliveryById(Long id) throws RecordNotFoundException;
     
-    public Delivery addDelivery(Delivery delivery) throws DuplicateRecordException;
+    public Delivery addDelivery(Delivery delivery);
          
     public Delivery updateDelivery(Delivery delivery) throws RecordNotFoundException;
        

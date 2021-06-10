@@ -82,7 +82,6 @@ class AdminTest {
 		assertEquals("John", admin.getUserName());
 	}
 	
-	
 	@Test
 	void testUpdateAdminById() throws UserNotFoundException {
 		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);

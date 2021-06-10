@@ -7,7 +7,7 @@ import com.sprint.exceptions.RecordNotFoundException;
 
 public interface ISecurityAlertService {
 	
-	public SecurityAlert addSecurityAlert(SecurityAlert securityAlert) throws DuplicateRecordException;
+	public SecurityAlert addSecurityAlert(SecurityAlert securityAlert);
 	
 	public SecurityAlert updateSecurityAlert(SecurityAlert securityAlert) throws RecordNotFoundException;
 	

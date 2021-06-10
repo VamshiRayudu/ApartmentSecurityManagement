@@ -44,17 +44,9 @@ public class DomesticHelpService implements IDomesticHelpService {
 	}
 
 	@Override
-	public DomesticHelp addDomesticHelp(DomesticHelp domesticHelp)throws DuplicateRecordException {
+	public DomesticHelp addDomesticHelp(DomesticHelp domesticHelp){
 		// TODO Auto-generated method stub
-		Optional<DomesticHelp> dHelp = domesticHelpRepository.findById(domesticHelp.getId());
-		if(dHelp == null)
-		{
-			return domesticHelpRepository.save(domesticHelp);
-		}
-		else
-		{
-			throw new DuplicateRecordException("Id Not Found");
-		}
+		return domesticHelpRepository.save(domesticHelp);
 	}
 
 	@Override

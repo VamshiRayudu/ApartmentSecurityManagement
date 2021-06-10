@@ -42,17 +42,9 @@ public class DeliveryServiceImpl implements IDeliveryService{
 	}
 
 	@Override
-	public Delivery addDelivery(Delivery delivery) throws DuplicateRecordException {
+	public Delivery addDelivery(Delivery delivery) {
 		// TODO Auto-generated method stub
-		Optional<Delivery> delivery1 = deliveryRepository.findById(delivery.getDeliveryId());
-		if(delivery1 == null)
-		{
 			return deliveryRepository.save(delivery);
-		}
-		else
-		{
-			throw new DuplicateRecordException("Delivery Already Exists");
-		}
 	}
 
 	@Override
