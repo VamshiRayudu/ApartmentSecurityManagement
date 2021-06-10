@@ -47,7 +47,7 @@ public class DomesticHelpService implements IDomesticHelpService {
 	public DomesticHelp addDomesticHelp(DomesticHelp domesticHelp)throws DuplicateRecordException {
 		// TODO Auto-generated method stub
 		Optional<DomesticHelp> dHelp = domesticHelpRepository.findById(domesticHelp.getId());
-		if(dHelp!=null)
+		if(dHelp == null)
 		{
 			return domesticHelpRepository.save(domesticHelp);
 		}

@@ -26,7 +26,7 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 	public Admin addAdmin(Admin admin) throws DuplicateRecordException {
 		// TODO Auto-generated method stub
 		Admin user =  adminRepository.findByEmailId(admin.getEmailId());
-		if(user != null)
+		if(user == null)
 		{
 			return adminRepository.save(admin);
 		}
@@ -99,7 +99,7 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 	public Admin deleteAdminById(Long id) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 		  Optional<Admin> deleteAdmin = adminRepository.findById(id);
-	      if(deleteAdmin.get() != null)
+	      if(deleteAdmin != null)
 	      {
 	    	  adminRepository.deleteById(id);
 	      }

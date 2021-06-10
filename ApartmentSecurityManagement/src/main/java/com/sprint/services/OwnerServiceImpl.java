@@ -26,7 +26,7 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 	public Owner addOwner(Owner owner) throws DuplicateRecordException {
 		// TODO Auto-generated method stub
 		Owner owner1 = ownerRepository.findByEmailId(owner.getEmailId());
-		if(owner1 != null)
+		if(owner1 == null)
 		{
 			return ownerRepository.save(owner);
 		}
@@ -49,7 +49,6 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 		{
 			throw new UserNotFoundException("User Not Found");
 		}
-		
 	}
 
 	@Override
@@ -92,8 +91,6 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 		{
 			throw new UserNotFoundException("User Not Found");
 		}
-		
-		
 	}
 
 	@Override
@@ -103,7 +100,7 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 		Optional<Owner> owner = ownerRepository.findById(id);
 
 		//performing a delete operation  on this id 
-		if(owner.get() != null)
+		if(owner != null)
 		{
 			ownerRepository.deleteById(id);
 		}
@@ -120,7 +117,7 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 	public Owner deleteOwner(Owner owner) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 		Optional<Owner> owner1 = ownerRepository.findById(owner.getId());
-		if(owner1.get() != null)
+		if(owner1 != null)
 		{
 			ownerRepository.delete(owner);
 		}

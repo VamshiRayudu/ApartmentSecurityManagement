@@ -26,7 +26,7 @@ public class FlatDetailsServiceImpl implements IFlatDetailsService{
 	public FlatDetails addFlatDetails(FlatDetails flatDetails)throws DuplicateRecordException {
 		// TODO Auto-generated method stub
 		Optional<FlatDetails> flatDetails1=flatDetailsRepository.findById(flatDetails.getFlatNumber());
-		if(flatDetails1!=null)
+		if(flatDetails1 == null)
 		{
 			return flatDetailsRepository.save(flatDetails);
 		}
