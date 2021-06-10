@@ -9,14 +9,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
 @Embeddable
 public class Attendance {
 	
+	@NotNull
 	private LocalDate dateOfAttendance;
+	
+	@NotBlank(message = "Enter Login Time")
 	private LocalDateTime inTime;
+	
+	@NotBlank(message = "Enter Logiout Time")
 	private LocalDateTime outTime;
 	
 	private Long updatedByGuardId;

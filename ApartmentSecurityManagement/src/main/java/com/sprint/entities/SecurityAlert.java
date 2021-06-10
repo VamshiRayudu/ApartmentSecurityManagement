@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "securityalerts_asm")
@@ -18,10 +20,13 @@ public class SecurityAlert {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotBlank(message = "Alert Message is Required")
 	private String message;
 	
+	@NotBlank(message = "Alert is Required")
 	private String alert;
 	
+	@NotNull
 	private LocalDateTime dateTimeOfAlert;
 	
 	@ManyToOne

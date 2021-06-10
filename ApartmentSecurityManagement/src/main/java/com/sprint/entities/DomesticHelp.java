@@ -15,6 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -25,6 +29,7 @@ public class DomesticHelp {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="dhelp_attendance",joinColumns = @JoinColumn(name = "domestic_help_id"))
 	private List<Attendance> attendance;
@@ -32,12 +37,16 @@ public class DomesticHelp {
 	@Enumerated(EnumType.STRING)
 	private DomesticHelpType helpType;
 	
+	@NotBlank(message = "Name Required")
 	private String name;
 	
+	@NotBlank(message = "Id Required")
 	private String aadharId;
 	
+	@NotNull(message = "Mobile Number Required")
 	private Long mobileNumber;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<FlatDetails> flatDetails;
 

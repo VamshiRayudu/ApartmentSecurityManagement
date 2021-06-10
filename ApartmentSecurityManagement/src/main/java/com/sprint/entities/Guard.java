@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "guard_asm")
 public class Guard extends User{
@@ -27,30 +29,31 @@ public class Guard extends User{
 	@Embedded
 	private GuardShift guardShifts;
 	
+	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="guard_salaries",joinColumns = @JoinColumn(name = "guard_id"))
 	@Column(name = "salary")
 	private List<GuardSalary> guardSalaries = new ArrayList<GuardSalary>();
 	
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "guard",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<SecurityAlert> securityAlerts;
 	
 	
-	
+	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="guard_attnd",joinColumns = @JoinColumn(name = "guard_id"))
 	@Column(name = "guard_att")
 	private List<Attendance> guardAttendances = new ArrayList<Attendance>();
 	
 	
-	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Visitor> visitors;
 
 	
-	
+	@JsonIgnore
 	//@ManyToMany(cascade = CascadeType.ALL)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="guard_vehicleupd",joinColumns = @JoinColumn(name = "guard_id"))
@@ -58,7 +61,7 @@ public class Guard extends User{
 	private List<VehicleUpdates> vehicleUpdates = new ArrayList<VehicleUpdates>();
 	
 	
-	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Delivery> deliveries;
 	

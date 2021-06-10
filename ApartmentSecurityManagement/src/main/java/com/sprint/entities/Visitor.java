@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -22,8 +25,10 @@ public class Visitor {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotBlank(message = "Required Visitor Name")
 	private String visitorName;
 	
+	@NotBlank(message = "Mobile Number Name")
 	private String mobileNumber;
 	
 	@ManyToOne
@@ -34,6 +39,7 @@ public class Visitor {
 	
 	private LocalDateTime outTime;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Guard> guards;
 

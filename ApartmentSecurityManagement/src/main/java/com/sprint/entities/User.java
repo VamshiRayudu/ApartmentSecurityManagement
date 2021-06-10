@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "user_asm")
@@ -18,12 +21,23 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@NotBlank(message = "UserName is Mandatory")
 	private String userName;
+	
+	@NotBlank(message = "Name is Mandatory")
 	private String name;
+	
+	@NotNull
 	private Long mobileNumber;
+	
+	@Pattern(regexp = "\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}\\b")
 	private String emailId;
+	
+	@NotBlank(message = "Password is Mandatory")
 	private String password;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
 

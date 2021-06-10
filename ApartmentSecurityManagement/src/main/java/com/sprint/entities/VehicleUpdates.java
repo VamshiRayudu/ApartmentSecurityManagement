@@ -3,15 +3,19 @@ package com.sprint.entities;
 import java.time.LocalDateTime;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 
 @Embeddable
 public class VehicleUpdates {
 
+	@NotBlank(message = "Enter vehicle inTime")
 	private LocalDateTime vehicleInTime;
 	
+	@NotBlank(message = "Enter vehicle outTime")
 	private LocalDateTime vehicleOutTime;
 	
+	@NotBlank(message = "GuardId is Required")
 	private Long updatedByGuardId;
 
 	public LocalDateTime getVehicleInTime() {

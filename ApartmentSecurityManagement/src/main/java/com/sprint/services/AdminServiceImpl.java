@@ -58,6 +58,7 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 		Optional<Admin> admin = adminRepository.findById(id);
 		if(admin != null)
 		{
+			System.out.println(admin.get());
 			if(admin.get().getPassword() == oldPassword)
 			{
 				admin.get().setPassword(newPassword);

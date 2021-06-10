@@ -3,11 +3,14 @@ package com.sprint.entities;
 import java.time.LocalTime;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class GuardShift{
 
+	@NotBlank(message = "Enter Login Time")
 	private LocalTime inTime;
+	@NotBlank(message = "Enter Logout Time")
 	private LocalTime outTime;
 	public LocalTime getInTime() {
 		return inTime;

@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "delivery_asm")
@@ -27,6 +28,7 @@ public class Delivery {
 	@JoinColumn(name = "flat_deliveries")
 	private FlatDetails flatDetails;
 	
+	@NotNull(message = "Date Required")
 	private LocalDateTime deliveryDateTime;
 	
 	@Enumerated(EnumType.STRING)

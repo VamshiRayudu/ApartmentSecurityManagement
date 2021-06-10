@@ -14,8 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "flatdetails_asm")
@@ -25,6 +29,7 @@ public class FlatDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long flatNumber;
 	
+	@NotNull(message = "Floor Number is Mandatory")
 	private Long floorNumber;
 	
 	@Type(type="true_false")
@@ -37,9 +42,11 @@ public class FlatDetails {
 	@Embedded
 	private FlatRent flatRent;
 	
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
 	private List<Visitor> visitors;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	//@JoinColumn(name = "flat_dhelp")
 	private List<DomesticHelp> dHelpList;
@@ -47,6 +54,7 @@ public class FlatDetails {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
 	private List<Delivery> deliveries;
 	
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
 	private List<Vehicle> flatdetails;
 

@@ -86,9 +86,11 @@ class AdminTest {
 	void testUpdateAdminById() throws UserNotFoundException {
 		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
     	Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+    	System.out.println(admin);
 		Admin upPass = adminService.updateAdminById(admin.getId(), admin.getPassword(), "password2");
 		assertEquals("password2", upPass.getPassword());
 	}
+	
 	@Test
 	void testGetAllAdmins() {
 		

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "vehicle_asm")
@@ -22,6 +23,7 @@ public class Vehicle {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotBlank(message = "Vehicle NumberPlate is Mandatory")
 	private String numberPlate;
 	
 	private String vehicleColour;
