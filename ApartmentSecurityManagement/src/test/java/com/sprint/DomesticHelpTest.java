@@ -28,7 +28,7 @@ import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IDomesticHelpRepository;
 import com.sprint.services.AdminServiceImpl;
-import com.sprint.services.DomesticHelpService;
+import com.sprint.services.DomesticHelpServiceImpl;
 
 @SpringBootTest
 class DomesticHelpTest {
@@ -38,7 +38,7 @@ class DomesticHelpTest {
 	IDomesticHelpRepository domesticHelpRepository= org.mockito.Mockito.mock(IDomesticHelpRepository.class);
 
 	@InjectMocks
-	DomesticHelpService domesticService = new DomesticHelpService();
+	DomesticHelpServiceImpl domesticService = new DomesticHelpServiceImpl();
 	
 	
 	

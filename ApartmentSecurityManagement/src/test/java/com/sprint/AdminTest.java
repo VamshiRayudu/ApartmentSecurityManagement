@@ -83,12 +83,18 @@ class AdminTest {
 	}
 	
 	@Test
-	void testUpdateAdminById() throws UserNotFoundException {
-		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
-    	Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
-    	System.out.println(admin);
-		Admin upPass = adminService.updateAdminById(admin.getId(), admin.getPassword(), "password2");
-		assertEquals("password2", upPass.getPassword());
+	void testUpdateAdminById() throws UserNotFoundException, DuplicateRecordException {
+		Admin admin = new Admin();
+		admin.setName("TEst");
+		admin.setEmailId("vams1@gmail.com");
+		admin.setMobileNumber(678L);
+		admin.setPassword("pass1");
+		admin.setRole(Role.ADMIN);
+		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
+		adminService.addAdmin(admin);
+		Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+		Admin a = adminService.updateAdminById(admin.getId(), "pass1", "pass");
+		assertEquals("pass", a.getPassword());
 	}
 	
 	@Test

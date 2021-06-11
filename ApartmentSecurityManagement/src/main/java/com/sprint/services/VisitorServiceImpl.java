@@ -63,7 +63,7 @@ public class VisitorServiceImpl implements IVisitorService{
 		Optional<Visitor>visitor=visitorRepository.findById(Id);
 		if(visitor!=null)
 		{
-			if(visitor.get().getVisitorName()==visitorName && visitor.get().getMobileNumber()==mobileNumber)
+			if(visitor.get().getVisitorName().equals(visitorName) && visitor.get().getMobileNumber().equals(mobileNumber))
 			{
 				visitor.get().setVisitorName(visitorName);
 				visitor.get().setMobileNumber(mobileNumber);
@@ -97,7 +97,7 @@ public class VisitorServiceImpl implements IVisitorService{
 	@Override
 	public Visitor deleteVisitorById(Long id)throws RecordNotFoundException {
 		Optional<Visitor> deleteVisitor=visitorRepository.findById(id);
-		if(deleteVisitor.get()!=null)
+		if(deleteVisitor !=null)
 		{
 			visitorRepository.deleteById(id);
 		}

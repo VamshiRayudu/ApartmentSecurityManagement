@@ -96,7 +96,7 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 		Optional<Guard> guard =guardRepository.findById(id);
 		if(guard!=null)
 		{
-			if(guard.get().getMobileNumber()== oldPassword) {
+			if(guard.get().getMobileNumber().equals(oldPassword)) {
 				guard.get().setMobileNumber(newPassword);
 				return guardRepository.save(guard.get());
 

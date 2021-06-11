@@ -50,7 +50,7 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService{
 		Optional<SecurityAlert> securityAlert =securityAlertRepository.findById(id);
 		if(securityAlert!=null)
 		{
-			if(securityAlert.get().getMessage()== oldMessage) {
+			if(securityAlert.get().getMessage().equals(oldMessage)) {
 				securityAlert.get().setMessage(newMessage);
 				return securityAlertRepository.save(securityAlert.get());
 			}

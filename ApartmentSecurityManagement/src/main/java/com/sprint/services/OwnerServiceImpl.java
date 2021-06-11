@@ -77,7 +77,7 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 		Optional<Owner> owner = ownerRepository.findById(id);
 		if(owner != null)
 		{
-			if(owner.get().getPassword() == oldPassword)
+			if(owner.get().getPassword().equals(oldPassword))
 			{
 				owner.get().setName(newPassword);
 				return ownerRepository.save(owner.get());

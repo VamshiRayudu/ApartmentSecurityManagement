@@ -42,7 +42,7 @@ public class VehicleServiceImpl implements IVehicleService{
 	@Override
 	public Vehicle deleteVehicleById(Long id) throws RecordNotFoundException{
 		Optional<Vehicle> deleteVehicle=vehicleRepository.findById(id);
-		if(deleteVehicle.get()!=null)
+		if(deleteVehicle !=null)
 		{
 			vehicleRepository.deleteById(id);
 		}

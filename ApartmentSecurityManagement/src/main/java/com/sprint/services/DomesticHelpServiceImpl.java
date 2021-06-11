@@ -18,7 +18,7 @@ import com.sprint.repositories.IDomesticHelpRepository;
 
 @Service
 @Transactional
-public class DomesticHelpService implements IDomesticHelpService {
+public class DomesticHelpServiceImpl implements IDomesticHelpService {
 
 	@Autowired
 	private IDomesticHelpRepository domesticHelpRepository;
@@ -55,7 +55,7 @@ public class DomesticHelpService implements IDomesticHelpService {
 		Optional<DomesticHelp> domesticHelp = domesticHelpRepository.findById(id);
 		if(domesticHelp!=null)
 		{
-			if(domesticHelp.get().getHelpType() == oldHelpType)
+			if(domesticHelp.get().getHelpType().equals(oldHelpType))
 			{
 				domesticHelp.get().setHelpType(newHelpType);
 				domesticHelpRepository.save(domesticHelp.get());

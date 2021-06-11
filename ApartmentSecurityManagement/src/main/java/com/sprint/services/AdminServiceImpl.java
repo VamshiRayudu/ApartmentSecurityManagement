@@ -58,8 +58,7 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 		Optional<Admin> admin = adminRepository.findById(id);
 		if(admin != null)
 		{
-			System.out.println(admin.get());
-			if(admin.get().getPassword() == oldPassword)
+			if(admin.get().getPassword().equals(oldPassword))
 			{
 				admin.get().setPassword(newPassword);
 				return adminRepository.save(admin.get());
@@ -115,7 +114,7 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 	public Admin deleteAdmin(Admin admin) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 		Optional<Admin> adminData = adminRepository.findById(admin.getId());
-		  if(adminData.get() != null)
+		  if(adminData != null)
 	      {
 				adminRepository.delete(admin);
 	      }

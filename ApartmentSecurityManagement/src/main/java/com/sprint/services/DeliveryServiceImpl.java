@@ -68,7 +68,7 @@ public class DeliveryServiceImpl implements IDeliveryService{
 		
 		if(delivery != null)
 		{
-			if(delivery.get().getStatus() == oldStatus)
+			if(delivery.get().getStatus().equals(oldStatus))
 			{
 				delivery.get().setStatus(newStatus);
 				return deliveryRepository.save(delivery.get());
