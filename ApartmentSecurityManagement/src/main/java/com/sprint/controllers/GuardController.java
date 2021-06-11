@@ -71,16 +71,16 @@ public class GuardController {
 	@Autowired
 	private IVehicleRepository vehicleRepository;
 	
-	@PatchMapping("guard/{id}/Attendance")
-	public ResponseEntity<Guard>updateGuardAttendance(@Valid @PathVariable Long id,@RequestParam LocalDateTime inTime,@RequestParam LocalDateTime outTime) throws UserNotFoundException , MethodArgumentNotValidException
+	@PutMapping("guard/{id}/Attendance")
+	public ResponseEntity<Guard>updateGuardAttendance(@Valid @PathVariable Long id,@RequestBody Attendance attendance) throws UserNotFoundException , MethodArgumentNotValidException
 	{
 		LOGGER.info("updateGuardAttendance URL is opened");
 		LOGGER.info("updateGuardAttendance() is initiated");
-		return new ResponseEntity<Guard>(guardService.updateGuardAttendance(id, inTime, outTime),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardAttendance(id,attendance),HttpStatus.OK);
 	}
 
 	@PatchMapping("guard/Id")
-	public ResponseEntity<Guard>updateGuardById(@Valid @PathVariable Long id,@RequestParam Long oldPassword,@RequestParam Long newPassword) throws UserNotFoundException, MethodArgumentNotValidException
+	public ResponseEntity<Guard>updateGuardById(@Valid @PathVariable Long id,@RequestParam String oldPassword,@RequestParam String newPassword) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateGuardById URL is opened");
 		LOGGER.info("updateGuardById() is initiated");

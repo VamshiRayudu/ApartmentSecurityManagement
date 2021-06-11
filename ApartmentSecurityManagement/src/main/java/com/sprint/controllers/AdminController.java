@@ -1,5 +1,6 @@
 package com.sprint.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sprint.entities.Admin;
+import com.sprint.entities.Attendance;
 import com.sprint.entities.Delivery;
 import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Guard;
+import com.sprint.entities.GuardSalary;
 import com.sprint.entities.Owner;
 import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
@@ -208,21 +211,79 @@ public class AdminController {
 		return new ResponseEntity<Guard>(guardService.deleteGuardById(id),HttpStatus.OK);	
 	}
 
-	@PutMapping("admin/guard")
-	public ResponseEntity<Guard> updateGuard(@Valid @RequestBody Guard guard) throws UserNotFoundException, MethodArgumentNotValidException
+	@PatchMapping("admin/guard")
+	public ResponseEntity<Guard> updateGuardSalary(@Valid @RequestParam Long id , @RequestBody GuardSalary guardSalary) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateGuard URL is opened");
 		LOGGER.info("updateGuard() is initiated");
-		return new ResponseEntity<Guard>(guardService.updateGuard(guard),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardSalary(id, guardSalary),HttpStatus.OK);
 	}
 
 	@PatchMapping("admin/guard/{id}")
-	public ResponseEntity<Guard> updateGuardById(@Valid @PathVariable Long id,@RequestParam Long oldPassword, @RequestParam Long newPassword) throws UserNotFoundException
+	public ResponseEntity<Guard> updateGuardById(@Valid @PathVariable Long id,@RequestParam String oldPassword, @RequestParam String newPassword) throws UserNotFoundException
 	{
 		LOGGER.info("updateGuardById URL is opened");
 		LOGGER.info("updateGuardById() is initiated");
 		return new ResponseEntity<Guard>(guardService.updateGuardById(id, oldPassword, newPassword),HttpStatus.OK);
 	}
+	
+	@GetMapping ("admin/guard/getGuardAttendanceById")
+	public ResponseEntity<List<Attendance>> getGuardAttendanceById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<Attendance>>(guard.getGuardAttendances(),HttpStatus.OK);
+	}
+	
+	
+	@GetMapping ("admin/guard/getGuardSalariesById")
+	public ResponseEntity<List<GuardSalary>> getGuardSalariesById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<GuardSalary>>(guard.getGuardSalaries(),HttpStatus.OK);
+	}
+	
+	
+	@GetMapping ("admin/guard/getGuardSalariesByTimings")
+	public ResponseEntity<List<Guard>> getGuardSalariesByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
+		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
+	}
+	
+	
+//	@GetMapping ("admin/guard/getGuardAttendanceList")
+//	public ResponseEntity<List<Guard>> getGuardAttendanceList()
+//	{
+//		LOGGER.info("getGuardById URL is opened");
+//		LOGGER.info("getGuardById() is initiated");
+//		List<Guard> guard = guardService.getGuardAttendanceList();
+//		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
+//	}
+//	
+//	@GetMapping ("admin/guard/getGuardSalariesByTimings")
+//	public ResponseEntity<List<Guard>> getGuardSalariesByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
+//	{
+//		LOGGER.info("getGuardById URL is opened");
+//		LOGGER.info("getGuardById() is initiated");
+//		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
+//		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
+//	}
+//	
+//	@GetMapping ("admin/guard/getGuardSalariesByTimings")
+//	public ResponseEntity<List<Guard>> getGuardSalariesByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
+//	{
+//		LOGGER.info("getGuardById URL is opened");
+//		LOGGER.info("getGuardById() is initiated");
+//		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
+//		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
+//	}
+	
 
 	/////////////////////////-----------------VISITOR----------------------------//////////////////////////
 
@@ -351,7 +412,7 @@ public class AdminController {
 	}
 
 
-	@PatchMapping("admin/flatDetails/{flatNumber}")
+	@PutMapping("admin/flatDetails/{flatNumber}")
 	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@Valid @RequestParam Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateFlatDetails URL is opened");
@@ -368,8 +429,8 @@ public class AdminController {
 		return new ResponseEntity<Owner>(ownerService.addOwner(owner),HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("admin/{id}/owner/{id}")
-	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable("id") Long id) throws UserNotFoundException , MethodArgumentNotValidException{
+	@DeleteMapping("admin/owner/{id}")
+	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id) throws UserNotFoundException , MethodArgumentNotValidException{
 
 		LOGGER.info("deleteOwnerById URL is opened");
 		LOGGER.info("deleteOwnerById() is initiated");

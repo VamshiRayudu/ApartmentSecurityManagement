@@ -79,7 +79,7 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 		{
 			if(owner.get().getPassword().equals(oldPassword))
 			{
-				owner.get().setName(newPassword);
+				owner.get().setPassword(newPassword);
 				return ownerRepository.save(owner.get());
 			}
 			else

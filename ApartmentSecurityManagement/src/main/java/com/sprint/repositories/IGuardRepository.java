@@ -32,7 +32,7 @@ public interface IGuardRepository extends JpaRepository<Guard,Long>{
 	public Guard getGuardAttendanceById(Long id);
 	
 	@Query("select guard from Guard guard join guard.guardSalaries gsl where gsl.id = ?1")
-	public List<Guard> findByGuardSalaries(Long id);
+	public Guard getGuardSalariesById(Long id);
 		
 	@Query("select guard from Guard guard join guard.guardAttendances ga ORDER BY ga.id")
 	public List<Guard> getGuardAttendanceList();

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.sprint.entities.Admin;
 import com.sprint.entities.Attendance;
 import com.sprint.entities.Guard;
+import com.sprint.entities.GuardSalary;
 import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IGuardRepository;
@@ -91,13 +92,13 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 	}
 
 	@Override
-	public Guard updateGuardById(Long id,Long oldPassword, Long newPassword) throws UserNotFoundException {
+	public Guard updateGuardById(Long id,String oldPassword, String newPassword) throws UserNotFoundException {
 		// TODO Auto-generated method stub	
 		Optional<Guard> guard =guardRepository.findById(id);
 		if(guard!=null)
 		{
-			if(guard.get().getMobileNumber().equals(oldPassword)) {
-				guard.get().setMobileNumber(newPassword);
+			if(guard.get().getPassword().equals(oldPassword)) {
+				guard.get().setPassword(newPassword);
 				return guardRepository.save(guard.get());
 
 			}
@@ -126,17 +127,54 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 	}
 
 	@Override
-	public Guard updateGuardAttendance(Long id, LocalDateTime inTime, LocalDateTime outTime) throws UserNotFoundException {
+	public Guard updateGuardAttendance(Long id, Attendance attendance) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 		Optional<Guard> guard = guardRepository.findById(id);
 		
 		if(guard != null)
 		{
-			Attendance a = new Attendance();
-			a.setInTime(inTime);
-			a.setOutTime(outTime);
-			a.setUpdatedByGuardId(id);
-			guard.get().getGuardAttendances().add(a);
+			guard.get().getGuardAttendances().add(attendance);
+
+			return guardRepository.save(guard.get());
+		}
+		else
+		{
+			throw new UserNotFoundException("User Not Found");
+		}
+	}
+
+	@Override
+	public List<Guard> getGuardsByTimings(LocalDateTime inTime, LocalDateTime outTime) {
+		// TODO Auto-generated method stub
+		return guardRepository.getGuardsByTimings(inTime, outTime);
+	}
+
+	@Override
+	public List<Guard> getGuardAttendanceList() {
+		// TODO Auto-generated method stub
+		return guardRepository.getGuardAttendanceList();
+	}
+
+	@Override
+	public List<Guard> getGuardSalaryList() {
+		// TODO Auto-generated method stub
+		return guardRepository.getGuardSalaryList();
+	}
+
+	@Override
+	public List<Guard> getVehicleUpdatesByGuardList() {
+		// TODO Auto-generated method stub
+		return guardRepository.getVehicleUpdatesByGuardList();
+	}
+
+	@Override
+	public Guard updateGuardSalary(Long id, GuardSalary guardSalary) throws UserNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Guard> guard = guardRepository.findById(id);
+		
+		if(guard != null)
+		{
+			guard.get().getGuardSalaries().add(guardSalary);
 
 			return guardRepository.save(guard.get());
 		}

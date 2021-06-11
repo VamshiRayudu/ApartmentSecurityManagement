@@ -29,7 +29,6 @@ public class Guard extends User{
 	@Embedded
 	private GuardShift guardShifts;
 	
-	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="guard_salaries",joinColumns = @JoinColumn(name = "guard_id"))
 	@Column(name = "salary")
@@ -41,7 +40,6 @@ public class Guard extends User{
 	private List<SecurityAlert> securityAlerts;
 	
 	
-	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="guard_attnd",joinColumns = @JoinColumn(name = "guard_id"))
 	@Column(name = "guard_att")
