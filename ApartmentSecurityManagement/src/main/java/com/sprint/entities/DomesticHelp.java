@@ -29,7 +29,6 @@ public class DomesticHelp {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="dhelp_attendance",joinColumns = @JoinColumn(name = "domestic_help_id"))
 	private List<Attendance> attendance;

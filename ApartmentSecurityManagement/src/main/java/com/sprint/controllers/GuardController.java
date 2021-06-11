@@ -222,8 +222,8 @@ public class GuardController {
 	}
 
 	//update domestichelp attendance
-	@PostMapping("guard/domesticHelps/{id}/{domesticHelpId}")
-	public ResponseEntity<DomesticHelp> updateAttendance(@Valid @PathVariable("domesticHelpId") Long domesticHelpId,@RequestBody Attendance attendance) throws UserNotFoundException , MethodArgumentNotValidException{
+	@PostMapping("guard/domesticHelp/Attendance")
+	public ResponseEntity<DomesticHelp> updateAttendance(@Valid @RequestParam Long domesticHelpId,@RequestBody Attendance attendance) throws UserNotFoundException , MethodArgumentNotValidException{
 
 		LOGGER.info("updateAttendance URL is opened");
 		LOGGER.info("updateAttendance() is initiated");

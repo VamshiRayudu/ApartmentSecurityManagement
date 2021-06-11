@@ -247,8 +247,8 @@ public class AdminController {
 	}
 	
 	
-	@GetMapping ("admin/guard/getGuardSalariesByTimings")
-	public ResponseEntity<List<Guard>> getGuardSalariesByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
+	@GetMapping ("admin/guard/getGuardByTimings")
+	public ResponseEntity<List<Guard>> getGuardByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("getGuardById URL is opened");
 		LOGGER.info("getGuardById() is initiated");
