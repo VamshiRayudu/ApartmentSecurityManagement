@@ -62,7 +62,7 @@ class DeliveryTest {
 
 
 	@Test
-	void getDeliveryTest() throws DuplicateRecordException, RecordNotFoundException {
+	void getDeliveryByIdTest() throws DuplicateRecordException, RecordNotFoundException {
 
 		FlatDetails flatDetails = new FlatDetails();
 		flatDetails.setFlatNumber(123L);
@@ -72,10 +72,10 @@ class DeliveryTest {
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
 		deliveryService.addDelivery(delivery);
-		Mockito.when(deliveryRepository.getById(delivery.getDeliveryId())).thenReturn(delivery);
-		Delivery d = deliveryService.getDeliveryById(delivery.getDeliveryId());
-		assertEquals(d , delivery);
-		verify(deliveryRepository , times(1)).getById(delivery.getDeliveryId());
+		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
+
+		Delivery d= deliveryService.getDeliveryById(delivery.getDeliveryId());
+		assertEquals(d, delivery);
 
 	}
 

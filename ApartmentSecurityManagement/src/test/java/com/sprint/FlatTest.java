@@ -53,10 +53,10 @@ class FlatTest {
 		FlatDetails flat1 = new  FlatDetails(101L,1L,true,owner1);
 		Mockito.when(flatDetailsRepository.save(flat1)).thenReturn(flat1);
 		flatDetailsService.addFlatDetails(flat1);
-		Mockito.when(flatDetailsRepository.getById(flat1.getFlatNumber())).thenReturn(flat1);
+		Mockito.when(flatDetailsRepository.findById(flat1.getFlatNumber())).thenReturn(Optional.of(flat1));
 		FlatDetails f = flatDetailsService.getFlatDetailsById(flat1.getFlatNumber());
 		assertEquals(f,flat1);
-		verify(flatDetailsRepository, times(1)).getById(flat1.getFlatNumber()); 		
+		 		
 	}
 	
 	

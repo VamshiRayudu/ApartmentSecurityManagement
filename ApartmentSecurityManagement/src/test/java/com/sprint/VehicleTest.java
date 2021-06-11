@@ -122,7 +122,7 @@ class VehicleTest {
 	}
 
 	@Test
-	void testGetVehiclesByList() {
+	void testGetAllVehiclesList() {
 		List<Vehicle>list = new ArrayList<>();
 
 		FlatDetails fd = new FlatDetails();
@@ -211,4 +211,9 @@ class VehicleTest {
 		verify(IVehicleRepository, times(1)).getById(a1.getId());
 
 	}
+	
+	
+	
+	
+	
 }

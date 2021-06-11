@@ -56,7 +56,7 @@ public class OwnerTest {
 
 
 	@Test
-	public void testGetOwnerById() throws UserNotFoundException {
+	public void testGetOwnerById() throws UserNotFoundException, DuplicateRecordException {
 
 		Owner owner = new Owner();
 		owner.setMobileNumber(123L);
@@ -64,15 +64,16 @@ public class OwnerTest {
 		owner.setRole(Role.FLATOWNER);
 		owner.setName("test");
 		owner.setUserName("demo");
+		Mockito.when(ownerRepository.save(owner)).thenReturn(owner);
+		ownerService.addOwner(owner);
 
-
-		Mockito.when(ownerRepository.getById(owner.getId())).thenReturn(owner);
+		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
 
 		Owner a = ownerService.getOwnerById(owner.getId());
 
 		assertEquals(a,owner);
 
-		verify(ownerRepository, times(1)).getById(owner.getId());
+		
 	}
 
 
@@ -120,11 +121,17 @@ public class OwnerTest {
 
 	}
 	@Test
-	void testUpdateOwnerById() throws UserNotFoundException {
+	void testUpdateOwnerById() throws UserNotFoundException, DuplicateRecordException {
 		Owner owner = new Owner(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.FLATOWNER);
-		Mockito.when(ownerRepository.findById( owner.getId())).thenReturn(Optional.of( owner));
-		Owner upPass =  ownerService. updateOwnerById( owner.getId(),  owner.getPassword(), "password2");
-		assertEquals("password2", upPass.getPassword());
+		Mockito.when(ownerRepository.save(owner)).thenReturn(owner);
+		ownerService.addOwner(owner);
+
+		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
+
+		Owner a = ownerService.updateOwnerById(owner.getId(), "password", "madhupass");
+
+		assertEquals("madhupass",owner.getPassword());
+
 	}
 
 

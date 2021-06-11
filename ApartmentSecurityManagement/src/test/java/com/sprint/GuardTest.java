@@ -84,4 +84,34 @@ class GuardTest {
 		Mockito.when(guardRepository.findAll()).thenReturn(list);
 		assertEquals(list.size(),guardService.getAllGuards().size());
 	}
+	
+	@Test
+    void testUpdateGuatdById()throws UserNotFoundException, DuplicateRecordException{
+        Guard guard=new Guard();
+        guard.setId(1L);
+        guard.setUserName("shubham");
+        guard.setName("dwivedi");
+        guard.setMobileNumber(123456L);
+        guard.setEmailId("sd9345@gmail.com");
+        guard.setPassword("tata");
+        guard.setRole(Role.GUARD);
+        Mockito.when(guardRepository.save(guard)).thenReturn(guard);
+        guardService.addGuard(guard);
+        
+        
+        Mockito.when(guardRepository.findById(guard.getId())).thenReturn(Optional.of(guard));
+        Guard g = guardService.updateGuardById(1L, "tata", "hehe");
+        
+        assertEquals("hehe", guard.getPassword());
+   
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

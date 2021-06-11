@@ -87,10 +87,9 @@ class DomesticHelpTest {
 		
 		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
 		domesticService.addDomesticHelp(domesticHelp);
-		Mockito.when(domesticHelpRepository.getById(domesticHelp.getId())).thenReturn(domesticHelp);
+		Mockito.when(domesticHelpRepository.findById(domesticHelp.getId())).thenReturn(Optional.of(domesticHelp));
 		DomesticHelp dh = domesticService.getDomesticHelpById(domesticHelp.getId());
 		assertEquals(dh,domesticHelp);
-		verify(domesticHelpRepository , times(1)).getById(domesticHelp.getId());
 		
 	}
 	
