@@ -147,12 +147,12 @@ public class GuardController {
 		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id),HttpStatus.OK);
 	}
 
-	@PostMapping("guard/delivery")
-	public ResponseEntity<Delivery> addDelivery(@Valid @RequestBody Delivery delivery) throws DuplicateRecordException, MethodArgumentNotValidException
+	@PostMapping("guard/delivery/addDelivery")
+	public ResponseEntity<Delivery> addDelivery(@Valid @RequestParam Long flatId, @RequestParam Long guardId, @RequestBody Delivery delivery) throws Exception
 	{
 		LOGGER.info("addDelivery URL is opened");
 		LOGGER.info("addDelivery() is initiated");
-		return new ResponseEntity<Delivery>(deliveryService.addDelivery(delivery),HttpStatus.CREATED);
+		return new ResponseEntity<Delivery>(deliveryService.addDelivery(flatId,guardId,delivery),HttpStatus.CREATED);
 	}
 
 	@PutMapping("guard/delivery")

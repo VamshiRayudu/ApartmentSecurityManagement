@@ -62,7 +62,7 @@ class DeliveryTest {
 
 
 	@Test
-	void getDeliveryByIdTest() throws DuplicateRecordException, RecordNotFoundException {
+	void getDeliveryByIdTest() throws Exception {
 
 		FlatDetails flatDetails = new FlatDetails();
 		flatDetails.setFlatNumber(123L);
@@ -71,7 +71,7 @@ class DeliveryTest {
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-05-06T12:12:00"), DeliveryStatus.PICKEDUP);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(delivery);
+		deliveryService.addDelivery(flatDetails.getFlatNumber(),7L,delivery);
 		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
 
 		Delivery d= deliveryService.getDeliveryById(delivery.getDeliveryId());
@@ -81,7 +81,7 @@ class DeliveryTest {
 
 
 	@Test
-	void addDeliveryTest() throws DuplicateRecordException {
+	void addDeliveryTest() throws Exception {
 
 		FlatDetails flatDetails = new FlatDetails();
 		flatDetails.setFlatNumber(606L);
@@ -90,7 +90,7 @@ class DeliveryTest {
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-03-06T12:16:00"), DeliveryStatus.RECEIVED);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(delivery);
+		deliveryService.addDelivery(flatDetails.getFlatNumber(),7L,delivery);
 		assertEquals(DeliveryStatus.RECEIVED, delivery.getStatus());
 
 	}
@@ -114,7 +114,7 @@ class DeliveryTest {
 
 
 	@Test
-	void updateDeliveryByIdTest() throws DuplicateRecordException, RecordNotFoundException {
+	void updateDeliveryByIdTest() throws Exception {
 
 		FlatDetails flatDetails = new FlatDetails();
 		flatDetails.setFlatNumber(506L);
@@ -123,7 +123,7 @@ class DeliveryTest {
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-04-08T12:18:00"), DeliveryStatus.NOTPICKEDUP);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(delivery);
+		deliveryService.addDelivery(flatDetails.getFlatNumber(),7L, delivery);
 		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
 
 		delivery.setStatus( DeliveryStatus.PICKEDUP);

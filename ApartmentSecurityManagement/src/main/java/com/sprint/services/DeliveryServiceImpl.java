@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.sprint.entities.Delivery;
 import com.sprint.entities.DeliveryStatus;
+import com.sprint.entities.FlatDetails;
+import com.sprint.entities.Guard;
 import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IDeliveryRepository;
+import com.sprint.repositories.IFlatDetailsRepository;
+import com.sprint.repositories.IGuardRepository;
 
 @Service
 @Transactional
@@ -20,6 +24,12 @@ public class DeliveryServiceImpl implements IDeliveryService{
 
 	@Autowired
 	private IDeliveryRepository deliveryRepository;
+	
+	@Autowired
+	private IFlatDetailsRepository flatRepository;
+	
+	@Autowired
+	private IGuardRepository guardRepository;
 
 	@Override
 	public List<Delivery> getDeliveryList() {
@@ -40,11 +50,14 @@ public class DeliveryServiceImpl implements IDeliveryService{
 			throw new RecordNotFoundException("Record Not Found");
 		}
 	}
-
+	
 	@Override
-	public Delivery addDelivery(Delivery delivery) {
+	public Delivery addDelivery(Long flatId, Long guardId, Delivery delivery) throws Exception {
 		// TODO Auto-generated method stub
-			return deliveryRepository.save(delivery);
+		FlatDetails flatDetails = flatRepository.findById(flatId).get();
+		Guard guard = guardRepository.findById(guardId).get();
+		delivery.setFlatDetails(flatDetails);
+		return deliveryRepository.save(delivery);
 	}
 
 	@Override
