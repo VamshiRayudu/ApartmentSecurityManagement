@@ -110,7 +110,7 @@ public class OwnerController {
 	}
 	
 	@PatchMapping("owner/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@RequestParam Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
+	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@RequestBody Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateFlatDetails URL is opened");
 		LOGGER.info("updateFlatDetails() is initiated");
@@ -199,16 +199,16 @@ public class OwnerController {
 	
     //////////////////---------------------------GUARD------------------
 
-	@GetMapping("owner/guard/{name}")
-	public ResponseEntity< List<Guard>> findByGuardName(@Valid @PathVariable String name)
+	@GetMapping("owner/guard/getGuardByName")
+	public ResponseEntity< List<Guard>> findByGuardName(@Valid @RequestParam String name)
 	{
 		LOGGER.info("findByGuardName URL is opened");
 		LOGGER.info("findByGuardName() is initiated");
 		return new ResponseEntity<List<Guard>>(guardRepository.findByName(name),HttpStatus.OK);
 	}
 	
-	@GetMapping ("owner/guard/{id}")
-	public ResponseEntity<Guard> getGuardById(@Valid @PathVariable Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	@GetMapping ("owner/guard/getGuardById")
+	public ResponseEntity<Guard> getGuardById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("getGuardById URL is opened");
 		LOGGER.info("getGuardById() is initiated");

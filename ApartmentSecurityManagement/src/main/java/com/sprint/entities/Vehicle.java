@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "vehicle_asm")
 public class Vehicle {
@@ -28,6 +30,7 @@ public class Vehicle {
 	
 	private String vehicleColour;
 	
+	@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="vehicle_updates",joinColumns = @JoinColumn(name = "vehicle_id"))
 	private List<VehicleUpdates> vehicleUpdates = new ArrayList<VehicleUpdates>();
@@ -36,6 +39,7 @@ public class Vehicle {
 	@JoinColumn(name = "owner_vehicle")
 	private Owner owner;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "flat_vehicle")
 	private FlatDetails flatDetails;

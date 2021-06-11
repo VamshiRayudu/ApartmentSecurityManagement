@@ -58,9 +58,7 @@ public class FlatDetailsServiceImpl implements IFlatDetailsService{
 		{
 			flatDetails.get().getOwner().setEmailId(ownerDetails.getEmailId());
 			
-			flatDetails.get().getOwner().setPassword(ownerDetails.getPassword());
-			
-			flatDetails.get().getOwner().setEmailId(ownerDetails.getEmailId());
+			flatDetails.get().getOwner().setMobileNumber(ownerDetails.getMobileNumber());;
 			
 			flatDetailsRepository.save(flatDetails.get());
 			
