@@ -31,7 +31,7 @@ public class Vehicle {
 	private String vehicleColour;
 	
 	//@JsonIgnore
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="vehicle_updates",joinColumns = @JoinColumn(name = "vehicle_id"))
 	private List<VehicleUpdates> vehicleUpdates = new ArrayList<VehicleUpdates>();
 	

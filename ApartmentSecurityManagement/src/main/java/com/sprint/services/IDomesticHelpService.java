@@ -14,7 +14,7 @@ public interface IDomesticHelpService {
 
 	public DomesticHelp getDomesticHelpById(Long id) throws UserNotFoundException;
 
-	public DomesticHelp addDomesticHelp(DomesticHelp domesticHelp);
+	public DomesticHelp addDomesticHelp(Long flatNumber, DomesticHelp domesticHelp);
 
 	public DomesticHelp updateDomesticHelp(DomesticHelp domesticHelp)throws UserNotFoundException;
 

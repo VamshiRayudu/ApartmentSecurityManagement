@@ -13,7 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -46,8 +46,9 @@ public class DomesticHelp {
 	private Long mobileNumber;
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private List<FlatDetails> flatDetails;
+	@ManyToOne
+	@JoinColumn(name = "dhelp_flat")
+	private FlatDetails flatDetails;
 
 	public Long getId() {
 		return id;
@@ -97,16 +98,16 @@ public class DomesticHelp {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public List<FlatDetails> getFlatDetails() {
+	public FlatDetails getFlatDetails() {
 		return flatDetails;
 	}
 
-	public void setFlatDetails(List<FlatDetails> flatDetails) {
+	public void setFlatDetails(FlatDetails flatDetails) {
 		this.flatDetails = flatDetails;
 	}
 
 	public DomesticHelp(List<Attendance> attendance, DomesticHelpType helpType, String name, String aadharId,
-			Long mobileNumber, List<FlatDetails> flatDetails) {
+			Long mobileNumber, FlatDetails flatDetails) {
 		super();
 		this.attendance = attendance;
 		this.helpType = helpType;
@@ -117,7 +118,7 @@ public class DomesticHelp {
 	}
 
 	public DomesticHelp(Long id, List<Attendance> attendance, DomesticHelpType helpType, String name, String aadharId,
-			Long mobileNumber, List<FlatDetails> flatDetails) {
+			Long mobileNumber, FlatDetails flatDetails) {
 		super();
 		this.id = id;
 		this.attendance = attendance;

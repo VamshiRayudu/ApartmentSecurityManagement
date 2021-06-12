@@ -41,13 +41,12 @@ public class FlatDetails {
 	
 	@Embedded
 	private FlatRent flatRent;
-	
-	@JsonIgnore
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
 	private List<Visitor> visitors;
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "flatDetails",fetch = FetchType.LAZY)
 	//@JoinColumn(name = "flat_dhelp")
 	private List<DomesticHelp> dHelpList;
 	

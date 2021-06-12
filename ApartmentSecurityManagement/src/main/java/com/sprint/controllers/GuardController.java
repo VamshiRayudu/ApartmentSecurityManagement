@@ -196,11 +196,11 @@ public class GuardController {
 
 	//add domesticHelp
 	@PostMapping("guard/domesticHelps")
-	public ResponseEntity<DomesticHelp> addDomesticHelp(@Valid @RequestBody DomesticHelp domsticHelp) throws DuplicateRecordException , MethodArgumentNotValidException{
+	public ResponseEntity<DomesticHelp> addDomesticHelp(@Valid @RequestBody DomesticHelp domesticHelp, @RequestParam Long flatNumber) throws DuplicateRecordException , MethodArgumentNotValidException{
 
 		LOGGER.info("addDomesticHelp URL is opened");
 		LOGGER.info("addDomesticHelp() is initiated");
-		return new ResponseEntity<DomesticHelp>(domesticHelpService.addDomesticHelp(domsticHelp),HttpStatus.CREATED);
+		return new ResponseEntity<DomesticHelp>(domesticHelpService.addDomesticHelp(flatNumber,domesticHelp),HttpStatus.CREATED);
 	}
 
 

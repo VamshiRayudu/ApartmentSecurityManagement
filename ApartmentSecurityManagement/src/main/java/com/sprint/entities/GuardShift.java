@@ -1,5 +1,7 @@
 package com.sprint.entities;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.persistence.Embeddable;
@@ -7,24 +9,25 @@ import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class GuardShift{
-
+	
 	@NotBlank(message = "Enter Login Time")
-	private LocalTime inTime;
+	private LocalDateTime inTime;
+	
 	@NotBlank(message = "Enter Logout Time")
-	private LocalTime outTime;
-	public LocalTime getInTime() {
+	private LocalDateTime outTime;
+	public LocalDateTime getInTime() {
 		return inTime;
 	}
-	public void setInTime(LocalTime inTime) {
+	public void setInTime(LocalDateTime inTime) {
 		this.inTime = inTime;
 	}
-	public LocalTime getOutTime() {
+	public LocalDateTime getOutTime() {
 		return outTime;
 	}
-	public void setOutTime(LocalTime outTime) {
+	public void setOutTime(LocalDateTime outTime) {
 		this.outTime = outTime;
 	}
-	public GuardShift(LocalTime inTime, LocalTime outTime) {
+	public GuardShift(LocalDateTime inTime, LocalDateTime outTime) {
 		super();
 		this.inTime = inTime;
 		this.outTime = outTime;

@@ -101,7 +101,7 @@ public class VisitorServiceImpl implements IVisitorService{
 		Optional<Visitor> deleteVisitor=visitorRepository.findById(id);
 		if(deleteVisitor !=null)
 		{
-			visitorRepository.deleteById(id);
+			visitorRepository.delete(deleteVisitor.get());
 		}
 		else
 		{

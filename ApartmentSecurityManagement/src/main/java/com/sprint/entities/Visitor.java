@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -32,6 +33,7 @@ public class Visitor {
 	@NotBlank(message = "Mobile Number Name")
 	private String mobileNumber;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "flatdetails_visitors")
 	private FlatDetails flatDetails;

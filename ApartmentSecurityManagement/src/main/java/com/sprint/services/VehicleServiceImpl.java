@@ -44,7 +44,7 @@ public class VehicleServiceImpl implements IVehicleService{
 		Optional<Vehicle> deleteVehicle=vehicleRepository.findById(id);
 		if(deleteVehicle !=null)
 		{
-			vehicleRepository.deleteById(id);
+			vehicleRepository.delete(deleteVehicle.get());
 		}
 		else
 		{

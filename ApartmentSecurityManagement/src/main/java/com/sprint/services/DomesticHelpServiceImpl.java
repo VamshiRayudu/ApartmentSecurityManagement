@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import com.sprint.entities.Attendance;
 import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.DomesticHelpType;
+import com.sprint.entities.FlatDetails;
 import com.sprint.repositories.IDomesticHelpRepository;
+import com.sprint.repositories.IFlatDetailsRepository;
 
 @Service
 @Transactional
@@ -22,6 +24,9 @@ public class DomesticHelpServiceImpl implements IDomesticHelpService {
 
 	@Autowired
 	private IDomesticHelpRepository domesticHelpRepository;
+	
+	@Autowired
+	private IFlatDetailsRepository flatRepository;
 	
 	@Override
 	public List<DomesticHelp> getDomesticHelpList() {
@@ -44,8 +49,10 @@ public class DomesticHelpServiceImpl implements IDomesticHelpService {
 	}
 
 	@Override
-	public DomesticHelp addDomesticHelp(DomesticHelp domesticHelp){
+	public DomesticHelp addDomesticHelp(Long flatNumber, DomesticHelp domesticHelp){
 		// TODO Auto-generated method stub
+		Optional<FlatDetails> flatDetails = flatRepository.findById(flatNumber);
+		domesticHelp.setFlatDetails(flatDetails.get());
 		return domesticHelpRepository.save(domesticHelp);
 	}
 
