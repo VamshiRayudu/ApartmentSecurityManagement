@@ -63,16 +63,9 @@ public class VisitorServiceImpl implements IVisitorService{
 		Optional<Visitor>visitor=visitorRepository.findById(Id);
 		if(visitor!=null)
 		{
-			if(visitor.get().getVisitorName().equals(visitorName) && visitor.get().getMobileNumber().equals(mobileNumber))
-			{
-				visitor.get().setVisitorName(visitorName);
-				visitor.get().setMobileNumber(mobileNumber);
-				return visitorRepository.save(visitor.get());
-			}
-			else
-			{
-				throw new RecordNotFoundException("Invalid Visitor");
-			}
+			visitor.get().setVisitorName(visitorName);
+			visitor.get().setMobileNumber(mobileNumber);
+			return visitorRepository.save(visitor.get());
 		}
 		else
 		{

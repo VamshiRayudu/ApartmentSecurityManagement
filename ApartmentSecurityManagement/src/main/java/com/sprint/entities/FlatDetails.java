@@ -56,7 +56,7 @@ public class FlatDetails {
 	
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "flatDetails", fetch = FetchType.LAZY)
-	private List<Vehicle> flatdetails;
+	private List<Vehicle> vehicleList;
 
 	public Long getFlatNumber() {
 		return flatNumber;
@@ -122,16 +122,16 @@ public class FlatDetails {
 		this.deliveries = deliveries;
 	}
 
-	public List<Vehicle> getFlatdetails() {
-		return flatdetails;
+	public List<Vehicle> getVehicleList() {
+		return vehicleList;
 	}
 
-	public void setFlatdetails(List<Vehicle> flatdetails) {
-		this.flatdetails = flatdetails;
+	public void setVechileList(List<Vehicle> vehicleList) {
+		this.vehicleList = vehicleList;
 	}
 
 	public FlatDetails(Long floorNumber, Boolean isRented, Owner owner, FlatRent flatRent, List<Visitor> visitors,
-			List<DomesticHelp> dHelpList, List<Delivery> deliveries, List<Vehicle> flatdetails) {
+			List<DomesticHelp> dHelpList, List<Delivery> deliveries, List<Vehicle> vehicleList) {
 		super();
 		this.floorNumber = floorNumber;
 		this.isRented = isRented;
@@ -140,12 +140,12 @@ public class FlatDetails {
 		this.visitors = visitors;
 		this.dHelpList = dHelpList;
 		this.deliveries = deliveries;
-		this.flatdetails = flatdetails;
+		this.vehicleList = vehicleList;
 	}
 
 	public FlatDetails(Long flatNumber, Long floorNumber, Boolean isRented, Owner owner, FlatRent flatRent,
 			List<Visitor> visitors, List<DomesticHelp> dHelpList, List<Delivery> deliveries,
-			List<Vehicle> flatdetails) {
+			List<Vehicle> vehicleList) {
 		super();
 		this.flatNumber = flatNumber;
 		this.floorNumber = floorNumber;
@@ -155,7 +155,7 @@ public class FlatDetails {
 		this.visitors = visitors;
 		this.dHelpList = dHelpList;
 		this.deliveries = deliveries;
-		this.flatdetails = flatdetails;
+		this.vehicleList = vehicleList;
 	}
 
 	public FlatDetails() {
@@ -182,7 +182,7 @@ public class FlatDetails {
 	public String toString() {
 		return "FlatDetails [flatNumber=" + flatNumber + ", floorNumber=" + floorNumber + ", isRented=" + isRented
 				+ ", owner=" + owner + ", flatRent=" + flatRent + ", visitors=" + visitors + ", dHelpList=" + dHelpList
-				+ ", deliveries=" + deliveries + ", flatdetails=" + flatdetails + "]";
+				+ ", deliveries=" + deliveries + ", vehicleList=" + vehicleList + "]";
 	}
 
 	
