@@ -28,6 +28,8 @@ import com.sprint.entities.DeliveryStatus;
 import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.DomesticHelpType;
 import com.sprint.entities.Guard;
+import com.sprint.entities.GuardSalary;
+import com.sprint.entities.GuardShift;
 import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.VehicleUpdates;
@@ -300,8 +302,8 @@ public class GuardController {
 
 	//////////////////////------------------------------VEHICLE UPDATES----------------------------------------///////////
 
-	@PostMapping("guard/vehicleUpdates/{vehicleId}")
-	public ResponseEntity<Vehicle> updateVehicleUpdate(@Valid @PathVariable("vehicleId") Long vehicleId,@RequestBody VehicleUpdates vUpdate) throws RecordNotFoundException, MethodArgumentNotValidException {
+	@PostMapping("guard/vehicleUpdates")
+	public ResponseEntity<Vehicle> updateVehicleUpdate(@Valid @RequestParam Long vehicleId,@RequestBody VehicleUpdates vUpdate) throws RecordNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("updateVehicleUpdate URL is opened");
 		LOGGER.info("updateVehicleUpdate() is initiated");
@@ -316,7 +318,7 @@ public class GuardController {
 		LOGGER.info("findByNumberPlate() is initiated");
 		return new ResponseEntity<Vehicle>(vehicleRepository.findByNumberPlate(numberPlate),HttpStatus.OK);
 	}
-
+	
 	//get vehicles by id
 	@GetMapping("guard/vehicles/getVehicleById")
 	public ResponseEntity<Vehicle> getVehiclesById(@Valid @PathVariable Long id) throws RecordNotFoundException , MethodArgumentNotValidException{
@@ -326,5 +328,32 @@ public class GuardController {
 		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
 	}
 	
-	////VIEW GUARD SALARIES,GUARD SHIFT
+	@GetMapping ("guard/getGuardAttendanceById")
+	public ResponseEntity<List<Attendance>> getGuardAttendanceById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<Attendance>>(guard.getGuardAttendances(),HttpStatus.OK);
+	}
+	
+	
+	@GetMapping ("guard/getGuardSalariesById")
+	public ResponseEntity<List<GuardSalary>> getGuardSalariesById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<GuardSalary>>(guard.getGuardSalaries(),HttpStatus.OK);
+	}
+	
+	@GetMapping ("guard/getGuardShiftsById")
+	public ResponseEntity<GuardShift> getGuardShiftsById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		
+		return new ResponseEntity<GuardShift>(guard.getGuardShifts(),HttpStatus.OK);
+	}
 }

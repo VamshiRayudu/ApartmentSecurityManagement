@@ -29,6 +29,7 @@ import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Guard;
 import com.sprint.entities.GuardSalary;
+import com.sprint.entities.GuardShift;
 import com.sprint.entities.Owner;
 import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
@@ -246,44 +247,25 @@ public class AdminController {
 		return new ResponseEntity<List<GuardSalary>>(guard.getGuardSalaries(),HttpStatus.OK);
 	}
 	
-	
-	@GetMapping ("admin/guard/getGuardByTimings")
-	public ResponseEntity<List<Guard>> getGuardByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
+	@GetMapping ("admin/guard/getGuardShiftsById")
+	public ResponseEntity<GuardShift> getGuardShiftsById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("getGuardById URL is opened");
 		LOGGER.info("getGuardById() is initiated");
-		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
-		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
+		Guard guard = guardService.getGuardById(id);
+		
+		return new ResponseEntity<GuardShift>(guard.getGuardShifts(),HttpStatus.OK);
 	}
 	
 	
-//	@GetMapping ("admin/guard/getGuardAttendanceList")
-//	public ResponseEntity<List<Guard>> getGuardAttendanceList()
-//	{
-//		LOGGER.info("getGuardById URL is opened");
-//		LOGGER.info("getGuardById() is initiated");
-//		List<Guard> guard = guardService.getGuardAttendanceList();
-//		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
-//	}
-//	
-//	@GetMapping ("admin/guard/getGuardSalariesByTimings")
-//	public ResponseEntity<List<Guard>> getGuardSalariesByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
+//	@GetMapping ("admin/guard/getGuardByTimings")
+//	public ResponseEntity<List<Guard>> getGuardByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
 //	{
 //		LOGGER.info("getGuardById URL is opened");
 //		LOGGER.info("getGuardById() is initiated");
 //		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
 //		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
 //	}
-//	
-//	@GetMapping ("admin/guard/getGuardSalariesByTimings")
-//	public ResponseEntity<List<Guard>> getGuardSalariesByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
-//	{
-//		LOGGER.info("getGuardById URL is opened");
-//		LOGGER.info("getGuardById() is initiated");
-//		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
-//		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
-//	}
-	
 
 	/////////////////////////-----------------VISITOR----------------------------//////////////////////////
 
@@ -443,9 +425,24 @@ public class AdminController {
 	{
 		LOGGER.info("updateOwner URL is opened");
 		LOGGER.info("updateOwner() is initiated");
-		return new ResponseEntity<Owner>(ownerService.updateOwner( owner),HttpStatus.OK);
+		return new ResponseEntity<Owner>(ownerService.updateOwner(owner),HttpStatus.OK);
 	}
 
+	@GetMapping("admin/owner/getOwnerById")
+	public ResponseEntity<Owner> getOwnerById(@Valid @RequestParam Long id) throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
+
+		LOGGER.info("getOwnerById URL is opened");
+		LOGGER.info("getOwnerById() is initiated");
+		return new ResponseEntity<Owner>(ownerService.getOwnerById(id),HttpStatus.OK);
+	}
+	
+	@GetMapping("admin/owner/getOwnerList")
+	public ResponseEntity<List<Owner>> getOwnerList() throws RecordNotFoundException, MethodArgumentNotValidException {
+
+		LOGGER.info("getOwnerList URL is opened");
+		LOGGER.info("getOwnerList() is initiated");
+		return new ResponseEntity<List<Owner>>(ownerService.getAllOwnerList(),HttpStatus.OK);
+	}
 	///////////////////////////////-------------------------VEHICLE------------------------------------------------
 	//get vehicles by id
 	@GetMapping("admin/vehicles/{id}")
@@ -455,5 +452,13 @@ public class AdminController {
 		LOGGER.info("getVehiclesById() is initiated");
 		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
 	}
+	
+	
+	@GetMapping("admin/vehicles/getAllVehicles")
+	public ResponseEntity<List<Vehicle>> getAllVehicles() throws RecordNotFoundException, MethodArgumentNotValidException {
 
+		LOGGER.info("getVehiclesById URL is opened");
+		LOGGER.info("getVehiclesById() is initiated");
+		return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicles(),HttpStatus.OK);
+	}
 }

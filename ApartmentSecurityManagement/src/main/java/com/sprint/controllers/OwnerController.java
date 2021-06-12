@@ -33,7 +33,9 @@ import com.sprint.entities.Visitor;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
+import com.sprint.repositories.IFlatDetailsRepository;
 import com.sprint.repositories.IGuardRepository;
+import com.sprint.repositories.IVehicleRepository;
 import com.sprint.services.FlatDetailsServiceImpl;
 import com.sprint.services.IAdminService;
 import com.sprint.services.IDeliveryService;
@@ -67,9 +69,16 @@ public class OwnerController {
 
 	@Autowired
 	private IDeliveryService deliveryService;
+	
+	@Autowired
+	private IVehicleRepository vehicleRepository;
 
 	@Autowired
 	private IDomesticHelpService domesticHelpService;
+	
+	@Autowired
+	private IFlatDetailsRepository flatDetailsRepository;
+	
 	
 	@Autowired
 	private IVehicleService vehicleService;
@@ -180,12 +189,22 @@ public class OwnerController {
 		return new ResponseEntity<Vehicle>(vehicleService.deleteVehicleById(id),HttpStatus.OK);
 	}
 	
+	//get vehileUpdates by vehicleNumber
+	@GetMapping("owner/vehicleUpdates/getByVehicleNumber")
+	public ResponseEntity<Vehicle> findByNumberPlate(@Valid @RequestParam String numberPlate) {
+
+		LOGGER.info("findByNumberPlate URL is opened");
+		LOGGER.info("findByNumberPlate() is initiated");
+		return new ResponseEntity<Vehicle>(vehicleRepository.findByNumberPlate(numberPlate),HttpStatus.OK);
+	}
+	
 	///////////////////////////////////////////--VISITOR----------------------------
-//	@GetMapping("guard/visitor")
-//	public ResponseEntity<List<Visitor>> getVisitorList()
-//	{
-//		return new ResponseEntity<List<Visitor>>(visitorService.getVisitorList(),HttpStatus.OK);
-//	}	
+	@GetMapping("guard/visitor/getVisitorListByFlatNumber")
+	public ResponseEntity<List<Visitor>> getVisitorListByFlatNumber(@Valid @RequestParam Long id)
+	{
+		FlatDetails fd = flatDetailsRepository.getById(id);
+		return new ResponseEntity<List<Visitor>>(fd.getVisitors(),HttpStatus.OK);
+	}	
 
 	
 	@GetMapping("owner/visitor/{id}")
@@ -197,7 +216,7 @@ public class OwnerController {
 	}
 	
 	
-    //////////////////---------------------------GUARD------------------
+    //////////////////---------------------------GUARD-----------------------
 
 	@GetMapping("owner/guard/getGuardByName")
 	public ResponseEntity< List<Guard>> findByGuardName(@Valid @RequestParam String name)
@@ -223,7 +242,7 @@ public class OwnerController {
 		return new ResponseEntity<List<Guard>>(guardService.getAllGuards(),HttpStatus.OK);
 	}
 	
-	/////////////-----------DOMESTIC HELP---------
+	//////////////////////////////////////-----------DOMESTIC HELP---------
 
 	//get domesticHelp by id
 	@GetMapping("owner/domesticHelps/{id}")
@@ -231,6 +250,15 @@ public class OwnerController {
 		LOGGER.info("getDomesticHelpById URL is opened");
 		LOGGER.info("getDomesticHelpById() is initiated");
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
+	}
+	
+	@GetMapping("owner/domesticHelps/getDomesticHelpByFlatId/{id}")
+	public ResponseEntity<List<DomesticHelp>> getDomesticHelpByFlatId(@Valid @PathVariable Long id) throws RecordNotFoundException, MethodArgumentNotValidException
+	{
+		LOGGER.info("getDomesticHelpByFlatId URL is opened");
+		LOGGER.info("getDomesticHelpByFlatId() is initiated");
+		FlatDetails fd = flatDetailsRepository.getById(id);
+		return new ResponseEntity<List<DomesticHelp>>(fd.getdHelpList(),HttpStatus.OK);
 	}
 	
 	
