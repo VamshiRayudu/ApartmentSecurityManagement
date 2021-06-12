@@ -47,7 +47,7 @@ public class Guard extends User{
 	
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Visitor> visitors;
 
 	
@@ -60,7 +60,7 @@ public class Guard extends User{
 	
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy= "guard",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Delivery> deliveries;
 	
 

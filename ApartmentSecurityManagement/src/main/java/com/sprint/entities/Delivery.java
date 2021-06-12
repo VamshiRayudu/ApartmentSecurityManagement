@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -27,6 +28,7 @@ public class Delivery {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long deliveryId;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "flat_deliveries")
 	private FlatDetails flatDetails;
@@ -38,8 +40,11 @@ public class Delivery {
 	private DeliveryStatus status;
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.MERGE)
-	private List<Guard> guards;
+	@JsonBackReference
+	//@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToOne
+	@JoinColumn(name = "g_deliveries")
+	private Guard guard;
 
 	public Long getDeliveryId() {
 		return deliveryId;
@@ -73,31 +78,31 @@ public class Delivery {
 		this.status = status;
 	}
 
-	public List<Guard> getGuards() {
-		return guards;
+	public Guard getGuard() {
+		return guard;
 	}
 
-	public void setGuards(List<Guard> guards) {
-		this.guards = guards;
+	public void setGuard(Guard guard) {
+		this.guard = guard;
 	}
 
 	public Delivery(FlatDetails flatDetails, LocalDateTime deliveryDateTime, DeliveryStatus status,
-			List<Guard> guards) {
+			Guard guard) {
 		super();
 		this.flatDetails = flatDetails;
 		this.deliveryDateTime = deliveryDateTime;
 		this.status = status;
-		this.guards = guards;
+		this.guard = guard;
 	}
 
 	public Delivery(Long deliveryId, FlatDetails flatDetails, LocalDateTime deliveryDateTime, DeliveryStatus status,
-			List<Guard> guards) {
+			Guard guard) {
 		super();
 		this.deliveryId = deliveryId;
 		this.flatDetails = flatDetails;
 		this.deliveryDateTime = deliveryDateTime;
 		this.status = status;
-		this.guards = guards;
+		this.guard = guard;
 	}
 
 	public Delivery() {
@@ -115,7 +120,7 @@ public class Delivery {
 	@Override
 	public String toString() {
 		return "Delivery [deliveryId=" + deliveryId + ", flatDetails=" + flatDetails + ", deliveryDateTime="
-				+ deliveryDateTime + ", status=" + status + ", guards=" + guards + "]";
+				+ deliveryDateTime + ", status=" + status + ", guard=" + guard + "]";
 	}
 
 }

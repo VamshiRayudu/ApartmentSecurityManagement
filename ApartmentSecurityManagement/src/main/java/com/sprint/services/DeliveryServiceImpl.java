@@ -54,9 +54,10 @@ public class DeliveryServiceImpl implements IDeliveryService{
 	@Override
 	public Delivery addDelivery(Long flatId, Long guardId, Delivery delivery) throws Exception {
 		// TODO Auto-generated method stub
-		FlatDetails flatDetails = flatRepository.findById(flatId).get();
-		Guard guard = guardRepository.findById(guardId).get();
-		delivery.setFlatDetails(flatDetails);
+		Optional<FlatDetails> flatDetails = flatRepository.findById(flatId);
+		Optional<Guard> guard = guardRepository.findById(guardId);
+		delivery.setFlatDetails(flatDetails.get());
+		delivery.setGuard(guard.get());
 		return deliveryRepository.save(delivery);
 	}
 
