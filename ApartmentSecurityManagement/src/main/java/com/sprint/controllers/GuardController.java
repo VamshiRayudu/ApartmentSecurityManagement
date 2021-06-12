@@ -241,19 +241,19 @@ public class GuardController {
 	}	
 
 	@PostMapping("guard/visitor")
-	public ResponseEntity<Visitor> addVisitor(@Valid @RequestBody Visitor visitor)
+	public ResponseEntity<Visitor> addVisitor(@Valid @RequestBody Visitor visitor, @RequestParam Long guardId)
 	{
 		LOGGER.info("addVisitor URL is opened");
 		LOGGER.info("addVisitor() is initiated");
-		return new ResponseEntity<Visitor>(visitorService.addVisitor(visitor),HttpStatus.CREATED);
+		return new ResponseEntity<Visitor>(visitorService.addVisitor(visitor,guardId),HttpStatus.CREATED);
 	}
 
 	@PutMapping("guard/visitor")
-	public ResponseEntity<Visitor> updateVisitor(@Valid @RequestBody Visitor visitor ) throws RecordNotFoundException, MethodArgumentNotValidException
+	public ResponseEntity<Visitor> updateVisitor(@Valid @RequestBody Visitor visitor, @RequestParam Long guardId ) throws RecordNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateVisitor URL is opened");
 		LOGGER.info("updateVisitor() is initiated");
-		return new ResponseEntity<Visitor>(visitorService.updateVisitor(visitor),HttpStatus.OK);
+		return new ResponseEntity<Visitor>(visitorService.updateVisitor(visitor,guardId),HttpStatus.OK);
 	}
 
 	@GetMapping("guard/visitor/getVisitorById")

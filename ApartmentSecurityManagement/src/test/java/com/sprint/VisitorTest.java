@@ -16,6 +16,7 @@ import com.sprint.entities.Visitor;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.entities.FlatDetails;
+import com.sprint.entities.Guard;
 import com.sprint.repositories.IVisitorRepository;
 import com.sprint.services.VisitorServiceImpl;
 
@@ -32,6 +33,8 @@ class VisitorTest {
 
 	@Test
 	public void addVisitorTest() {
+		Guard guard = new Guard();
+		guard.setId(9L);
 
 		FlatDetails fd = new FlatDetails();
 
@@ -55,7 +58,7 @@ class VisitorTest {
 
 		Mockito.when(visitorRepository.save(visitor)).thenReturn(visitor);
 
-		visitorService.addVisitor(visitor);
+		visitorService.addVisitor(visitor,guard.getId());
 
 		verify(visitorRepository, times(1)).save(visitor);
 
@@ -63,6 +66,9 @@ class VisitorTest {
 
 	@Test
 	public void testGetUserById() throws RecordNotFoundException {
+		
+		Guard guard = new Guard();
+		guard.setId(9L);
 
 		FlatDetails fd = new FlatDetails();
 
@@ -86,7 +92,7 @@ class VisitorTest {
 
 		Mockito.when(visitorRepository.save(visitor)).thenReturn(visitor);
 
-		visitorService.addVisitor(visitor);
+		visitorService.addVisitor(visitor,guard.getId());
 
 		Mockito.when(visitorRepository.getById(visitor.getId())).thenReturn(visitor);
 
@@ -126,6 +132,10 @@ class VisitorTest {
 	}
 	@Test
 	void testUpdateVisitor() throws UserNotFoundException, RecordNotFoundException {
+		
+		Guard guard = new Guard();
+		guard.setId(9L);
+		
 		Visitor visitor = new Visitor();
 		FlatDetails fd = new FlatDetails();
 
@@ -146,9 +156,8 @@ class VisitorTest {
 
 		visitor.setVisitorName("Test");
 
-
 		Mockito.when(visitorRepository.save(visitor)).thenReturn(visitor);
-		visitorService.updateVisitor(visitor);
+		visitorService.updateVisitor(visitor,guard.getId());
 		assertEquals("21312",visitor.getMobileNumber());
 	}
 }

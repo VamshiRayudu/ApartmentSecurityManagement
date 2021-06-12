@@ -63,15 +63,18 @@ class DeliveryTest {
 
 	@Test
 	void getDeliveryByIdTest() throws Exception {
+		
+		Guard g = new Guard();
+		g.setId(3L);
 
 		FlatDetails flatDetails = new FlatDetails();
-		flatDetails.setFlatNumber(123L);
+		flatDetails.setFlatNumber(2L);
 		flatDetails.setFloorNumber(6L);
 
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-05-06T12:12:00"), DeliveryStatus.PICKEDUP);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(flatDetails.getFlatNumber(),7L,delivery);
+		deliveryService.addDelivery(flatDetails.getFlatNumber(),g.getId(),delivery);
 		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
 
 		Delivery d= deliveryService.getDeliveryById(delivery.getDeliveryId());
@@ -83,14 +86,17 @@ class DeliveryTest {
 	@Test
 	void addDeliveryTest() throws Exception {
 
+		Guard g = new Guard();
+		g.setId(3L);
+		
 		FlatDetails flatDetails = new FlatDetails();
-		flatDetails.setFlatNumber(606L);
+		flatDetails.setFlatNumber(2L);
 		flatDetails.setFloorNumber(6L);
 
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-03-06T12:16:00"), DeliveryStatus.RECEIVED);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(flatDetails.getFlatNumber(),7L,delivery);
+		deliveryService.addDelivery(flatDetails.getFlatNumber(),g.getId(),delivery);
 		assertEquals(DeliveryStatus.RECEIVED, delivery.getStatus());
 
 	}
@@ -100,7 +106,7 @@ class DeliveryTest {
 	void updateDeliveryTest() throws RecordNotFoundException {
 
 		FlatDetails flatDetails = new FlatDetails();
-		flatDetails.setFlatNumber(303L);
+		flatDetails.setFlatNumber(2L);
 		flatDetails.setFloorNumber(3L);
 
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-05-05T12:13:00"), DeliveryStatus.NOTPICKEDUP);
@@ -116,14 +122,17 @@ class DeliveryTest {
 	@Test
 	void updateDeliveryByIdTest() throws Exception {
 
+		Guard g = new Guard();
+		g.setId(3L);
+		
 		FlatDetails flatDetails = new FlatDetails();
-		flatDetails.setFlatNumber(506L);
+		flatDetails.setFlatNumber(2L);
 		flatDetails.setFloorNumber(5L);
 
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-04-08T12:18:00"), DeliveryStatus.NOTPICKEDUP);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(flatDetails.getFlatNumber(),7L, delivery);
+		deliveryService.addDelivery(flatDetails.getFlatNumber(),g.getId(), delivery);
 		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
 
 		delivery.setStatus( DeliveryStatus.PICKEDUP);

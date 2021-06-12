@@ -9,9 +9,9 @@ public interface IVisitorService {
 	
 	public List<Visitor> getVisitorList();
 	
-	public Visitor addVisitor(Visitor visitor);
+	public Visitor addVisitor(Visitor visitor, Long guardId);
 	
-	public Visitor updateVisitor (Visitor visitor) throws RecordNotFoundException;
+	public Visitor updateVisitor (Visitor visitor, Long guardId) throws RecordNotFoundException;
 
 	public Visitor getVisitorById(Long Id) throws RecordNotFoundException;
 	

@@ -30,7 +30,7 @@ public class Vehicle {
 	
 	private String vehicleColour;
 	
-	@JsonIgnore
+	//@JsonIgnore
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name="vehicle_updates",joinColumns = @JoinColumn(name = "vehicle_id"))
 	private List<VehicleUpdates> vehicleUpdates = new ArrayList<VehicleUpdates>();

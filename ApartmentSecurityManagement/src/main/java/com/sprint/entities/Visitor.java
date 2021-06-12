@@ -40,9 +40,10 @@ public class Visitor {
 	
 	private LocalDateTime outTime;
 	
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private List<Guard> guards;
+	//@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "guard_visitors")
+	private Guard guard;
 
 	public Long getId() {
 		return id;
@@ -92,27 +93,27 @@ public class Visitor {
 		this.outTime = outTime;
 	}
 
-	public List<Guard> getGuards() {
-		return guards;
+	public Guard getGuard() {
+		return guard;
 	}
 
-	public void setGuards(List<Guard> guards) {
-		this.guards = guards;
+	public void setGuard(Guard guard) {
+		this.guard = guard;
 	}
 
 	public Visitor(String visitorName, String mobileNumber, FlatDetails flatDetails, LocalDateTime inTime,
-			LocalDateTime outTime, List<Guard> guards) {
+			LocalDateTime outTime, Guard guard) {
 		super();
 		this.visitorName = visitorName;
 		this.mobileNumber = mobileNumber;
 		this.flatDetails = flatDetails;
 		this.inTime = inTime;
 		this.outTime = outTime;
-		this.guards = guards;
+		this.guard = guard;
 	}
 
 	public Visitor(Long id, String visitorName, String mobileNumber, FlatDetails flatDetails, LocalDateTime inTime,
-			LocalDateTime outTime, List<Guard> guards) {
+			LocalDateTime outTime, Guard guard) {
 		super();
 		this.id = id;
 		this.visitorName = visitorName;
@@ -120,7 +121,7 @@ public class Visitor {
 		this.flatDetails = flatDetails;
 		this.inTime = inTime;
 		this.outTime = outTime;
-		this.guards = guards;
+		this.guard = guard;
 	}
 
 	public Visitor() {
@@ -131,7 +132,7 @@ public class Visitor {
 	@Override
 	public String toString() {
 		return "Visitor [id=" + id + ", visitorName=" + visitorName + ", mobileNumber=" + mobileNumber
-				+ ", flatDetails=" + flatDetails + ", inTime=" + inTime + ", outTime=" + outTime + ", guards=" + guards
+				+ ", flatDetails=" + flatDetails + ", inTime=" + inTime + ", outTime=" + outTime + ", guard=" + guard
 				+ "]";
 	}
 }

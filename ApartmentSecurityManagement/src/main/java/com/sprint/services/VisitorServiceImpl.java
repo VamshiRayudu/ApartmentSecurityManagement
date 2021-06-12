@@ -8,9 +8,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.entities.Guard;
 import com.sprint.entities.Visitor;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IVisitorRepository;
+import com.sprint.repositories.IGuardRepository;
 
 @Service
 @Transactional
@@ -18,10 +20,15 @@ public class VisitorServiceImpl implements IVisitorService{
 
 	@Autowired
 	private IVisitorRepository visitorRepository;
+	
+	@Autowired
+	private IGuardRepository guardRepository;
 
 	@Override
-	public Visitor addVisitor(Visitor visitor) {
+	public Visitor addVisitor(Visitor visitor, Long guardId) {
 		// TODO Auto-generated method stub
+		Optional<Guard> guard = guardRepository.findById(guardId);
+		visitor.setGuard(guard.get());
 		return visitorRepository.save(visitor);
 	}
 
@@ -32,11 +39,13 @@ public class VisitorServiceImpl implements IVisitorService{
 	}
 
 	@Override
-	public Visitor updateVisitor(Visitor visitor)throws RecordNotFoundException {
+	public Visitor updateVisitor(Visitor visitor,Long guardId)throws RecordNotFoundException {
 		Optional<Visitor> user = visitorRepository.findById(visitor.getId());
+		Optional<Guard> guard = guardRepository.findById(guardId);
 		// TODO Auto-generated method stub
 		if(user!=null)
 		{
+			visitor.setGuard(guard.get());
 			return visitorRepository.save(visitor);
 		}
 		else

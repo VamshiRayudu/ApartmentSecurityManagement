@@ -47,7 +47,7 @@ public class Guard extends User{
 	
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "guard",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Visitor> visitors;
 
 	
