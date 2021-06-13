@@ -16,6 +16,10 @@ import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.ISecurityAlertRepository;
 
+/**
+ * @author VIVEK PABBA
+ *
+ */
 @Service
 @Transactional
 public class SecurityAlertServiceImpl implements ISecurityAlertService{

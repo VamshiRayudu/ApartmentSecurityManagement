@@ -18,6 +18,10 @@ import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IGuardRepository;
 
+/**
+ * @author SHUBHAM
+ *
+ */
 @Service
 @Transactional
 public class GuardServiceImpl extends UserServiceImpl implements IGuardService{

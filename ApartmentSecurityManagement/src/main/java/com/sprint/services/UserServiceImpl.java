@@ -16,6 +16,10 @@ import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IGuardRepository;
 import com.sprint.repositories.IOwnerRepository;
 
+/**
+ * @author SAI VAMSI KRISHNA
+ *
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService{

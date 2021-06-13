@@ -18,6 +18,10 @@ import com.sprint.repositories.IDeliveryRepository;
 import com.sprint.repositories.IFlatDetailsRepository;
 import com.sprint.repositories.IGuardRepository;
 
+/**
+ * @author NIJAGNA
+ *
+ */
 @Service
 @Transactional
 public class DeliveryServiceImpl implements IDeliveryService{

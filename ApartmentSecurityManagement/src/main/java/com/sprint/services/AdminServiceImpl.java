@@ -14,6 +14,10 @@ import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 
 
+/**
+ * @author SAI VAMSI KRISHNA
+ *
+ */
 @Service
 @Transactional
 public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
@@ -36,7 +40,6 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 		}
 	}
 
-	//Used for put
 	@Override
 	public Admin updateAdmin(Admin admin) throws UserNotFoundException {
 		// TODO Auto-generated method stub
@@ -51,7 +54,6 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 		}
 	}
 
-	//Patch Update
 	@Override
 	public Admin updateAdminById(Long id,String oldPassword,String newPassword) throws UserNotFoundException {
 		// TODO Auto-generated method stub

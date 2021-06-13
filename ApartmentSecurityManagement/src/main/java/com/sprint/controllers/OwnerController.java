@@ -9,14 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,13 +45,16 @@ import com.sprint.services.ISecurityAlertService;
 import com.sprint.services.IVehicleService;
 import com.sprint.services.IVisitorService;
 
-
+/**
+ * @authors NIJAGNA, KUNDANA PRIYA
+ *
+ */
 @RestController
 @RequestMapping("api/v1/")
 public class OwnerController {
-	
+
 	static final Logger LOGGER = LoggerFactory.getLogger(OwnerController.class);
-	
+
 	@Autowired
 	private IAdminService adminService;
 
@@ -71,207 +72,278 @@ public class OwnerController {
 
 	@Autowired
 	private IDeliveryService deliveryService;
-	
+
 	@Autowired
 	private IVehicleRepository vehicleRepository;
 
 	@Autowired
 	private IDomesticHelpService domesticHelpService;
-	
+
 	@Autowired
 	private IFlatDetailsRepository flatDetailsRepository;
-	
+
 	@Autowired
 	private ISecurityAlertService securityAlertService;
-	
+
 	@Autowired
 	private IVehicleService vehicleService;
 
 	@Autowired
 	private FlatDetailsServiceImpl flatDetailsService;
-	
+
 	@Autowired
 	private IOwnerService ownerService;
-	
-	
+
+	/**
+	 * @param owner
+	 * @return ResponseEntity<Owner>
+	 */
 	@PostMapping("owner/login")
-	public ResponseEntity<Owner> LoginOwner(@Valid @RequestBody Owner owner)
-	{
+	public ResponseEntity<Owner> LoginOwner(@Valid @RequestBody Owner owner) {
 		LOGGER.info("LoginOwner URL is opened");
 		LOGGER.info("LoginOwner() is initiated");
-		return new ResponseEntity<Owner>((Owner) ownerService.Login(owner.getEmailId(), owner.getPassword(), owner.getRole()),HttpStatus.OK);
+		return new ResponseEntity<Owner>(
+				(Owner) ownerService.Login(owner.getEmailId(), owner.getPassword(), owner.getRole()), HttpStatus.OK);
 	}
-	
-	/////////////////////--------------FLAT--------------
-	
+
+	/**
+	 * @param flatNumber
+	 * @return ResponseEntity<FlatDetails>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/flatDetails/getByFlatNumber")
-	public ResponseEntity<FlatDetails> getFlatDetailsById(@Valid @RequestParam Long flatNumber) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<FlatDetails> getFlatDetailsById(@Valid @RequestParam Long flatNumber)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getFlatDetailsById URL is opened");
 		LOGGER.info("getFlatDetailsById() is initiated");
 		FlatDetails flat = flatDetailsService.getFlatDetailsById(flatNumber);
-		return new ResponseEntity<FlatDetails>(flat,HttpStatus.OK);
+		return new ResponseEntity<FlatDetails>(flat, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @return ResponseEntity<List<FlatDetails>>
+	 */
 	@GetMapping("owner/flatDetails")
-	public ResponseEntity<List<FlatDetails>> getFlatDetails()
-	{
+	public ResponseEntity<List<FlatDetails>> getFlatDetails() {
 		LOGGER.info("getFlatDetails URL is opened");
 		LOGGER.info("getFlatDetails() is initiated");
 		List<FlatDetails> flat = flatDetailsService.listAllFlatDetails();
-		return new ResponseEntity<List<FlatDetails>>(flat,(HttpStatus.OK));
+		return new ResponseEntity<List<FlatDetails>>(flat, (HttpStatus.OK));
 	}
-	
+
+	/**
+	 * @param flatNumber
+	 * @param ownerDetails
+	 * @return ResponseEntity<FlatDetails>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PatchMapping("owner/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@RequestBody Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,
+			@RequestBody Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateFlatDetails URL is opened");
 		LOGGER.info("updateFlatDetails() is initiated");
-		return new ResponseEntity<FlatDetails>(flatDetailsService.updateFlatDetails(flatNumber,ownerDetails),HttpStatus.OK);		
+		return new ResponseEntity<FlatDetails>(flatDetailsService.updateFlatDetails(flatNumber, ownerDetails),
+				HttpStatus.OK);
 	}
-		
-	//////////////////////-------------------ADMINS--------------------------/////////////////////////////-
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/admin/getAdminById")
-	public ResponseEntity<Admin> getAdminById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Admin> getAdminById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getAdminById URL is opened");
 		LOGGER.info("getAdminById() is initiated");
-		return new ResponseEntity<Admin>(adminService.getAdminById(id),HttpStatus.OK);
+		return new ResponseEntity<Admin>(adminService.getAdminById(id), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @param name
+	 * @return ResponseEntity<List<Admin>>
+	 */
 	@GetMapping("owner/admin/getAdminByName")
-	public ResponseEntity<List<Admin>> getAdminByName(@Valid @RequestParam String name)
-	{
+	public ResponseEntity<List<Admin>> getAdminByName(@Valid @RequestParam String name) {
 		LOGGER.info("getAdminByName URL is opened");
 		LOGGER.info("getAdminByName() is initiated");
-		return new ResponseEntity<List<Admin>>(adminRepository.findByName(name),HttpStatus.OK);
+		return new ResponseEntity<List<Admin>>(adminRepository.findByName(name), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @return ResponseEntity<List<Admin>>
+	 */
 	@GetMapping("owner/admin")
-	public ResponseEntity<List<Admin>> getAllAdmins()
-	{
+	public ResponseEntity<List<Admin>> getAllAdmins() {
 		LOGGER.info("getAllAdmins URL is opened");
 		LOGGER.info("getAllAdmins() is initiated");
-		return new ResponseEntity<List<Admin>>(adminService.getAllAdmins(),HttpStatus.OK);
+		return new ResponseEntity<List<Admin>>(adminService.getAllAdmins(), HttpStatus.OK);
 	}
-	
-	////////////////////////////---------------DELIVERIES-------------------------------------------------
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<Delivery>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/delivery/{id}")
-	public ResponseEntity<Delivery> getDeliveryById(@Valid @PathVariable Long id) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Delivery> getDeliveryById(@Valid @PathVariable Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getDeliveryById URL is opened");
 		LOGGER.info("getDeliveryById() is initiated");
-		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id),HttpStatus.OK);
+		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id), HttpStatus.OK);
 	}
-	
-	////////////////////////////////------------------VEHICLES----------------------------------------------
-	//get vehicles by id
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<Vehicle>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/vehicles/getVehicleById")
-	public ResponseEntity<Vehicle> getVehiclesById(@Valid @RequestParam Long id) throws RecordNotFoundException , MethodArgumentNotValidException{
+	public ResponseEntity<Vehicle> getVehiclesById(@Valid @RequestParam Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getVehiclesById URL is opened");
 		LOGGER.info("getVehiclesById() is initiated");
-		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
+		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id), HttpStatus.OK);
 	}
-	
-	
-	//add a vehicle
+
+	/**
+	 * @param vehicle
+	 * @return ResponseEntity<Vehicle>
+	 */
 	@PostMapping("owner/vehicles")
 	public ResponseEntity<Vehicle> addVehicle(@Valid @RequestBody Vehicle vehicle) {
 		LOGGER.info("addVehicle URL is opened");
 		LOGGER.info("addVehicle() is initiated");
-		return new ResponseEntity<Vehicle>(vehicleService.addVehicle(vehicle),HttpStatus.CREATED);
+		return new ResponseEntity<Vehicle>(vehicleService.addVehicle(vehicle), HttpStatus.CREATED);
 	}
-	
-	
-	//delete vehicle
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<Vehicle>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("owner/vehicles/{id}")
-	public ResponseEntity<Vehicle> deleteVehicleById(@Valid @PathVariable("id") Long id) throws RecordNotFoundException, MethodArgumentNotValidException {
+	public ResponseEntity<Vehicle> deleteVehicleById(@Valid @PathVariable("id") Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteVehicleById URL is opened");
 		LOGGER.info("deleteVehicleById() is initiated");
-		return new ResponseEntity<Vehicle>(vehicleService.deleteVehicleById(id),HttpStatus.OK);
+		return new ResponseEntity<Vehicle>(vehicleService.deleteVehicleById(id), HttpStatus.OK);
 	}
-	
-	//get vehileUpdates by vehicleNumber
+
+	/**
+	 * @param numberPlate
+	 * @return ResponseEntity<Vehicle>
+	 */
 	@GetMapping("owner/vehicleUpdates/getByVehicleNumber")
 	public ResponseEntity<Vehicle> findByNumberPlate(@Valid @RequestParam String numberPlate) {
 
 		LOGGER.info("findByNumberPlate URL is opened");
 		LOGGER.info("findByNumberPlate() is initiated");
-		return new ResponseEntity<Vehicle>(vehicleRepository.findByNumberPlate(numberPlate),HttpStatus.OK);
+		return new ResponseEntity<Vehicle>(vehicleRepository.findByNumberPlate(numberPlate), HttpStatus.OK);
 	}
-	
-	///////////////////////////////////////////--VISITOR----------------------------
-	@GetMapping("guard/visitor/getVisitorListByFlatNumber")
-	public ResponseEntity<List<Visitor>> getVisitorListByFlatNumber(@Valid @RequestParam Long id)
-	{
-		FlatDetails fd = flatDetailsRepository.getById(id);
-		return new ResponseEntity<List<Visitor>>(fd.getVisitors(),HttpStatus.OK);
-	}	
 
-	
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<Visitor>>
+	 */
+	@GetMapping("guard/visitor/getVisitorListByFlatNumber")
+	public ResponseEntity<List<Visitor>> getVisitorListByFlatNumber(@Valid @RequestParam Long id) {
+		FlatDetails fd = flatDetailsRepository.getById(id);
+		return new ResponseEntity<List<Visitor>>(fd.getVisitors(), HttpStatus.OK);
+	}
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<Visitor>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/visitor/{id}")
-	public ResponseEntity<Visitor>getvisitorById(@Valid @PathVariable Long id) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Visitor> getvisitorById(@Valid @PathVariable Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getvisitorById URL is opened");
 		LOGGER.info("getvisitorById() is initiated");
-		return new ResponseEntity<Visitor>(visitorService.getVisitorById(id),HttpStatus.OK);
+		return new ResponseEntity<Visitor>(visitorService.getVisitorById(id), HttpStatus.OK);
 	}
-	
-	
-    //////////////////---------------------------GUARD-----------------------
 
+	/**
+	 * @param name
+	 * @return ResponseEntity<List<Guard>>
+	 */
 	@GetMapping("owner/guard/getGuardByName")
-	public ResponseEntity< List<Guard>> findByGuardName(@Valid @RequestParam String name)
-	{
+	public ResponseEntity<List<Guard>> findByGuardName(@Valid @RequestParam String name) {
 		LOGGER.info("findByGuardName URL is opened");
 		LOGGER.info("findByGuardName() is initiated");
-		return new ResponseEntity<List<Guard>>(guardRepository.findByName(name),HttpStatus.OK);
+		return new ResponseEntity<List<Guard>>(guardRepository.findByName(name), HttpStatus.OK);
 	}
-	
-	@GetMapping ("owner/guard/getGuardById")
-	public ResponseEntity<Guard> getGuardById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("owner/guard/getGuardById")
+	public ResponseEntity<Guard> getGuardById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getGuardById URL is opened");
 		LOGGER.info("getGuardById() is initiated");
-		return new ResponseEntity<Guard>(guardService.getGuardById(id),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.getGuardById(id), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @return ResponseEntity<List<Guard>>
+	 */
 	@GetMapping("owner/guard")
-	public ResponseEntity<List<Guard>> getAllGuards()
-	{
+	public ResponseEntity<List<Guard>> getAllGuards() {
 		LOGGER.info("getAllGuards URL is opened");
 		LOGGER.info("getAllGuards() is initiated");
-		return new ResponseEntity<List<Guard>>(guardService.getAllGuards(),HttpStatus.OK);
+		return new ResponseEntity<List<Guard>>(guardService.getAllGuards(), HttpStatus.OK);
 	}
-	
-	//////////////////////////////////////-----------DOMESTIC HELP---------
 
-	//get domesticHelp by id
+	/**
+	 * @param id
+	 * @return ResponseEntity<DomesticHelp>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/domesticHelps/{id}")
-	public ResponseEntity<DomesticHelp> getDomesticHelpById(@Valid @PathVariable("id") Long id) throws UserNotFoundException , MethodArgumentNotValidException{
+	public ResponseEntity<DomesticHelp> getDomesticHelpById(@Valid @PathVariable("id") Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getDomesticHelpById URL is opened");
 		LOGGER.info("getDomesticHelpById() is initiated");
-		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
+		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<DomesticHelp>>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("owner/domesticHelps/getDomesticHelpByFlatId/{id}")
-	public ResponseEntity<List<DomesticHelp>> getDomesticHelpByFlatId(@Valid @PathVariable Long id) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<List<DomesticHelp>> getDomesticHelpByFlatId(@Valid @PathVariable Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getDomesticHelpByFlatId URL is opened");
 		LOGGER.info("getDomesticHelpByFlatId() is initiated");
 		FlatDetails fd = flatDetailsRepository.getById(id);
-		return new ResponseEntity<List<DomesticHelp>>(fd.getdHelpList(),HttpStatus.OK);
+		return new ResponseEntity<List<DomesticHelp>>(fd.getdHelpList(), HttpStatus.OK);
 	}
-	
-	//Security Alerts
+
+	/**
+	 * @return ResponseEntity<List<SecurityAlert>>
+	 */
 	@GetMapping("owner/securityAlert")
-	public ResponseEntity<List<SecurityAlert>> getAllSecurityAlert()
-	{
+	public ResponseEntity<List<SecurityAlert>> getAllSecurityAlert() {
 		LOGGER.info("getAllSecurityAlert URL is opened");
 		LOGGER.info("getAllSecurityAlert() is initiated");
-		return new ResponseEntity<List<SecurityAlert>>(securityAlertService.getSecurityAlertList(),HttpStatus.OK);
+		return new ResponseEntity<List<SecurityAlert>>(securityAlertService.getSecurityAlertList(), HttpStatus.OK);
 	}
-	
+
 }

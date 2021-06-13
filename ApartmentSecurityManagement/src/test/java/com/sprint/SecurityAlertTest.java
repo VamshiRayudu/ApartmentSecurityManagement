@@ -25,17 +25,16 @@ import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.ISecurityAlertRepository;
 
 import com.sprint.services.SecurityAlertServiceImpl;
+
 @SpringBootTest
 class SecurityAlertTest {
 
-
 	@Mock
 
-	ISecurityAlertRepository securityalertRepository= org.mockito.Mockito.mock(ISecurityAlertRepository.class);
+	ISecurityAlertRepository securityalertRepository = org.mockito.Mockito.mock(ISecurityAlertRepository.class);
 	@InjectMocks
 
-	SecurityAlertServiceImpl securityalertService;  
-
+	SecurityAlertServiceImpl securityalertService;
 
 	@Test
 	public void testGetSecurityAlertById() throws RecordNotFoundException {
@@ -50,32 +49,31 @@ class SecurityAlertTest {
 
 		SecurityAlert s = securityalertService.getSecurityAlertById(securityalert.getId());
 
-		assertEquals(s,securityalert);
+		assertEquals(s, securityalert);
 
 		verify(securityalertRepository, times(1)).getById(securityalert.getId());
 	}
+
 	@Test
 	public void testAddSecurityAlert() throws DuplicateRecordException {
-		SecurityAlert  securityalert = new SecurityAlert();
+		SecurityAlert securityalert = new SecurityAlert();
 
 		securityalert.setMessage("justjoking");
 		securityalert.setAlert("emergency");
 		securityalert.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
 
-
-		Mockito.when(securityalertRepository.save( securityalert)).thenReturn(securityalert);
+		Mockito.when(securityalertRepository.save(securityalert)).thenReturn(securityalert);
 
 		SecurityAlert s = securityalertService.addSecurityAlert(securityalert);
 
-		assertEquals("justjoking",s.getMessage());
-		assertEquals("emergency",s.getAlert());
-	}	
-
+		assertEquals("justjoking", s.getMessage());
+		assertEquals("emergency", s.getAlert());
+	}
 
 	@Test
 	void testGetAllSecurityAlert() {
 
-		List<SecurityAlert>list = new ArrayList<>();
+		List<SecurityAlert> list = new ArrayList<>();
 		SecurityAlert securityalert2 = new SecurityAlert();
 
 		securityalert2.setMessage("all members alert");
@@ -87,7 +85,6 @@ class SecurityAlertTest {
 		securityalert3.setMessage("fast");
 		securityalert3.setAlert("test");
 		securityalert3.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
-
 
 		list.add(securityalert2);
 		list.add(securityalert3);
@@ -103,22 +100,64 @@ class SecurityAlertTest {
 		securityalert.setAlert("test");
 		securityalert.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
 		Mockito.when(securityalertRepository.findById(securityalert.getId())).thenReturn(Optional.of(securityalert));
-		assertEquals(securityalert,  securityalertService.deleteSecurityAlertById(securityalert.getId()));
+		assertEquals(securityalert, securityalertService.deleteSecurityAlertById(securityalert.getId()));
 	}
 
 	@Test
 	void testUpdateSecurityAlert() throws RecordNotFoundException {
+		SecurityAlert securityalert = new SecurityAlert();
+
+		securityalert.setMessage("just joking");
+		securityalert.setAlert("emergency");
+		securityalert.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
+
+		Mockito.when(securityalertRepository.save(securityalert)).thenReturn(securityalert);
+		securityalertService.updateSecurityAlert(securityalert);
+		assertEquals("just joking", securityalert.getMessage());
+	}
+
+	@Test
+	public void testNotAddSecurityAlert() throws DuplicateRecordException {
+		SecurityAlert  securityalert = new SecurityAlert();
+
+		securityalert.setMessage("justjoking");
+		securityalert.setAlert("emergency");
+		securityalert.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
+
+
+		Mockito.when(securityalertRepository.save( securityalert)).thenReturn(securityalert);
+
+		SecurityAlert s = securityalertService.addSecurityAlert(securityalert);
+
+		assertEquals("emergency",s.getMessage());
+		assertEquals("justjoking",s.getAlert());
+	}	
+	
+	@Test
+	void testNotUpdateSecurityAlert() throws RecordNotFoundException {
 		SecurityAlert  securityalert  = new SecurityAlert();
-
-
-
 		securityalert .setMessage("just joking");
 		securityalert .setAlert("emergency");
 		securityalert.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
 
 		Mockito.when(securityalertRepository.save( securityalert)).thenReturn( securityalert );
 		securityalertService.updateSecurityAlert ( securityalert );
-		assertEquals("just joking",  securityalert .getMessage());
+		assertNotEquals("just joking",  securityalert .getMessage());
 	}
+	@Test
+	public void testNotdeleteById() throws RecordNotFoundException {
 
+		SecurityAlert securityalert = new SecurityAlert();
+		securityalert.setMessage("all members alert");
+		securityalert.setAlert("test");
+		securityalert.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
+		
+		SecurityAlert securityalert1 = new SecurityAlert();
+		securityalert1.setMessage("all members alert");
+		securityalert1.setAlert("test");
+		securityalert1.setDateTimeOfAlert(LocalDateTime.parse("2020-12-23T15:12:00"));
+		Mockito.when(securityalertRepository.findById(securityalert.getId())).thenReturn(Optional.of(securityalert));
+		assertNotEquals(securityalert,  securityalertService.deleteSecurityAlertById(securityalert.getId()));
+		
+	}
 }

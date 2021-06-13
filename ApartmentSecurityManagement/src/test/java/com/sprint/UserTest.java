@@ -35,7 +35,7 @@ class UserTest {
 
 	@InjectMocks
 	UserServiceImpl userService;
-	
+
 	@Mock
 	IAdminRepository adminRepository= org.mockito.Mockito.mock(IAdminRepository.class);
 	@InjectMocks
@@ -45,15 +45,15 @@ class UserTest {
 	IGuardRepository guardRepository= org.mockito.Mockito.mock(IGuardRepository.class);
 	@InjectMocks
 	GuardServiceImpl guardService;
-	
+
 	@Mock
 	IOwnerRepository ownerRepository= org.mockito.Mockito.mock(IOwnerRepository.class);
 	@InjectMocks
 	OwnerServiceImpl ownerService;
-	
+
 	@Test
 	public void addUser() {
-		
+
 		User user = new User();
 		user.setName("Demo");
 		user.setMobileNumber(1232L);
@@ -64,7 +64,7 @@ class UserTest {
 		assertEquals(u, user);
 
 	} 
-	
+
 	@Test
 	public void loginUserAdmin() {
 		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
@@ -72,8 +72,8 @@ class UserTest {
 		assertEquals("sampleTest@asp.com",admin.getEmailId());
 		assertEquals("password",admin.getPassword());
 	}
-	
-	
+
+
 	@Test
 	public void loginAdminWithWrongPassword() {
 		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
@@ -81,8 +81,8 @@ class UserTest {
 		assertNotEquals("sampleTest@asp.com",admin.getEmailId());
 		assertNotEquals("password",admin.getPassword());
 	}
-	
-	
+
+
 	@Test
 	public void loginGuardUser() {
 
@@ -91,8 +91,8 @@ class UserTest {
 		assertEquals("sampleguard@asp.com",guard.getEmailId());
 		assertEquals("password",guard.getPassword());
 	}
-	
-	
+
+
 	@Test
 	public void loginGuardWithWrongPassword() {
 		Guard guard = new Guard(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.GUARD);
@@ -100,8 +100,8 @@ class UserTest {
 		assertNotEquals("sampleguard@asp.com",guard.getEmailId());
 		assertNotEquals("password",guard.getPassword());
 	}
-	
-	
+
+
 	@Test
 	public void loginOwnerUser() {
 
@@ -110,8 +110,8 @@ class UserTest {
 		assertEquals("sampleguard@asp.com",owner.getEmailId());
 		assertEquals("password",owner.getPassword());
 	}
-	
-	
+
+
 	@Test
 	public void loginOwnerWithWrongPassword() {
 		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.FLATOWNER);

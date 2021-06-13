@@ -18,6 +18,10 @@ import com.sprint.entities.FlatDetails;
 import com.sprint.repositories.IDomesticHelpRepository;
 import com.sprint.repositories.IFlatDetailsRepository;
 
+/**
+ * @author NIJAGNA
+ *
+ */
 @Service
 @Transactional
 public class DomesticHelpServiceImpl implements IDomesticHelpService {

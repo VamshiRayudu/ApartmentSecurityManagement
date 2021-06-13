@@ -1,6 +1,10 @@
 package com.sprint.exceptions;
 
-public class RecordNotFoundException extends Exception{
+/**
+ * @author SAI VAMSI KRISHNA
+ *
+ */
+public class RecordNotFoundException extends Exception {
 
 	public RecordNotFoundException(String string) {
 		super(string);

@@ -15,6 +15,10 @@ import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IOwnerRepository;
 
+/**
+ * @author VIVEK PABBA
+ *
+ */
 @Service
 @Transactional
 public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{

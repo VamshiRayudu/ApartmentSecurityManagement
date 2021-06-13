@@ -15,6 +15,10 @@ import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IFlatDetailsRepository;
 
+/**
+ * @author KUNDANA PRIYA
+ *
+ */
 @Service
 @Transactional
 public class FlatDetailsServiceImpl implements IFlatDetailsService{

@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.sprint.entities.Vehicle;
 
+@Repository
 public interface IVehicleRepository extends JpaRepository<Vehicle, Long>{
 
 	public Vehicle findByNumberPlate(String vehicleNumber);

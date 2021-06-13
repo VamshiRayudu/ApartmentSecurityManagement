@@ -14,6 +14,10 @@ import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IVisitorRepository;
 import com.sprint.repositories.IGuardRepository;
 
+/**
+ * @author VISHNU KUMAR
+ *
+ */
 @Service
 @Transactional
 public class VisitorServiceImpl implements IVisitorService{

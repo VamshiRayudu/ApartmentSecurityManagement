@@ -49,12 +49,16 @@ import com.sprint.services.ISecurityAlertService;
 import com.sprint.services.IVehicleService;
 import com.sprint.services.IVisitorService;
 
-@RestController 
+/**
+ * @authors SAI VAMSI KRISHNA, VIVEK PABBA
+ *
+ */
+@RestController
 @RequestMapping("api/v1/")
 public class AdminController {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
-	
+
 	@Autowired
 	private IAdminService adminService;
 
@@ -84,448 +88,656 @@ public class AdminController {
 
 	@Autowired
 	private IOwnerService ownerService;
-	
+
 	@Autowired
 	private IVehicleService vehicleService;
 
+	/**
+	 * 
+	 * @param admin
+	 * @param adminId
+	 * @return ResponseEntity<Admin>
+	 * @throws DuplicateRecordException
+	 * @throws MethodArgumentNotValidException
+	 * @throws UserNotFoundException
+	 */
 	@PostMapping("admin")
-	public ResponseEntity<Admin> addAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId) throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException
-	{
+	public ResponseEntity<Admin> addAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId)
+			throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException {
 		LOGGER.info("addAdmin URL is opened");
 		LOGGER.info("addAdmin() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
-			return new ResponseEntity<Admin>(adminService.addAdmin(admin),HttpStatus.CREATED);
-		}
-		else
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
+			return new ResponseEntity<Admin>(adminService.addAdmin(admin), HttpStatus.CREATED);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
-
 	}
 
+	/**
+	 * 
+	 * @param admin
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 */
 	@PostMapping("admin/login")
-	public ResponseEntity<Admin> LoginAdmin(@Valid @RequestBody Admin admin)
-	{
+	public ResponseEntity<Admin> LoginAdmin(@Valid @RequestBody Admin admin) throws UserNotFoundException {
 		LOGGER.info("LoginAdmin URL is opened");
 		LOGGER.info("loginAdmin() is initiated");
-		return new ResponseEntity<Admin>((Admin) adminService.Login(admin.getEmailId(), admin.getPassword(), admin.getRole()),HttpStatus.OK);
+		Optional<Admin> user = adminRepository.findById(admin.getId());
+		if (user != null) {
+			return new ResponseEntity<Admin>(user.get(), HttpStatus.OK);
+		} else {
+			throw new UserNotFoundException("Not a valid Admin");
+		}
 	}
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/getAdminById")
-	public ResponseEntity<Admin> getAdminById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Admin> getAdminById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getAdminById URL is opened");
 		LOGGER.info("getAdminById() is initiated");
-		return new ResponseEntity<Admin>(adminService.getAdminById(id),HttpStatus.OK);
+		return new ResponseEntity<Admin>(adminService.getAdminById(id), HttpStatus.OK);
 	}
 
+	/**
+	 * @param name
+	 * @return ResponseEntity<List<Admin>>
+	 */
 	@GetMapping("admin/getAdminByName")
-	public ResponseEntity<List<Admin>> getAdminByName(@Valid @RequestParam String name)
-	{
+	public ResponseEntity<List<Admin>> getAdminByName(@Valid @RequestParam String name) {
 		LOGGER.info("getAdminByName URL is opened");
 		LOGGER.info("getAdminByName() is initiated");
-		return new ResponseEntity<List<Admin>>(adminRepository.findByName(name),HttpStatus.OK);
+		return new ResponseEntity<List<Admin>>(adminRepository.findByName(name), HttpStatus.OK);
 	}
 
+	/**
+	 * @return ResponseEntity<List<Admin>>
+	 */
 	@GetMapping("admin/getAllAdmins")
-	public ResponseEntity<List<Admin>> getAllAdmins()
-	{
+	public ResponseEntity<List<Admin>> getAllAdmins() {
 		LOGGER.info("getAllAdmins URL is opened");
 		LOGGER.info("getAllAdmins() is initiated");
-		return new ResponseEntity<List<Admin>>(adminService.getAllAdmins(),HttpStatus.OK);
+		return new ResponseEntity<List<Admin>>(adminService.getAllAdmins(), HttpStatus.OK);
 	}
 
+	/**
+	 * @param adminId
+	 * @param id
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("admin/{adminId}")
-	public ResponseEntity<Admin> deleteAdminById(@Valid @PathVariable(name = "adminId") Long adminId, @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Admin> deleteAdminById(@Valid @PathVariable(name = "adminId") Long adminId,
+			@RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteAdminById URL is opened");
 		LOGGER.info("deleteAdminById() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
-			return new ResponseEntity<Admin>(adminService.deleteAdminById(id),HttpStatus.OK);
-		}
-		else
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
+			return new ResponseEntity<Admin>(adminService.deleteAdminById(id), HttpStatus.OK);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
 	}
 
+	/**
+	 * 
+	 * @param admin
+	 * @param adminId
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("admin/")
-	public ResponseEntity<Admin> deleteAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Admin> deleteAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteAdmin URL is opened");
 		LOGGER.info("deleteAdmin() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
-			return new ResponseEntity<Admin>(adminService.deleteAdmin(admin),HttpStatus.OK);
-		}
-		else
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
+			return new ResponseEntity<Admin>(adminService.deleteAdmin(admin), HttpStatus.OK);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
 	}
 
+	/**
+	 * @param admin
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PutMapping("admin")
-	public ResponseEntity<Admin> updateAdmin(@Valid @RequestBody Admin admin) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Admin> updateAdmin(@Valid @RequestBody Admin admin)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateAdmin URL is opened");
 		LOGGER.info("updateAdmin() is initiated");
-		return new ResponseEntity<Admin>(adminService.updateAdmin(admin),HttpStatus.OK);
+		return new ResponseEntity<Admin>(adminService.updateAdmin(admin), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return ResponseEntity<Admin>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PatchMapping("admin/{id}")
-	public ResponseEntity<Admin> updateAdminPassword(@Valid @PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Admin> updateAdminPassword(@Valid @PathVariable Long id, @RequestParam String oldPassword,
+			@RequestParam String newPassword) throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateAdminPassword URL is opened");
 		LOGGER.info("updateAdminPassword() is initiated");
-		return new ResponseEntity<Admin>(adminService.updateAdminById(id, oldPassword, newPassword),HttpStatus.OK);
+		return new ResponseEntity<Admin>(adminService.updateAdminById(id, oldPassword, newPassword), HttpStatus.OK);
 	}
 
-
-	////////////////////////////----------------ADMIN OPERATION ON GUARD----------------------------//////////////////////
-
-
+	/**
+	 * @param guard
+	 * @param adminId
+	 * @return ResponseEntity<Guard>
+	 * @throws DuplicateRecordException
+	 * @throws MethodArgumentNotValidException
+	 * @throws UserNotFoundException
+	 */
 	@PostMapping("admin/guard")
-	public ResponseEntity<Guard> addGuard(@Valid @RequestBody Guard guard, @RequestParam Long adminId) throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException
-	{
+	public ResponseEntity<Guard> addGuard(@Valid @RequestBody Guard guard, @RequestParam Long adminId)
+			throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException {
 		LOGGER.info("addGuard URL is opened");
 		LOGGER.info("addGuard() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
-			return new ResponseEntity<Guard>(guardService.addGuard(guard),HttpStatus.CREATED);
-		}
-		else
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
+			return new ResponseEntity<Guard>(guardService.addGuard(guard), HttpStatus.CREATED);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
 	}
 
+	/**
+	 * @param name
+	 * @return ResponseEntity<List<Guard>>
+	 */
 	@GetMapping("admin/guard/getGuardByName")
-	public ResponseEntity< List<Guard>> findByGuardName(@Valid @RequestParam String name)
-	{
+	public ResponseEntity<List<Guard>> findByGuardName(@Valid @RequestParam String name) {
 		LOGGER.info("findByGuardName URL is opened");
 		LOGGER.info("findByGuardName() is initiated");
-		return new ResponseEntity<List<Guard>>(guardRepository.findByName(name),HttpStatus.OK);
+		return new ResponseEntity<List<Guard>>(guardRepository.findByName(name), HttpStatus.OK);
 	}
 
-	@GetMapping ("admin/guard/getGuardById")
-	public ResponseEntity<Guard> getGuardById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	/**
+	 * @param id
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("admin/guard/getGuardById")
+	public ResponseEntity<Guard> getGuardById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getGuardById URL is opened");
 		LOGGER.info("getGuardById() is initiated");
-		return new ResponseEntity<Guard>(guardService.getGuardById(id),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.getGuardById(id), HttpStatus.OK);
 	}
 
+	/**
+	 * @return ResponseEntity<List<Guard>>
+	 */
 	@GetMapping("admin/guard")
-	public ResponseEntity<List<Guard>> getAllGuards()
-	{
+	public ResponseEntity<List<Guard>> getAllGuards() {
 		LOGGER.info("getAllGuards URL is opened");
 		LOGGER.info("getAllGuards() is initiated");
-		return new ResponseEntity<List<Guard>>(guardService.getAllGuards(),HttpStatus.OK);
+		return new ResponseEntity<List<Guard>>(guardService.getAllGuards(), HttpStatus.OK);
 	}
 
+	/**
+	 * @param guard
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("admin/guard")
-	public ResponseEntity<Guard> deleteGuard(@Valid @RequestBody Guard guard) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Guard> deleteGuard(@Valid @RequestBody Guard guard)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteGuard URL is opened");
 		LOGGER.info("deleteGuard() is initiated");
-		return new ResponseEntity<Guard>(guardService.deleteGuard(guard),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.deleteGuard(guard), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("admin/guard/{id}")
-	public ResponseEntity<Guard> deleteGuardById(@Valid @PathVariable Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Guard> deleteGuardById(@Valid @PathVariable Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteGuardById URL is opened");
 		LOGGER.info("deleteGuardById() is initiated");
-		return new ResponseEntity<Guard>(guardService.deleteGuardById(id),HttpStatus.OK);	
+		return new ResponseEntity<Guard>(guardService.deleteGuardById(id), HttpStatus.OK);
 	}
 
+	/**
+	 * @param guardId
+	 * @param guardSalary
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PatchMapping("admin/guard")
-	public ResponseEntity<Guard> updateGuardSalary(@Valid @RequestParam Long guardId , @RequestBody GuardSalary guardSalary) throws UserNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Guard> updateGuardSalary(@Valid @RequestParam Long guardId,
+			@RequestBody GuardSalary guardSalary) throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateGuard URL is opened");
 		LOGGER.info("updateGuard() is initiated");
-		return new ResponseEntity<Guard>(guardService.updateGuardSalary(guardId, guardSalary),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardSalary(guardId, guardSalary), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 */
 	@PatchMapping("admin/guard/{id}")
-	public ResponseEntity<Guard> updateGuardById(@Valid @PathVariable Long id,@RequestParam String oldPassword, @RequestParam String newPassword) throws UserNotFoundException
-	{
+	public ResponseEntity<Guard> updateGuardById(@Valid @PathVariable Long id, @RequestParam String oldPassword,
+			@RequestParam String newPassword) throws UserNotFoundException {
 		LOGGER.info("updateGuardById URL is opened");
 		LOGGER.info("updateGuardById() is initiated");
-		return new ResponseEntity<Guard>(guardService.updateGuardById(id, oldPassword, newPassword),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardById(id, oldPassword, newPassword), HttpStatus.OK);
 	}
-	
-	@GetMapping ("admin/guard/getGuardAttendanceById")
-	public ResponseEntity<List<Attendance>> getGuardAttendanceById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
-		LOGGER.info("getGuardById URL is opened");
-		LOGGER.info("getGuardById() is initiated");
-		Guard guard = guardService.getGuardById(id);
-		return new ResponseEntity<List<Attendance>>(guard.getGuardAttendances(),HttpStatus.OK);
-	}
-	
-	
-	@GetMapping ("admin/guard/getGuardSalariesById")
-	public ResponseEntity<List<GuardSalary>> getGuardSalariesById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
-		LOGGER.info("getGuardById URL is opened");
-		LOGGER.info("getGuardById() is initiated");
-		Guard guard = guardService.getGuardById(id);
-		return new ResponseEntity<List<GuardSalary>>(guard.getGuardSalaries(),HttpStatus.OK);
-	}
-	
-	@GetMapping ("admin/guard/getGuardShiftsById")
-	public ResponseEntity<GuardShift> getGuardShiftsById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
-	{
-		LOGGER.info("getGuardById URL is opened");
-		LOGGER.info("getGuardById() is initiated");
-		Guard guard = guardService.getGuardById(id);
-		
-		return new ResponseEntity<GuardShift>(guard.getGuardShifts(),HttpStatus.OK);
-	}
-	
-	
-//	@GetMapping ("admin/guard/getGuardByTimings")
-//	public ResponseEntity<List<Guard>> getGuardByTimings(@Valid @RequestParam LocalDateTime inTime, @RequestParam LocalDateTime outTime) throws UserNotFoundException, MethodArgumentNotValidException
-//	{
-//		LOGGER.info("getGuardById URL is opened");
-//		LOGGER.info("getGuardById() is initiated");
-//		List<Guard> guard = guardService.getGuardsByTimings(inTime, outTime);
-//		return new ResponseEntity<List<Guard>>(guard,HttpStatus.OK);
-//	}
 
-	/////////////////////////-----------------VISITOR----------------------------//////////////////////////
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<Attendance>>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("admin/guard/getGuardAttendanceById")
+	public ResponseEntity<List<Attendance>> getGuardAttendanceById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<Attendance>>(guard.getGuardAttendances(), HttpStatus.OK);
+	}
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<GuardSalary>>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("admin/guard/getGuardSalariesById")
+	public ResponseEntity<List<GuardSalary>> getGuardSalariesById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<GuardSalary>>(guard.getGuardSalaries(), HttpStatus.OK);
+	}
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<GuardShift>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("admin/guard/getGuardShiftsById")
+	public ResponseEntity<GuardShift> getGuardShiftsById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("getGuardById URL is opened");
+		LOGGER.info("getGuardById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+
+		return new ResponseEntity<GuardShift>(guard.getGuardShifts(), HttpStatus.OK);
+	}
+
+	/**
+	 * @return ResponseEntity<List<Visitor>>
+	 */
 	@GetMapping("admin/visitor")
-	public ResponseEntity<List<Visitor>> getVisitorList()
-	{
+	public ResponseEntity<List<Visitor>> getVisitorList() {
 		LOGGER.info("getVisitorList URL is opened");
 		LOGGER.info("getVisitorList() is initiated");
-		return new ResponseEntity<List<Visitor>>(visitorService.getVisitorList(),HttpStatus.OK);
-	}	
+		return new ResponseEntity<List<Visitor>>(visitorService.getVisitorList(), HttpStatus.OK);
+	}
 
-	/////////////////////////---------------------SECURITY ALERTS ------------------------------/////////
-
-	@PostMapping("admin/{id}/securityAlert") ///Add To adminRepo
-	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert, @RequestParam Long adminId) throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException
-	{
+	/**
+	 * @param securityAlert
+	 * @param adminId
+	 * @return ResponseEntity<SecurityAlert>
+	 * @throws DuplicateRecordException
+	 * @throws MethodArgumentNotValidException
+	 * @throws UserNotFoundException
+	 */
+	@PostMapping("admin/{id}/securityAlert") /// Add To adminRepo
+	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert,
+			@RequestParam Long adminId)
+			throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException {
 		LOGGER.info("addSecurityAlert URL is opened");
 		LOGGER.info("addSecurityAlert() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
-			return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),HttpStatus.CREATED);
-		}
-		else
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
+			return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),
+					HttpStatus.CREATED);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
 	}
 
+	/**
+	 * @return ResponseEntity<List<SecurityAlert>>
+	 */
 	@GetMapping("admin/securityAlert")
-	public ResponseEntity<List<SecurityAlert>> getAllSecurityAlert()
-	{
+	public ResponseEntity<List<SecurityAlert>> getAllSecurityAlert() {
 		LOGGER.info("getAllSecurityAlert URL is opened");
 		LOGGER.info("getAllSecurityAlert() is initiated");
-		return new ResponseEntity<List<SecurityAlert>>(securityAlertService.getSecurityAlertList(),HttpStatus.OK);
+		return new ResponseEntity<List<SecurityAlert>>(securityAlertService.getSecurityAlertList(), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<SecurityAlert>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/securityAlert/getSecurityAlertById")
-	public ResponseEntity<SecurityAlert> getSecurityAlertById(@Valid @RequestParam Long id) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<SecurityAlert> getSecurityAlertById(@Valid @RequestParam Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getSecurityAlertById URL is opened");
 		LOGGER.info("getSecurityAlertById() is initiated");
-		return new ResponseEntity<SecurityAlert>(securityAlertService.getSecurityAlertById(id),HttpStatus.OK);
+		return new ResponseEntity<SecurityAlert>(securityAlertService.getSecurityAlertById(id), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<SecurityAlert>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("admin/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> deleteSecurityAlertById(@Valid @PathVariable Long id) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<SecurityAlert> deleteSecurityAlertById(@Valid @PathVariable Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteSecurityAlertById URL is opened");
 		LOGGER.info("deleteSecurityAlertById() is initiated");
-		return new ResponseEntity<SecurityAlert>(securityAlertService.deleteSecurityAlertById(id),HttpStatus.OK);
+		return new ResponseEntity<SecurityAlert>(securityAlertService.deleteSecurityAlertById(id), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @param oldMessage
+	 * @param newMessage
+	 * @return ResponseEntity<SecurityAlert>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PatchMapping("admin/securityAlert/{id}")
-	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@Valid @PathVariable Long id,@Valid @RequestParam String oldMessage, @Valid @RequestParam String newMessage) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@Valid @PathVariable Long id,
+			@Valid @RequestParam String oldMessage, @Valid @RequestParam String newMessage)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateSecurityAlertMessage URL is opened");
 		LOGGER.info("updateSecurityAlertMessage() is initiated");
-		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlertById(id, oldMessage, newMessage),HttpStatus.OK);
+		return new ResponseEntity<SecurityAlert>(
+				securityAlertService.updateSecurityAlertById(id, oldMessage, newMessage), HttpStatus.OK);
 	}
 
+	/**
+	 * @param securityAlert
+	 * @return ResponseEntity<SecurityAlert>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PutMapping("admin/securityAlert")
-	public ResponseEntity<SecurityAlert> updateSecurityAlert(@Valid @RequestBody SecurityAlert securityAlert) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<SecurityAlert> updateSecurityAlert(@Valid @RequestBody SecurityAlert securityAlert)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateSecurityAlert URL is opened");
 		LOGGER.info("updateSecurityAlert() is initiated");
-		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlert(securityAlert),HttpStatus.OK);
+		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlert(securityAlert),
+				HttpStatus.OK);
 	}
 
-	////////////////-----------------------------------DELIVERY---------------------------------------------
-
+	/**
+	 * @return ResponseEntity<List<Delivery>>
+	 */
 	@GetMapping("admin/delivery")
-	public ResponseEntity<List<Delivery>> getAllDeliveries()
-	{
+	public ResponseEntity<List<Delivery>> getAllDeliveries() {
 		LOGGER.info("getAllDeliveries URL is opened");
 		LOGGER.info("getAllDeliveries() is initiated");
-		return new ResponseEntity<List<Delivery>>(deliveryService.getDeliveryList(),HttpStatus.OK);
+		return new ResponseEntity<List<Delivery>>(deliveryService.getDeliveryList(), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @return
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/delivery/getDeliveryById")
-	public ResponseEntity<Delivery> getDeliveryById(@Valid @RequestParam Long id) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<Delivery> getDeliveryById(@Valid @RequestParam Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getDeliveryById URL is opened");
 		LOGGER.info("getDeliveryById() is initiated");
-		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id),HttpStatus.OK);
+		return new ResponseEntity<Delivery>(deliveryService.getDeliveryById(id), HttpStatus.OK);
 	}
 
-	//////////////////////////////---------------------------DOMESTIC HELP----------------------------------------------
-
+	/**
+	 * @return
+	 */
 	@GetMapping("admin/domesticHelps")
 	public ResponseEntity<List<DomesticHelp>> getDomesticHelpList() {
 
 		LOGGER.info("getDomesticHelpList URL is opened");
 		LOGGER.info("getDomesticHelpList() is initiated");
-		return new ResponseEntity<List<DomesticHelp>>(domesticHelpService.getDomesticHelpList(),HttpStatus.OK);
+		return new ResponseEntity<List<DomesticHelp>>(domesticHelpService.getDomesticHelpList(), HttpStatus.OK);
 	}
 
-	//get domesticHelp by id
+	/**
+	 * @param id
+	 * @return ResponseEntity<DomesticHelp>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/domesticHelps/getDomesticHelpById")
-	public ResponseEntity<DomesticHelp> getDomesticHelpById(@Valid @RequestParam Long id) throws UserNotFoundException , MethodArgumentNotValidException{
+	public ResponseEntity<DomesticHelp> getDomesticHelpById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("getDomesticHelpById URL is opened");
 		LOGGER.info("getDomesticHelpById() is initiated");
-		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
+		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<Attendance>>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/domesticHelps/getDomesticHelpAttendanceById")
-	public ResponseEntity<List<Attendance>> getDomesticHelpAttendanceById(@Valid @RequestParam Long id) throws UserNotFoundException , MethodArgumentNotValidException{
+	public ResponseEntity<List<Attendance>> getDomesticHelpAttendanceById(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("getDomesticHelpById URL is opened");
 		LOGGER.info("getDomesticHelpById() is initiated");
 		DomesticHelp dhelp = domesticHelpService.getDomesticHelpById(id);
-		return new ResponseEntity<List<Attendance>>(dhelp.getAttendance(),HttpStatus.OK);
+		return new ResponseEntity<List<Attendance>>(dhelp.getAttendance(), HttpStatus.OK);
 	}
 
-	/////////////////////////////////////////------FLATDETAILS-------------------------------------------
-
+	/**
+	 * @param flatDetails
+	 * @return ResponseEntity<FlatDetails>
+	 * @throws DuplicateRecordException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PostMapping("admin/flatDetails")
-	public ResponseEntity<FlatDetails> addFlatDetails(@Valid @RequestBody FlatDetails flatDetails) throws DuplicateRecordException, MethodArgumentNotValidException{
+	public ResponseEntity<FlatDetails> addFlatDetails(@Valid @RequestBody FlatDetails flatDetails)
+			throws DuplicateRecordException, MethodArgumentNotValidException {
 
 		LOGGER.info("addFlatDetails URL is opened");
 		LOGGER.info("addFlatDetails() is initiated");
 		FlatDetails flat = flatDetailsService.addFlatDetails(flatDetails);
-		return new ResponseEntity<FlatDetails>(flat,HttpStatus.CREATED);
+		return new ResponseEntity<FlatDetails>(flat, HttpStatus.CREATED);
 	}
 
+	/**
+	 * @param flatNumber
+	 * @return ResponseEntity<FlatDetails>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/flatDetails/getFlatDetailsById")
-	public ResponseEntity<FlatDetails> getFlatDetailsById(@Valid @RequestParam Long flatNumber) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<FlatDetails> getFlatDetailsById(@Valid @RequestParam Long flatNumber)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("getFlatDetailsById URL is opened");
 		LOGGER.info("getFlatDetailsById() is initiated");
 		FlatDetails flat = flatDetailsService.getFlatDetailsById(flatNumber);
-		return new ResponseEntity<FlatDetails>(flat,HttpStatus.OK);
+		return new ResponseEntity<FlatDetails>(flat, HttpStatus.OK);
 	}
 
+	/**
+	 * @return ResponseEntity<List<FlatDetails>>
+	 */
 	@GetMapping("admin/owner/flatDetails")
-	public ResponseEntity<List<FlatDetails>> getFlatDetails()
-	{
+	public ResponseEntity<List<FlatDetails>> getFlatDetails() {
 		LOGGER.info("getFlatDetails URL is opened");
 		LOGGER.info("getFlatDetails() is initiated");
 		List<FlatDetails> flat = flatDetailsService.listAllFlatDetails();
-		return new ResponseEntity<List<FlatDetails>>(flat,(HttpStatus.OK));
+		return new ResponseEntity<List<FlatDetails>>(flat, (HttpStatus.OK));
 	}
 
-
+	/**
+	 * @param flatNumber
+	 * @param ownerDetails
+	 * @return ResponseEntity<FlatDetails>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PutMapping("admin/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@Valid @RequestBody Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
-	{
+	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,
+			@Valid @RequestBody Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateFlatDetails URL is opened");
 		LOGGER.info("updateFlatDetails() is initiated");
-		return new ResponseEntity<FlatDetails>(flatDetailsService.updateFlatDetails(flatNumber,ownerDetails),HttpStatus.OK);		
+		return new ResponseEntity<FlatDetails>(flatDetailsService.updateFlatDetails(flatNumber, ownerDetails),
+				HttpStatus.OK);
 	}
 
-	///////////////////////////////---------------------ONWER DETAILS----------------
+	/**
+	 * @param owner
+	 * @param adminId
+	 * @return ResponseEntity<Owner>
+	 * @throws DuplicateRecordException
+	 * @throws UserNotFoundException
+	 */
 	@PostMapping("admin/{id}/owner")
-	public ResponseEntity<Owner> addOwner(@Valid @RequestBody Owner owner, @RequestParam Long adminId) throws DuplicateRecordException, UserNotFoundException
-	{
+	public ResponseEntity<Owner> addOwner(@Valid @RequestBody Owner owner, @RequestParam Long adminId)
+			throws DuplicateRecordException, UserNotFoundException {
 		LOGGER.info("addOwner URL is opened");
 		LOGGER.info("addOwner() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
-			return new ResponseEntity<Owner>(ownerService.addOwner(owner),HttpStatus.CREATED);
-		}
-		else
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
+			return new ResponseEntity<Owner>(ownerService.addOwner(owner), HttpStatus.CREATED);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
 
 	}
 
+	/**
+	 * @param id
+	 * @param adminId
+	 * @return ResponseEntity<Owner>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@DeleteMapping("admin/owner/{id}")
-	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id, @RequestParam Long adminId) throws UserNotFoundException , MethodArgumentNotValidException{
+	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id, @RequestParam Long adminId)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("deleteOwnerById URL is opened");
 		LOGGER.info("deleteOwnerById() is initiated");
-		Optional<Admin> user =  adminRepository.findById(adminId);
-		if(user != null)
-		{
+		Optional<Admin> user = adminRepository.findById(adminId);
+		if (user != null) {
 			Owner owner = ownerService.deleteOwnerById(id);
-			return new ResponseEntity<Owner>(owner,HttpStatus.OK);
-		}
-		else
-		{
+			return new ResponseEntity<Owner>(owner, HttpStatus.OK);
+		} else {
 			throw new UserNotFoundException("Not a valid Admin");
 		}
 	}
 
+	/**
+	 * @param owner
+	 * @return ResponseEntity<Owner>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@PutMapping("admin/owner")
-	public ResponseEntity<Owner> updateOwner(@Valid @RequestBody Owner owner) throws UserNotFoundException , MethodArgumentNotValidException
-	{
+	public ResponseEntity<Owner> updateOwner(@Valid @RequestBody Owner owner)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateOwner URL is opened");
 		LOGGER.info("updateOwner() is initiated");
-		return new ResponseEntity<Owner>(ownerService.updateOwner(owner),HttpStatus.OK);
+		return new ResponseEntity<Owner>(ownerService.updateOwner(owner), HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @return ResponseEntity<Owner>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 * @throws UserNotFoundException
+	 */
 	@GetMapping("admin/owner/getOwnerById")
-	public ResponseEntity<Owner> getOwnerById(@Valid @RequestParam Long id) throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
+	public ResponseEntity<Owner> getOwnerById(@Valid @RequestParam Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
 
 		LOGGER.info("getOwnerById URL is opened");
 		LOGGER.info("getOwnerById() is initiated");
-		return new ResponseEntity<Owner>(ownerService.getOwnerById(id),HttpStatus.OK);
+		return new ResponseEntity<Owner>(ownerService.getOwnerById(id), HttpStatus.OK);
 	}
-	
+
+	/**
+	 * @return ResponseEntity<List<Owner>>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/owner/getOwnerList")
 	public ResponseEntity<List<Owner>> getOwnerList() throws RecordNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("getOwnerList URL is opened");
 		LOGGER.info("getOwnerList() is initiated");
-		return new ResponseEntity<List<Owner>>(ownerService.getAllOwnerList(),HttpStatus.OK);
+		return new ResponseEntity<List<Owner>>(ownerService.getAllOwnerList(), HttpStatus.OK);
 	}
-	///////////////////////////////-------------------------VEHICLE------------------------------------------------
-	//get vehicles by id
+
+	/**
+	 * @param id
+	 * @return ResponseEntity<Vehicle>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/vehicles/{id}")
-	public ResponseEntity<Vehicle> getVehiclesById(@Valid @PathVariable("id") Long id) throws RecordNotFoundException, MethodArgumentNotValidException {
+	public ResponseEntity<Vehicle> getVehiclesById(@Valid @PathVariable("id") Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("getVehiclesById URL is opened");
 		LOGGER.info("getVehiclesById() is initiated");
-		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id),HttpStatus.OK);
+		return new ResponseEntity<Vehicle>(vehicleService.getVehiclesById(id), HttpStatus.OK);
 	}
-	
-	
+
+	/**
+	 * @return ResponseEntity<List<Vehicle>>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
 	@GetMapping("admin/vehicles/getAllVehicles")
-	public ResponseEntity<List<Vehicle>> getAllVehicles() throws RecordNotFoundException, MethodArgumentNotValidException {
+	public ResponseEntity<List<Vehicle>> getAllVehicles()
+			throws RecordNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("getVehiclesById URL is opened");
 		LOGGER.info("getVehiclesById() is initiated");
-		return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicles(),HttpStatus.OK);
+		return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicles(), HttpStatus.OK);
 	}
 }

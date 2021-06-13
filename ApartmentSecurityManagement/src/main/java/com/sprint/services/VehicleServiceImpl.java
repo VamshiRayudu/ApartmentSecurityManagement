@@ -13,6 +13,10 @@ import com.sprint.entities.VehicleUpdates;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IVehicleRepository;
 
+/**
+ * @author VISHNU KUMAR
+ *
+ */
 @Service
 @Transactional
 public class VehicleServiceImpl implements IVehicleService{

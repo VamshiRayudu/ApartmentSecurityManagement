@@ -1,6 +1,10 @@
 package com.sprint.exceptions;
 
-public class DuplicateRecordException extends Exception{
+/**
+ * @author SAI VAMSI KRISHNA
+ *
+ */
+public class DuplicateRecordException extends Exception {
 
 	public DuplicateRecordException(String string) {
 		// TODO Auto-generated constructor stub
