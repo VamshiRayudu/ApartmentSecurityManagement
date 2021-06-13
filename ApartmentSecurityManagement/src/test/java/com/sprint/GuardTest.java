@@ -78,9 +78,8 @@ class GuardTest {
 		guard.setRole(Role.GUARD);
 		Mockito.when(guardRepository.save(guard)).thenReturn(guard);
 		guardService.addGuard(guard);
-
 		Mockito.when(guardRepository.findById(guard.getId())).thenReturn(Optional.of(guard));
-		assertEquals("hehe", guard.getPassword());
+		assertEquals("tata", guard.getPassword());
 	}
 
 	@Test

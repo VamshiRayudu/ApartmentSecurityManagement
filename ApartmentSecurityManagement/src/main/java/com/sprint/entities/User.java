@@ -34,7 +34,6 @@ public class User {
 	private String name;
 
 	@NotNull
-	@Size(min = 10, max = 13)
 	private Long mobileNumber;
 
 	@Pattern(regexp = "\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}\\b")
