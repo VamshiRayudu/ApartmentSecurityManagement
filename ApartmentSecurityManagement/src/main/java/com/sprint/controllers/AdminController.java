@@ -107,7 +107,7 @@ public class AdminController {
 		LOGGER.info("addAdmin URL is opened");
 		LOGGER.info("addAdmin() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<Admin>(adminService.addAdmin(admin), HttpStatus.CREATED);
 		} else {
 			throw new UserNotFoundException("Not a valid Admin");
@@ -125,7 +125,7 @@ public class AdminController {
 		LOGGER.info("LoginAdmin URL is opened");
 		LOGGER.info("loginAdmin() is initiated");
 		Optional<Admin> user = adminRepository.findById(admin.getId());
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<Admin>(user.get(), HttpStatus.OK);
 		} else {
 			throw new UserNotFoundException("Not a valid Admin");
@@ -180,7 +180,7 @@ public class AdminController {
 		LOGGER.info("deleteAdminById URL is opened");
 		LOGGER.info("deleteAdminById() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<Admin>(adminService.deleteAdminById(id), HttpStatus.OK);
 		} else {
 			throw new UserNotFoundException("Not a valid Admin");
@@ -201,7 +201,7 @@ public class AdminController {
 		LOGGER.info("deleteAdmin URL is opened");
 		LOGGER.info("deleteAdmin() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<Admin>(adminService.deleteAdmin(admin), HttpStatus.OK);
 		} else {
 			throw new UserNotFoundException("Not a valid Admin");
@@ -252,7 +252,7 @@ public class AdminController {
 		LOGGER.info("addGuard URL is opened");
 		LOGGER.info("addGuard() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<Guard>(guardService.addGuard(guard), HttpStatus.CREATED);
 		} else {
 			throw new UserNotFoundException("Not a valid Admin");
@@ -423,7 +423,7 @@ public class AdminController {
 		LOGGER.info("addSecurityAlert URL is opened");
 		LOGGER.info("addSecurityAlert() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),
 					HttpStatus.CREATED);
 		} else {
@@ -639,7 +639,7 @@ public class AdminController {
 		LOGGER.info("addOwner URL is opened");
 		LOGGER.info("addOwner() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			return new ResponseEntity<Owner>(ownerService.addOwner(owner), HttpStatus.CREATED);
 		} else {
 			throw new UserNotFoundException("Not a valid Admin");
@@ -661,7 +661,7 @@ public class AdminController {
 		LOGGER.info("deleteOwnerById URL is opened");
 		LOGGER.info("deleteOwnerById() is initiated");
 		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user != null) {
+		if (user.get().getEmailId() != null) {
 			Owner owner = ownerService.deleteOwnerById(id);
 			return new ResponseEntity<Owner>(owner, HttpStatus.OK);
 		} else {
