@@ -116,13 +116,31 @@ class AdminTest {
 	}
 	
 	
-//	@Test
-//	public void testNotAddAdmin() {
-//		Admin admin1 = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
-//
-//		Admin admin2 = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
-//		
-//		Mockito.when(adminRepository.save(admin1)).thenReturn(admin1);
-//		assertEquals(admin1, adminService.addAdmin(admin2));
-//	}
+	@Test
+	public void testNotDeleteAdmin() throws UserNotFoundException {
+    	Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+    	Admin admin1 = new Admin(2L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+    	Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
+        assertEquals(admin1, adminService.deleteAdminById(admin.getId()));
+	}
+	
+	@Test
+	void testNotUpdateAdmin() throws UserNotFoundException {
+		Admin admin = new Admin();
+		admin.setUserName("John");
+		Mockito.when(adminRepository.save(admin)).thenReturn(admin);
+		adminService.updateAdmin(admin);
+		assertNotEquals("John", admin.getUserName());
+	}
+	
+	
+	@Test
+	public void testNotAddAdmin() throws DuplicateRecordException {
+		Admin admin1 = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+
+		Admin admin2 = new Admin("vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
+		
+		Mockito.when(adminRepository.save(admin1)).thenReturn(admin1);
+		assertEquals(admin1, adminService.addAdmin(admin2));
+	}
 }

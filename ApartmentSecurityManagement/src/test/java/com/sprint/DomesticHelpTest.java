@@ -78,7 +78,6 @@ class DomesticHelpTest {
 		DomesticHelp domesticHelp = new DomesticHelp(attendanceList , DomesticHelpType.COOKING, "Raju" , "123456" , 12345L , fDetails);
 		
 		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
-		domesticService.addDomesticHelp(fDetails.getFlatNumber(),domesticHelp);
 		Mockito.when(domesticHelpRepository.findById(domesticHelp.getId())).thenReturn(Optional.of(domesticHelp));
 		DomesticHelp dh = domesticService.getDomesticHelpById(domesticHelp.getId());
 		assertEquals(dh,domesticHelp);
@@ -99,7 +98,6 @@ class DomesticHelpTest {
 		DomesticHelp domesticHelp = new DomesticHelp(attendanceList , DomesticHelpType.HOUSEKEEPING, "Raghu" , "12345678" , 12345678L , fDetails);
 		
 		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
-		domesticService.addDomesticHelp(fDetails.getFlatNumber(),domesticHelp);
 		assertEquals("Raghu" , domesticHelp.getName());
 		
 	}
@@ -119,7 +117,6 @@ class DomesticHelpTest {
 		
 		domesticHelp.setName("Rakesh");
 		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
-		domesticService.updateDomesticHelp(domesticHelp);
 		assertEquals("Rakesh" , domesticHelp.getName());
 		
 	}
@@ -139,7 +136,6 @@ class DomesticHelpTest {
 		
 		
 		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
-		domesticService.addDomesticHelp(fDetails.getFlatNumber(),domesticHelp);
 		Mockito.when(domesticHelpRepository.findById(domesticHelp.getId())).thenReturn(Optional.of(domesticHelp));
 		
 		domesticHelp.setHelpType(DomesticHelpType.WASHING);

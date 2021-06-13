@@ -28,6 +28,7 @@ import com.sprint.entities.DomesticHelp;
 import com.sprint.entities.FlatDetails;
 import com.sprint.entities.Guard;
 import com.sprint.entities.Owner;
+import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.Visitor;
 import com.sprint.exceptions.RecordNotFoundException;
@@ -42,6 +43,7 @@ import com.sprint.services.IDeliveryService;
 import com.sprint.services.IDomesticHelpService;
 import com.sprint.services.IGuardService;
 import com.sprint.services.IOwnerService;
+import com.sprint.services.ISecurityAlertService;
 import com.sprint.services.IVehicleService;
 import com.sprint.services.IVisitorService;
 
@@ -79,6 +81,8 @@ public class OwnerController {
 	@Autowired
 	private IFlatDetailsRepository flatDetailsRepository;
 	
+	@Autowired
+	private ISecurityAlertService securityAlertService;
 	
 	@Autowired
 	private IVehicleService vehicleService;
@@ -261,5 +265,13 @@ public class OwnerController {
 		return new ResponseEntity<List<DomesticHelp>>(fd.getdHelpList(),HttpStatus.OK);
 	}
 	
+	//Security Alerts
+	@GetMapping("owner/securityAlert")
+	public ResponseEntity<List<SecurityAlert>> getAllSecurityAlert()
+	{
+		LOGGER.info("getAllSecurityAlert URL is opened");
+		LOGGER.info("getAllSecurityAlert() is initiated");
+		return new ResponseEntity<List<SecurityAlert>>(securityAlertService.getSecurityAlertList(),HttpStatus.OK);
+	}
 	
 }

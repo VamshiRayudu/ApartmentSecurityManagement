@@ -1,7 +1,7 @@
 package com.sprint.controllers;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -89,11 +89,20 @@ public class AdminController {
 	private IVehicleService vehicleService;
 
 	@PostMapping("admin")
-	public ResponseEntity<Admin> addAdmin(@Valid @RequestBody Admin admin) throws DuplicateRecordException, MethodArgumentNotValidException
+	public ResponseEntity<Admin> addAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId) throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException
 	{
 		LOGGER.info("addAdmin URL is opened");
 		LOGGER.info("addAdmin() is initiated");
-		return new ResponseEntity<Admin>(adminService.addAdmin(admin),HttpStatus.CREATED);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			return new ResponseEntity<Admin>(adminService.addAdmin(admin),HttpStatus.CREATED);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
+
 	}
 
 	@PostMapping("admin/login")
@@ -128,20 +137,36 @@ public class AdminController {
 		return new ResponseEntity<List<Admin>>(adminService.getAllAdmins(),HttpStatus.OK);
 	}
 
-	@DeleteMapping("admin/{id}")
-	public ResponseEntity<Admin> deleteAdminById(@Valid @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
+	@DeleteMapping("admin/{adminId}")
+	public ResponseEntity<Admin> deleteAdminById(@Valid @PathVariable(name = "adminId") Long adminId, @RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("deleteAdminById URL is opened");
 		LOGGER.info("deleteAdminById() is initiated");
-		return new ResponseEntity<Admin>(adminService.deleteAdminById(id),HttpStatus.OK);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			return new ResponseEntity<Admin>(adminService.deleteAdminById(id),HttpStatus.OK);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
 	}
 
-	@DeleteMapping("admin")
-	public ResponseEntity<Admin> deleteAdmin(@Valid @RequestBody Admin admin) throws UserNotFoundException, MethodArgumentNotValidException
+	@DeleteMapping("admin/")
+	public ResponseEntity<Admin> deleteAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("deleteAdmin URL is opened");
 		LOGGER.info("deleteAdmin() is initiated");
-		return new ResponseEntity<Admin>(adminService.deleteAdmin(admin),HttpStatus.OK);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			return new ResponseEntity<Admin>(adminService.deleteAdmin(admin),HttpStatus.OK);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
 	}
 
 	@PutMapping("admin")
@@ -165,11 +190,19 @@ public class AdminController {
 
 
 	@PostMapping("admin/guard")
-	public ResponseEntity<Guard> addGuard(@Valid @RequestBody Guard guard) throws DuplicateRecordException, MethodArgumentNotValidException
+	public ResponseEntity<Guard> addGuard(@Valid @RequestBody Guard guard, @RequestParam Long adminId) throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException
 	{
 		LOGGER.info("addGuard URL is opened");
 		LOGGER.info("addGuard() is initiated");
-		return new ResponseEntity<Guard>(guardService.addGuard(guard),HttpStatus.CREATED);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			return new ResponseEntity<Guard>(guardService.addGuard(guard),HttpStatus.CREATED);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
 	}
 
 	@GetMapping("admin/guard/getGuardByName")
@@ -213,11 +246,11 @@ public class AdminController {
 	}
 
 	@PatchMapping("admin/guard")
-	public ResponseEntity<Guard> updateGuardSalary(@Valid @RequestParam Long id , @RequestBody GuardSalary guardSalary) throws UserNotFoundException, MethodArgumentNotValidException
+	public ResponseEntity<Guard> updateGuardSalary(@Valid @RequestParam Long guardId , @RequestBody GuardSalary guardSalary) throws UserNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateGuard URL is opened");
 		LOGGER.info("updateGuard() is initiated");
-		return new ResponseEntity<Guard>(guardService.updateGuardSalary(id, guardSalary),HttpStatus.OK);
+		return new ResponseEntity<Guard>(guardService.updateGuardSalary(guardId, guardSalary),HttpStatus.OK);
 	}
 
 	@PatchMapping("admin/guard/{id}")
@@ -280,11 +313,19 @@ public class AdminController {
 	/////////////////////////---------------------SECURITY ALERTS ------------------------------/////////
 
 	@PostMapping("admin/{id}/securityAlert") ///Add To adminRepo
-	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert) throws DuplicateRecordException, MethodArgumentNotValidException
+	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert, @RequestParam Long adminId) throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException
 	{
 		LOGGER.info("addSecurityAlert URL is opened");
 		LOGGER.info("addSecurityAlert() is initiated");
-		return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),HttpStatus.CREATED);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),HttpStatus.CREATED);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
 	}
 
 	@GetMapping("admin/securityAlert")
@@ -363,6 +404,15 @@ public class AdminController {
 		LOGGER.info("getDomesticHelpById() is initiated");
 		return new ResponseEntity<DomesticHelp>(domesticHelpService.getDomesticHelpById(id),HttpStatus.OK);
 	}
+	
+	@GetMapping("admin/domesticHelps/getDomesticHelpAttendanceById")
+	public ResponseEntity<List<Attendance>> getDomesticHelpAttendanceById(@Valid @RequestParam Long id) throws UserNotFoundException , MethodArgumentNotValidException{
+
+		LOGGER.info("getDomesticHelpById URL is opened");
+		LOGGER.info("getDomesticHelpById() is initiated");
+		DomesticHelp dhelp = domesticHelpService.getDomesticHelpById(id);
+		return new ResponseEntity<List<Attendance>>(dhelp.getAttendance(),HttpStatus.OK);
+	}
 
 	/////////////////////////////////////////------FLATDETAILS-------------------------------------------
 
@@ -395,7 +445,7 @@ public class AdminController {
 
 
 	@PutMapping("admin/flatDetails/{flatNumber}")
-	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@Valid @RequestParam Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
+	public ResponseEntity<FlatDetails> updateFlatDetails(@Valid @PathVariable("flatNumber") Long flatNumber,@Valid @RequestBody Owner ownerDetails) throws RecordNotFoundException, MethodArgumentNotValidException
 	{
 		LOGGER.info("updateFlatDetails URL is opened");
 		LOGGER.info("updateFlatDetails() is initiated");
@@ -404,23 +454,40 @@ public class AdminController {
 
 	///////////////////////////////---------------------ONWER DETAILS----------------
 	@PostMapping("admin/{id}/owner")
-	public ResponseEntity<Owner> addOwner(@Valid @RequestBody Owner owner) throws DuplicateRecordException
+	public ResponseEntity<Owner> addOwner(@Valid @RequestBody Owner owner, @RequestParam Long adminId) throws DuplicateRecordException, UserNotFoundException
 	{
 		LOGGER.info("addOwner URL is opened");
 		LOGGER.info("addOwner() is initiated");
-		return new ResponseEntity<Owner>(ownerService.addOwner(owner),HttpStatus.CREATED);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			return new ResponseEntity<Owner>(ownerService.addOwner(owner),HttpStatus.CREATED);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
+
 	}
 
 	@DeleteMapping("admin/owner/{id}")
-	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id) throws UserNotFoundException , MethodArgumentNotValidException{
+	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id, @RequestParam Long adminId) throws UserNotFoundException , MethodArgumentNotValidException{
 
 		LOGGER.info("deleteOwnerById URL is opened");
 		LOGGER.info("deleteOwnerById() is initiated");
-		Owner owner = ownerService.deleteOwnerById(id);
-		return new ResponseEntity<Owner>(owner,HttpStatus.OK);
+		Optional<Admin> user =  adminRepository.findById(adminId);
+		if(user != null)
+		{
+			Owner owner = ownerService.deleteOwnerById(id);
+			return new ResponseEntity<Owner>(owner,HttpStatus.OK);
+		}
+		else
+		{
+			throw new UserNotFoundException("Not a valid Admin");
+		}
 	}
 
-	@PutMapping("admin/{id}/owner")
+	@PutMapping("admin/owner")
 	public ResponseEntity<Owner> updateOwner(@Valid @RequestBody Owner owner) throws UserNotFoundException , MethodArgumentNotValidException
 	{
 		LOGGER.info("updateOwner URL is opened");

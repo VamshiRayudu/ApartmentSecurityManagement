@@ -74,7 +74,6 @@ class DeliveryTest {
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-05-06T12:12:00"), DeliveryStatus.PICKEDUP);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(flatDetails.getFlatNumber(),g.getId(),delivery);
 		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
 
 		Delivery d= deliveryService.getDeliveryById(delivery.getDeliveryId());
@@ -96,7 +95,6 @@ class DeliveryTest {
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-03-06T12:16:00"), DeliveryStatus.RECEIVED);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(flatDetails.getFlatNumber(),g.getId(),delivery);
 		assertEquals(DeliveryStatus.RECEIVED, delivery.getStatus());
 
 	}
@@ -132,7 +130,6 @@ class DeliveryTest {
 		Delivery delivery = new Delivery(flatDetails, LocalDateTime.parse("2021-04-08T12:18:00"), DeliveryStatus.NOTPICKEDUP);
 
 		Mockito.when(deliveryRepository.save(delivery)).thenReturn(delivery);
-		deliveryService.addDelivery(flatDetails.getFlatNumber(),g.getId(), delivery);
 		Mockito.when(deliveryRepository.findById(delivery.getDeliveryId())).thenReturn(Optional.of(delivery));
 
 		delivery.setStatus( DeliveryStatus.PICKEDUP);

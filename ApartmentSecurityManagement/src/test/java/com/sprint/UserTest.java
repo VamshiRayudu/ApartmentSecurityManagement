@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprint.entities.Admin;
 import com.sprint.entities.Guard;
+import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
 import com.sprint.repositories.IAdminRepository;
@@ -77,8 +78,8 @@ class UserTest {
 	public void loginAdminWithWrongPassword() {
 		Admin admin = new Admin(1L,"vamshi","rayudu",12223L,"sampleTest@asp.com","password",Role.ADMIN);
 		Mockito.when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
-		assertEquals("sampleTest@asp.com",admin.getEmailId());
-		assertNotEquals("password1",admin.getPassword());
+		assertNotEquals("sampleTest@asp.com",admin.getEmailId());
+		assertNotEquals("password",admin.getPassword());
 	}
 	
 	
@@ -96,7 +97,26 @@ class UserTest {
 	public void loginGuardWithWrongPassword() {
 		Guard guard = new Guard(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.GUARD);
 		Mockito.when(guardRepository.findById(guard.getId())).thenReturn(Optional.of(guard));;
-		assertEquals("sampleguard@asp.com",guard.getEmailId());
-		assertNotEquals("password1",guard.getPassword());
+		assertNotEquals("sampleguard@asp.com",guard.getEmailId());
+		assertNotEquals("password",guard.getPassword());
+	}
+	
+	
+	@Test
+	public void loginOwnerUser() {
+
+		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.FLATOWNER);
+		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
+		assertEquals("sampleguard@asp.com",owner.getEmailId());
+		assertEquals("password",owner.getPassword());
+	}
+	
+	
+	@Test
+	public void loginOwnerWithWrongPassword() {
+		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.FLATOWNER);
+		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
+		assertNotEquals("sampleguard@asp.com",owner.getEmailId());
+		assertNotEquals("password",owner.getPassword());
 	}
 }

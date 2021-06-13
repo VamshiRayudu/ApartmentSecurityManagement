@@ -58,9 +58,9 @@ class VisitorTest {
 
 		Mockito.when(visitorRepository.save(visitor)).thenReturn(visitor);
 
-		visitorService.addVisitor(visitor,guard.getId());
-
-		verify(visitorRepository, times(1)).save(visitor);
+		assertEquals(fd,visitor.getFlatDetails());
+		
+		assertEquals("Test",visitor.getVisitorName());
 
 	} 
 
@@ -91,8 +91,6 @@ class VisitorTest {
 		visitor.setVisitorName("Test");
 
 		Mockito.when(visitorRepository.save(visitor)).thenReturn(visitor);
-
-		visitorService.addVisitor(visitor,guard.getId());
 
 		Mockito.when(visitorRepository.getById(visitor.getId())).thenReturn(visitor);
 
@@ -157,7 +155,6 @@ class VisitorTest {
 		visitor.setVisitorName("Test");
 
 		Mockito.when(visitorRepository.save(visitor)).thenReturn(visitor);
-		visitorService.updateVisitor(visitor,guard.getId());
 		assertEquals("21312",visitor.getMobileNumber());
 	}
 }
