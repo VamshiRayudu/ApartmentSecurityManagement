@@ -26,6 +26,10 @@ import com.sprint.services.GuardServiceImpl;
 import com.sprint.services.OwnerServiceImpl;
 import com.sprint.services.UserServiceImpl;
 
+/**
+ * @author SAI VAMSI KRISHNA
+ *
+ */
 @SpringBootTest
 class UserTest {
 
@@ -105,7 +109,7 @@ class UserTest {
 	@Test
 	public void loginOwnerUser() {
 
-		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.FLATOWNER);
+		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleowner@asp.com","password",Role.FLATOWNER);
 		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
 		assertEquals("sampleguard@asp.com",owner.getEmailId());
 		assertEquals("password",owner.getPassword());
@@ -114,7 +118,7 @@ class UserTest {
 
 	@Test
 	public void loginOwnerWithWrongPassword() {
-		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleguard@asp.com","password",Role.FLATOWNER);
+		Owner owner = new Owner(3L,"vamshi","rayudu",12223L,"sampleowner@asp.com","password",Role.FLATOWNER);
 		Mockito.when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
 		assertNotEquals("sampleguard@asp.com",owner.getEmailId());
 		assertNotEquals("password",owner.getPassword());

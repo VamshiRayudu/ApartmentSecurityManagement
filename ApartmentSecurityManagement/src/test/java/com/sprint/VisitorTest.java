@@ -20,6 +20,10 @@ import com.sprint.entities.Guard;
 import com.sprint.repositories.IVisitorRepository;
 import com.sprint.services.VisitorServiceImpl;
 
+/**
+ * @author VISHNU KUMAR
+ *
+ */
 @SpringBootTest
 class VisitorTest {
 

@@ -22,6 +22,10 @@ import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.services.AdminServiceImpl;
 
+/**
+ * @author SAI VAMSI KRISHNA
+ *
+ */
 @SpringBootTest
 class AdminTest {
 

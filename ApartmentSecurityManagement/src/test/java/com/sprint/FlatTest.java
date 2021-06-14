@@ -24,6 +24,10 @@ import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.repositories.IFlatDetailsRepository;
 import com.sprint.services.FlatDetailsServiceImpl;
 
+/**
+ * @author KUNDANA PRIYA
+ *
+ */
 @SpringBootTest
 class FlatTest {
 

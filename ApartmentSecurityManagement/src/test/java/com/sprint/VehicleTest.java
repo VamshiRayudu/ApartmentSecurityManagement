@@ -26,6 +26,10 @@ import com.sprint.repositories.IVehicleRepository;
 import com.sprint.services.IVehicleService;
 import com.sprint.services.VehicleServiceImpl;
 
+/**
+ * @author VISHNU KUMAR
+ *
+ */
 @SpringBootTest
 class VehicleTest {
 

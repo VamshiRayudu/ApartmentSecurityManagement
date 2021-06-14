@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,14 +122,21 @@ public class AdminController {
 	 * @throws UserNotFoundException
 	 */
 	@PostMapping("admin/login")
-	public ResponseEntity<Admin> LoginAdmin(@Valid @RequestBody Admin admin) throws UserNotFoundException {
+	public ResponseEntity<Admin> LoginAdmin(@RequestBody Admin admin) throws UserNotFoundException {
 		LOGGER.info("LoginAdmin URL is opened");
 		LOGGER.info("loginAdmin() is initiated");
 		Optional<Admin> user = adminRepository.findById(admin.getId());
 		if (user.get().getEmailId() != null) {
-			return new ResponseEntity<Admin>(user.get(), HttpStatus.OK);
+			if(user.get().getPassword().equals(admin.getPassword()))
+			{
+				return new ResponseEntity<Admin>(user.get(), HttpStatus.OK);
+			}
+			else
+			{
+				throw new ValidationException("Invalid Password");
+			}
 		} else {
-			throw new UserNotFoundException("Not a valid Admin");
+			throw new UserNotFoundException("Not User Found");
 		}
 	}
 

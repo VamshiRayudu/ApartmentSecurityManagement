@@ -1,8 +1,10 @@
 package com.sprint.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IFlatDetailsRepository;
 import com.sprint.repositories.IGuardRepository;
+import com.sprint.repositories.IOwnerRepository;
 import com.sprint.repositories.IVehicleRepository;
 import com.sprint.services.FlatDetailsServiceImpl;
 import com.sprint.services.IAdminService;
@@ -93,17 +96,32 @@ public class OwnerController {
 
 	@Autowired
 	private IOwnerService ownerService;
+	
+	@Autowired
+	private IOwnerRepository ownerRepository;
 
 	/**
 	 * @param owner
 	 * @return ResponseEntity<Owner>
+	 * @throws UserNotFoundException 
 	 */
 	@PostMapping("owner/login")
-	public ResponseEntity<Owner> LoginOwner(@Valid @RequestBody Owner owner) {
+	public ResponseEntity<Owner> LoginOwner(@RequestBody Owner owner) throws UserNotFoundException {
 		LOGGER.info("LoginOwner URL is opened");
 		LOGGER.info("LoginOwner() is initiated");
-		return new ResponseEntity<Owner>(
-				(Owner) ownerService.Login(owner.getEmailId(), owner.getPassword(), owner.getRole()), HttpStatus.OK);
+		Optional<Owner> user = ownerRepository.findById(owner.getId());
+		if (user.get().getEmailId() != null) {
+			if(user.get().getPassword().equals(owner.getPassword()))
+			{
+				return new ResponseEntity<Owner>(user.get(), HttpStatus.OK);
+			}
+			else
+			{
+				throw new ValidationException("Invalid Password");
+			}
+		} else {
+			throw new UserNotFoundException("No Account Found");
+		}
 	}
 
 	/**

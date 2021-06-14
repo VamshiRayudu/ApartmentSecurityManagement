@@ -1,8 +1,10 @@
 package com.sprint.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sprint.entities.Admin;
 import com.sprint.entities.Attendance;
 import com.sprint.entities.Delivery;
 import com.sprint.entities.DeliveryStatus;
@@ -29,6 +32,7 @@ import com.sprint.entities.DomesticHelpType;
 import com.sprint.entities.Guard;
 import com.sprint.entities.GuardSalary;
 import com.sprint.entities.GuardShift;
+import com.sprint.entities.Owner;
 import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.VehicleUpdates;
@@ -36,6 +40,7 @@ import com.sprint.entities.Visitor;
 import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
+import com.sprint.repositories.IGuardRepository;
 import com.sprint.repositories.IVehicleRepository;
 import com.sprint.services.IDeliveryService;
 import com.sprint.services.IDomesticHelpService;
@@ -74,6 +79,9 @@ public class GuardController {
 
 	@Autowired
 	private IVehicleRepository vehicleRepository;
+	
+	@Autowired
+	private IGuardRepository guardRepository;
 
 	/**
 	 * @param id
@@ -442,13 +450,25 @@ public class GuardController {
 	/**
 	 * @param guard
 	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException 
 	 */
 	@PostMapping("guard/login")
-	public ResponseEntity<Guard> LoginGuard(@Valid @RequestBody Guard guard) {
+	public ResponseEntity<Guard> LoginGuard(@RequestBody Guard guard) throws UserNotFoundException {
 		LOGGER.info("LoginGuard URL is opened");
 		LOGGER.info("LoginGuard() is initiated");
-		return new ResponseEntity<Guard>(
-				(Guard) guardService.Login(guard.getEmailId(), guard.getPassword(), guard.getRole()), HttpStatus.OK);
+		Optional<Guard> user = guardRepository.findById(guard.getId());
+		if (user.get().getEmailId() != null) {
+			if(user.get().getPassword().equals(guard.getPassword()))
+			{
+				return new ResponseEntity<Guard>(user.get(), HttpStatus.OK);
+			}
+			else
+			{
+				throw new ValidationException("Invalid Password");
+			}
+		} else {
+			throw new UserNotFoundException("No Account Found");
+		}
 	}
 
 	/**
@@ -486,7 +506,7 @@ public class GuardController {
 	 * @throws MethodArgumentNotValidException
 	 */
 	@GetMapping("guard/vehicles/getVehicleById")
-	public ResponseEntity<Vehicle> getVehiclesById(@Valid @PathVariable Long id)
+	public ResponseEntity<Vehicle> getVehiclesById(@Valid @RequestParam Long id)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("getVehiclesById URL is opened");

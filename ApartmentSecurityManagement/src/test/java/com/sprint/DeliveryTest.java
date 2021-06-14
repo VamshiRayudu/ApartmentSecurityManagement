@@ -31,6 +31,10 @@ import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IDeliveryRepository;
 import com.sprint.services.DeliveryServiceImpl;
 
+/**
+ * @author NIJAGNA
+ *
+ */
 @SpringBootTest
 class DeliveryTest {
 
@@ -102,6 +106,8 @@ class DeliveryTest {
 
 	@Test
 	void updateDeliveryTest() throws RecordNotFoundException {
+		Guard g = new Guard();
+		g.setId(3L);
 
 		FlatDetails flatDetails = new FlatDetails();
 		flatDetails.setFlatNumber(2L);
@@ -144,6 +150,9 @@ class DeliveryTest {
 	@Test
 	public void testNotAddDelivery() throws DuplicateRecordException {
 
+		Guard g = new Guard();
+		g.setId(3L);
+		
 		FlatDetails flatDetails = new FlatDetails();
 		flatDetails.setFlatNumber(2L);
 		flatDetails.setFloorNumber(6L);

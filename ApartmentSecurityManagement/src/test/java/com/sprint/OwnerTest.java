@@ -30,6 +30,10 @@ import com.sprint.repositories.IOwnerRepository;
 import com.sprint.services.AdminServiceImpl;
 import com.sprint.services.OwnerServiceImpl;
 
+/**
+ * @author VIVEK PABBA
+ *
+ */
 @SpringBootTest
 public class OwnerTest {
 
