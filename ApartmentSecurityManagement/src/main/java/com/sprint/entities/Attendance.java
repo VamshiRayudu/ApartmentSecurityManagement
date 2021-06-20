@@ -21,7 +21,7 @@ import org.hibernate.annotations.Type;
 @Embeddable
 public class Attendance {
 
-	@NotNull
+	@NotNull(message = "Date of Attendance is Mandatory")
 	private LocalDate dateOfAttendance;
 
 	@NotBlank(message = "Enter Login Time")

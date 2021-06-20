@@ -37,7 +37,7 @@ public class Delivery {
 	@JoinColumn(name = "flat_deliveries")
 	private FlatDetails flatDetails;
 
-	@NotNull(message = "Date Required")
+	@NotNull(message = "Delivery Date Required")
 	private LocalDateTime deliveryDateTime;
 
 	@Enumerated(EnumType.STRING)

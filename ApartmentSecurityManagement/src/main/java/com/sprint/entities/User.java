@@ -33,16 +33,16 @@ public class User {
 	@NotBlank(message = "Name is Mandatory")
 	private String name;
 
-	@NotNull
+	@NotNull(message = "MobileNumber is Mandatory")
 	private Long mobileNumber;
 
-	@Pattern(regexp = "\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}\\b")
+	@Pattern(regexp = "\\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}\\b",message = "Invalid Email Format")
 	private String emailId;
 
 	@NotBlank(message = "Password is Mandatory")
 	private String password;
 
-	@NotNull
+	@NotNull(message = "Please Select Role")
 	@Enumerated(EnumType.STRING)
 	private Role role;
 

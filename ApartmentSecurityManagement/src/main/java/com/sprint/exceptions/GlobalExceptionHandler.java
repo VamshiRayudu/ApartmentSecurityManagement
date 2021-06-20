@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Object> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex,
 			WebRequest request) {
 		// creating exception response structure
-		ExceptionMessage exceptionMessage = new ExceptionMessage(new Date(), ex.getMessage(),
+		ExceptionMessage exceptionMessage = new ExceptionMessage(new Date(), ex.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
 				request.getDescription(false));
 
 		// returning exception structure and specific status
