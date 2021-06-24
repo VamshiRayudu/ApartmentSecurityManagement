@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -122,6 +123,23 @@ public class OwnerController {
 		} else {
 			throw new UserNotFoundException("No Account Found");
 		}
+	}
+	
+	/**
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return ResponseEntity<Owner>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@PatchMapping("owner/{id}")
+	public ResponseEntity<Owner> updateOwnerPassword(@Valid @PathVariable Long id, @RequestParam String oldPassword,
+			@RequestParam String newPassword)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("updateOwnerPassword URL is opened");
+		LOGGER.info("updateOwnerPassword() is initiated");
+		return new ResponseEntity<Owner>(ownerService.updateOwnerById(id,oldPassword,newPassword), HttpStatus.OK);
 	}
 
 	/**
