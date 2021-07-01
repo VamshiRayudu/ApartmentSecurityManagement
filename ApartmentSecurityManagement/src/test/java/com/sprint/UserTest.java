@@ -17,6 +17,7 @@ import com.sprint.entities.Guard;
 import com.sprint.entities.Owner;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
+import com.sprint.exceptions.DuplicateRecordException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IGuardRepository;
 import com.sprint.repositories.IOwnerRepository;
@@ -56,7 +57,7 @@ class UserTest {
 	OwnerServiceImpl ownerService;
 
 	@Test
-	public void addUser() {
+	public void addUser() throws DuplicateRecordException {
 
 		User user = new User();
 		user.setName("Demo");

@@ -382,4 +382,38 @@ public class OwnerController {
 		return new ResponseEntity<List<SecurityAlert>>(securityAlertService.getSecurityAlertList(), HttpStatus.OK);
 	}
 
+	
+	/**
+	 * @param id
+	 * @return ResponseEntity<Owner>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 * @throws UserNotFoundException
+	 */
+	@GetMapping("owner/getAllVehiclesByOwnerId")
+	public ResponseEntity<List<Vehicle>> getAllVehiclesByOwnerId(@Valid @RequestParam Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
+
+		LOGGER.info("getAllVehiclesByOwnerId URL is opened");
+		LOGGER.info("getAllVehiclesByOwnerId() is initiated");
+		Owner owner = ownerService.getOwnerById(id);
+		return new ResponseEntity<List<Vehicle>>(owner.getVehicleDetails(), HttpStatus.OK);
+	}
+	
+	/**
+	 * @param id
+	 * @return ResponseEntity<Owner>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 * @throws UserNotFoundException
+	 */
+	@GetMapping("owner/getAllFlatDetailsByOwnerId")
+	public ResponseEntity<List<FlatDetails>> getAllFlatDetailsByOwnerId(@Valid @RequestParam Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
+
+		LOGGER.info("getAllFlatDetailsByOwnerId URL is opened");
+		LOGGER.info("getAllFlatDetailsByOwnerId() is initiated");
+		Owner owner = ownerService.getOwnerById(id);
+		return new ResponseEntity<List<FlatDetails>>(owner.getFlatDetails(), HttpStatus.OK);
+	}
 }

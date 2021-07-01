@@ -245,6 +245,21 @@ public class AdminController {
 		LOGGER.info("updateAdminPassword() is initiated");
 		return new ResponseEntity<Admin>(adminService.updateAdminById(id, oldPassword, newPassword), HttpStatus.OK);
 	}
+	
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<SecurityAlert>>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("admin/getSecurityAlertsByAdminId")
+	public ResponseEntity<List<SecurityAlert>> getSecurityAlertsByAdminId(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("getAdminById URL is opened");
+		LOGGER.info("getAdminById() is initiated");
+		Admin adm = adminService.getAdminById(id);
+		return new ResponseEntity<List<SecurityAlert>>(adm.getSecurityAlerts(), HttpStatus.OK);
+	}
 
 	/**
 	 * @param guard
@@ -343,6 +358,32 @@ public class AdminController {
 		LOGGER.info("updateGuard URL is opened");
 		LOGGER.info("updateGuard() is initiated");
 		return new ResponseEntity<Guard>(guardService.updateGuardSalary(guardId, guardSalary), HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * @param guardId
+	 * @param guardShift
+	 * @return ResponseEntity<Guard>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@PatchMapping("admin/guard/UpdateGuardShift")
+	public ResponseEntity<Guard> updateGuardShift(@Valid @RequestParam Long guardId,
+			@RequestBody GuardShift guardShift) throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("updateGuardShift URL is opened");
+		LOGGER.info("updateGuardShift() is initiated");
+		Optional<Guard> guard = guardRepository.findById(guardId);	
+		if(guard != null)
+		{
+			guard.get().setGuardShifts(guardShift);
+			Guard gd = guardRepository.save(guard.get());
+			return new ResponseEntity<Guard>(gd, HttpStatus.OK);
+		}
+		else
+		{
+			throw new UserNotFoundException("User Not Found");
+		}
 	}
 
 	/**

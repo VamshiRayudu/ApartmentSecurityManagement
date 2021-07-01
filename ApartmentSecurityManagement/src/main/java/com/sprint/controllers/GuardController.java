@@ -185,6 +185,22 @@ public class GuardController {
 		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlert(securityAlert),
 				HttpStatus.OK);
 	}
+	
+	/**
+	 * @param id
+	 * @return ResponseEntity<List<SecurityAlert>>
+	 * @throws UserNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("guard/getSecurityAlertsByGuardId")
+	public ResponseEntity<List<SecurityAlert>> getSecurityAlertsByAdminId(@Valid @RequestParam Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("getAdminById URL is opened");
+		LOGGER.info("getAdminById() is initiated");
+		Guard guard = guardService.getGuardById(id);
+		return new ResponseEntity<List<SecurityAlert>>(guard.getSecurityAlerts(), HttpStatus.OK);
+	}
+
 
 	/**
 	 * @return ResponseEntity<List<Delivery>>
@@ -558,5 +574,19 @@ public class GuardController {
 		Guard guard = guardService.getGuardById(id);
 
 		return new ResponseEntity<GuardShift>(guard.getGuardShifts(), HttpStatus.OK);
+	}
+	
+	/**
+	 * @return ResponseEntity<List<Vehicle>>
+	 * @throws RecordNotFoundException
+	 * @throws MethodArgumentNotValidException
+	 */
+	@GetMapping("guard/vehicles/getAllVehicles")
+	public ResponseEntity<List<Vehicle>> getAllVehicles()
+			throws RecordNotFoundException, MethodArgumentNotValidException {
+
+		LOGGER.info("getVehiclesById URL is opened");
+		LOGGER.info("getVehiclesById() is initiated");
+		return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicles(), HttpStatus.OK);
 	}
 }
