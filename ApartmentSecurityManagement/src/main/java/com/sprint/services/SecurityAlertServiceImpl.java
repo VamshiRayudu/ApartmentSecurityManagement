@@ -22,7 +22,7 @@ import com.sprint.repositories.ISecurityAlertRepository;
  */
 @Service
 @Transactional
-public class SecurityAlertServiceImpl implements ISecurityAlertService{
+public class SecurityAlertServiceImpl implements ISecurityAlertService {
 
 	@Autowired
 	private ISecurityAlertRepository securityAlertRepository;
@@ -34,50 +34,37 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService{
 	}
 
 	@Override
-	public SecurityAlert updateSecurityAlert(SecurityAlert securityAlert) throws RecordNotFoundException{
+	public SecurityAlert updateSecurityAlert(SecurityAlert securityAlert) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
 		Optional<SecurityAlert> sAlert = securityAlertRepository.findById(securityAlert.getId());
-		if(sAlert!=null)
-		{
+		if (sAlert != null) {
 			return securityAlertRepository.save(securityAlert);
-		}
-		else
-		{
+		} else {
 			throw new RecordNotFoundException("Record Not Found");
 		}
 	}
 
-
 	@Override
-	public SecurityAlert updateSecurityAlertById(Long id,String oldMessage,String newMessage) throws RecordNotFoundException {
-		// TODO Auto-generated method stub	
-		Optional<SecurityAlert> securityAlert =securityAlertRepository.findById(id);
-		if(securityAlert!=null)
-		{
-			if(securityAlert.get().getMessage().equals(oldMessage)) {
-				securityAlert.get().setMessage(newMessage);
-				return securityAlertRepository.save(securityAlert.get());
-			}
-			else
-				throw new ValidationException("Invalid MobileNumber");
-		}
-		else
-		{
+	public SecurityAlert updateSecurityAlertById(Long id, String newMessage, String newAlert)
+			throws RecordNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<SecurityAlert> securityAlert = securityAlertRepository.findById(id);
+		if (securityAlert != null) {
+			securityAlert.get().setMessage(newMessage);
+			securityAlert.get().setAlert(newAlert);
+			return securityAlertRepository.save(securityAlert.get());
+		} else {
 			throw new RecordNotFoundException("Record Not Found");
 		}
-	}	
-
+	}
 
 	@Override
-	public SecurityAlert getSecurityAlertById(Long id) throws RecordNotFoundException{
+	public SecurityAlert getSecurityAlertById(Long id) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-		Optional<SecurityAlert> securityAlert= securityAlertRepository.findById(id);
-		if(securityAlert!=null)
-		{
+		Optional<SecurityAlert> securityAlert = securityAlertRepository.findById(id);
+		if (securityAlert != null) {
 			return securityAlertRepository.getById(id);
-		}
-		else
-		{
+		} else {
 			throw new RecordNotFoundException("Record Not Found");
 		}
 	}
@@ -88,18 +75,14 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService{
 		return securityAlertRepository.findAll();
 	}
 
-
 	@Override
-	public SecurityAlert deleteSecurityAlertById(Long id) throws RecordNotFoundException{
+	public SecurityAlert deleteSecurityAlertById(Long id) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-		Optional<SecurityAlert> securityAlert=securityAlertRepository.findById(id);
-		if(securityAlert!=null)
-		{
+		Optional<SecurityAlert> securityAlert = securityAlertRepository.findById(id);
+		if (securityAlert != null) {
 			securityAlertRepository.delete(securityAlert.get());
 			return securityAlert.get();
-		}
-		else
-		{
+		} else {
 			throw new RecordNotFoundException("Record Not Found");
 		}
 	}

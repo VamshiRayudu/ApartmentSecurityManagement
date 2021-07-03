@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,6 +34,7 @@ import com.sprint.entities.GuardSalary;
 import com.sprint.entities.GuardShift;
 import com.sprint.entities.Owner;
 import com.sprint.entities.SecurityAlert;
+import com.sprint.entities.User;
 import com.sprint.entities.Vehicle;
 import com.sprint.entities.Visitor;
 import com.sprint.exceptions.DuplicateRecordException;
@@ -40,6 +42,8 @@ import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
 import com.sprint.repositories.IAdminRepository;
 import com.sprint.repositories.IGuardRepository;
+import com.sprint.repositories.IOwnerRepository;
+import com.sprint.repositories.IUserRepository;
 import com.sprint.services.IAdminService;
 import com.sprint.services.IDeliveryService;
 import com.sprint.services.IDomesticHelpService;
@@ -54,6 +58,7 @@ import com.sprint.services.IVisitorService;
  * @authors SAI VAMSI KRISHNA, VIVEK PABBA
  *
  */
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/")
 public class AdminController {
@@ -93,6 +98,12 @@ public class AdminController {
 	@Autowired
 	private IVehicleService vehicleService;
 
+	@Autowired
+	private IUserRepository userRepository;
+
+	@Autowired
+	private IOwnerRepository ownerRepository;
+
 	/**
 	 * 
 	 * @param admin
@@ -127,12 +138,9 @@ public class AdminController {
 		LOGGER.info("loginAdmin() is initiated");
 		Optional<Admin> user = adminRepository.findById(admin.getId());
 		if (user.get().getEmailId() != null) {
-			if(user.get().getPassword().equals(admin.getPassword()))
-			{
+			if (user.get().getPassword().equals(admin.getPassword())) {
 				return new ResponseEntity<Admin>(user.get(), HttpStatus.OK);
-			}
-			else
-			{
+			} else {
 				throw new ValidationException("Invalid Password");
 			}
 		} else {
@@ -182,16 +190,20 @@ public class AdminController {
 	 * @throws UserNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@DeleteMapping("admin/{adminId}")
-	public ResponseEntity<Admin> deleteAdminById(@Valid @PathVariable(name = "adminId") Long adminId,
-			@RequestParam Long id) throws UserNotFoundException, MethodArgumentNotValidException {
+	@DeleteMapping("admin/{id}")
+	public ResponseEntity<Admin> deleteAdminById(@Valid @PathVariable(name = "id") Long id)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteAdminById URL is opened");
 		LOGGER.info("deleteAdminById() is initiated");
-		Optional<Admin> user = adminRepository.findById(adminId);
+		Optional<Admin> user = adminRepository.findById(id);
 		if (user.get().getEmailId() != null) {
+			List<User> userRep = userRepository.findByEmailId(user.get().getEmailId());
+			if (userRep.size() > 0) {
+				userRepository.deleteById(userRep.get(0).getId());
+			}
 			return new ResponseEntity<Admin>(adminService.deleteAdminById(id), HttpStatus.OK);
 		} else {
-			throw new UserNotFoundException("Not a valid Admin");
+			throw new UserNotFoundException("No User Found");
 		}
 	}
 
@@ -204,15 +216,19 @@ public class AdminController {
 	 * @throws MethodArgumentNotValidException
 	 */
 	@DeleteMapping("admin/")
-	public ResponseEntity<Admin> deleteAdmin(@Valid @RequestBody Admin admin, @RequestParam Long adminId)
+	public ResponseEntity<Admin> deleteAdmin(@Valid @RequestBody Admin admin)
 			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteAdmin URL is opened");
 		LOGGER.info("deleteAdmin() is initiated");
-		Optional<Admin> user = adminRepository.findById(adminId);
+		Optional<Admin> user = adminRepository.findById(admin.getId());
 		if (user.get().getEmailId() != null) {
+			List<User> userRep = userRepository.findByEmailId(user.get().getEmailId());
+			if (userRep.size() > 0) {
+				userRepository.delete(userRep.get(0));
+			}
 			return new ResponseEntity<Admin>(adminService.deleteAdmin(admin), HttpStatus.OK);
 		} else {
-			throw new UserNotFoundException("Not a valid Admin");
+			throw new UserNotFoundException("No user Found");
 		}
 	}
 
@@ -245,7 +261,7 @@ public class AdminController {
 		LOGGER.info("updateAdminPassword() is initiated");
 		return new ResponseEntity<Admin>(adminService.updateAdminById(id, oldPassword, newPassword), HttpStatus.OK);
 	}
-	
+
 	/**
 	 * @param id
 	 * @return ResponseEntity<List<SecurityAlert>>
@@ -342,7 +358,16 @@ public class AdminController {
 			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("deleteGuardById URL is opened");
 		LOGGER.info("deleteGuardById() is initiated");
-		return new ResponseEntity<Guard>(guardService.deleteGuardById(id), HttpStatus.OK);
+		Optional<Guard> user = guardRepository.findById(id);
+		if (user.get().getEmailId() != null) {
+			List<User> userRep = userRepository.findByEmailId(user.get().getEmailId());
+			if (userRep.size() > 0) {
+				userRepository.deleteById(userRep.get(0).getId());
+			}
+			return new ResponseEntity<Guard>(guardService.deleteGuardById(id), HttpStatus.OK);
+		} else {
+			throw new UserNotFoundException("No User Found");
+		}
 	}
 
 	/**
@@ -359,8 +384,7 @@ public class AdminController {
 		LOGGER.info("updateGuard() is initiated");
 		return new ResponseEntity<Guard>(guardService.updateGuardSalary(guardId, guardSalary), HttpStatus.OK);
 	}
-	
-	
+
 	/**
 	 * @param guardId
 	 * @param guardShift
@@ -369,19 +393,16 @@ public class AdminController {
 	 * @throws MethodArgumentNotValidException
 	 */
 	@PatchMapping("admin/guard/UpdateGuardShift")
-	public ResponseEntity<Guard> updateGuardShift(@Valid @RequestParam Long guardId,
-			@RequestBody GuardShift guardShift) throws UserNotFoundException, MethodArgumentNotValidException {
+	public ResponseEntity<Guard> updateGuardShift(@Valid @RequestParam Long guardId, @RequestBody GuardShift guardShift)
+			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateGuardShift URL is opened");
 		LOGGER.info("updateGuardShift() is initiated");
-		Optional<Guard> guard = guardRepository.findById(guardId);	
-		if(guard != null)
-		{
+		Optional<Guard> guard = guardRepository.findById(guardId);
+		if (guard != null) {
 			guard.get().setGuardShifts(guardShift);
 			Guard gd = guardRepository.save(guard.get());
 			return new ResponseEntity<Guard>(gd, HttpStatus.OK);
-		}
-		else
-		{
+		} else {
 			throw new UserNotFoundException("User Not Found");
 		}
 	}
@@ -466,18 +487,12 @@ public class AdminController {
 	 * @throws UserNotFoundException
 	 */
 	@PostMapping("admin/{id}/securityAlert") /// Add To adminRepo
-	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert,
-			@RequestParam Long adminId)
+	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert)
 			throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException {
 		LOGGER.info("addSecurityAlert URL is opened");
 		LOGGER.info("addSecurityAlert() is initiated");
-		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user.get().getEmailId() != null) {
-			return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),
-					HttpStatus.CREATED);
-		} else {
-			throw new UserNotFoundException("Not a valid Admin");
-		}
+		return new ResponseEntity<SecurityAlert>(securityAlertService.addSecurityAlert(securityAlert),
+				HttpStatus.CREATED);
 	}
 
 	/**
@@ -528,12 +543,12 @@ public class AdminController {
 	 */
 	@PatchMapping("admin/securityAlert/{id}")
 	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@Valid @PathVariable Long id,
-			@Valid @RequestParam String oldMessage, @Valid @RequestParam String newMessage)
+			@Valid @RequestParam String newMessage, @Valid @RequestParam String newAlert)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateSecurityAlertMessage URL is opened");
 		LOGGER.info("updateSecurityAlertMessage() is initiated");
-		return new ResponseEntity<SecurityAlert>(
-				securityAlertService.updateSecurityAlertById(id, oldMessage, newMessage), HttpStatus.OK);
+		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlertById(id, newMessage, newAlert),
+				HttpStatus.OK);
 	}
 
 	/**
@@ -704,18 +719,23 @@ public class AdminController {
 	 * @throws MethodArgumentNotValidException
 	 */
 	@DeleteMapping("admin/owner/{id}")
-	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id, @RequestParam Long adminId)
+	public ResponseEntity<Owner> deleteOwnerById(@Valid @PathVariable Long id)
 			throws UserNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("deleteOwnerById URL is opened");
 		LOGGER.info("deleteOwnerById() is initiated");
-		Optional<Admin> user = adminRepository.findById(adminId);
-		if (user.get().getEmailId() != null) {
-			Owner owner = ownerService.deleteOwnerById(id);
-			return new ResponseEntity<Owner>(owner, HttpStatus.OK);
+
+		Optional<Owner> own = ownerRepository.findById(id);
+		if (own.get().getEmailId() != null) {
+			List<User> userRep = userRepository.findByEmailId(own.get().getEmailId());
+			if (userRep.size() > 0) {
+				userRepository.deleteById(userRep.get(0).getId());
+			}
 		} else {
-			throw new UserNotFoundException("Not a valid Admin");
+			throw new UserNotFoundException("No User Found");
 		}
+		Owner owner = ownerService.deleteOwnerById(id);
+		return new ResponseEntity<Owner>(owner, HttpStatus.OK);
 	}
 
 	/**

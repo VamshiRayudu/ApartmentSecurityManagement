@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import com.sprint.entities.Guard;
 import com.sprint.entities.Owner;
 import com.sprint.entities.SecurityAlert;
 import com.sprint.entities.Vehicle;
+import com.sprint.entities.VehicleUpdates;
 import com.sprint.entities.Visitor;
 import com.sprint.exceptions.RecordNotFoundException;
 import com.sprint.exceptions.UserNotFoundException;
@@ -53,6 +55,7 @@ import com.sprint.services.IVisitorService;
  * @authors NIJAGNA, KUNDANA PRIYA
  *
  */
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/")
 public class OwnerController {
@@ -390,7 +393,7 @@ public class OwnerController {
 	 * @throws MethodArgumentNotValidException
 	 * @throws UserNotFoundException
 	 */
-	@GetMapping("owner/getAllVehiclesByOwnerId")
+	@GetMapping("owner/getVehiclesByOwnerId")
 	public ResponseEntity<List<Vehicle>> getAllVehiclesByOwnerId(@Valid @RequestParam Long id)
 			throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
 
@@ -407,8 +410,8 @@ public class OwnerController {
 	 * @throws MethodArgumentNotValidException
 	 * @throws UserNotFoundException
 	 */
-	@GetMapping("owner/getAllFlatDetailsByOwnerId")
-	public ResponseEntity<List<FlatDetails>> getAllFlatDetailsByOwnerId(@Valid @RequestParam Long id)
+	@GetMapping("owner/getFlatDetailsByOwnerId")
+	public ResponseEntity<List<FlatDetails>> getFlatDetailsByOwnerId(@Valid @RequestParam Long id)
 			throws RecordNotFoundException, MethodArgumentNotValidException, UserNotFoundException {
 
 		LOGGER.info("getAllFlatDetailsByOwnerId URL is opened");

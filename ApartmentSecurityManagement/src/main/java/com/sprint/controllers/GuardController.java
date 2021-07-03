@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -53,6 +54,7 @@ import com.sprint.services.IVisitorService;
  * @authors SHUBHAM ,VISHNU KUMAR
  *
  */
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/")
 public class GuardController {
@@ -163,12 +165,12 @@ public class GuardController {
 	 */
 	@PatchMapping("guard/securityAlert/{id}")
 	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@Valid @PathVariable Long id,
-			@RequestParam String oldMessage, @RequestParam String newMessage)
+			@RequestParam String newMessage, @RequestParam String newAlert)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateSecurityAlertMessage URL is opened");
 		LOGGER.info("updateSecurityAlertMessage() is initiated");
 		return new ResponseEntity<SecurityAlert>(
-				securityAlertService.updateSecurityAlertById(id, oldMessage, newMessage), HttpStatus.OK);
+				securityAlertService.updateSecurityAlertById(id, newMessage, newAlert), HttpStatus.OK);
 	}
 
 	/**
@@ -588,5 +590,15 @@ public class GuardController {
 		LOGGER.info("getVehiclesById URL is opened");
 		LOGGER.info("getVehiclesById() is initiated");
 		return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicles(), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("guard/vehicleUpdates/getById")
+	public ResponseEntity<List<VehicleUpdates>> findById(@Valid @RequestParam Long id) {
+
+		LOGGER.info("findByNumberPlate URL is opened");
+		LOGGER.info("findByNumberPlate() is initiated");
+		Vehicle v=vehicleRepository.findById(id).get();
+		return new ResponseEntity<List<VehicleUpdates>>(v.getVehicleUpdates(), HttpStatus.OK);
 	}
 }
