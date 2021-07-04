@@ -486,7 +486,7 @@ public class AdminController {
 	 * @throws MethodArgumentNotValidException
 	 * @throws UserNotFoundException
 	 */
-	@PostMapping("admin/{id}/securityAlert") /// Add To adminRepo
+	@PostMapping("admin/addSecurityAlert")
 	public ResponseEntity<SecurityAlert> addSecurityAlert(@RequestBody SecurityAlert securityAlert)
 			throws DuplicateRecordException, MethodArgumentNotValidException, UserNotFoundException {
 		LOGGER.info("addSecurityAlert URL is opened");
@@ -543,11 +543,11 @@ public class AdminController {
 	 */
 	@PatchMapping("admin/securityAlert/{id}")
 	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@Valid @PathVariable Long id,
-			@Valid @RequestParam String newMessage, @Valid @RequestParam String newAlert)
+			@RequestBody SecurityAlert securityAlert)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateSecurityAlertMessage URL is opened");
 		LOGGER.info("updateSecurityAlertMessage() is initiated");
-		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlertById(id, newMessage, newAlert),
+		return new ResponseEntity<SecurityAlert>(securityAlertService.updateSecurityAlertById(id,securityAlert),
 				HttpStatus.OK);
 	}
 

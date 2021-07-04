@@ -165,12 +165,12 @@ public class GuardController {
 	 */
 	@PatchMapping("guard/securityAlert/{id}")
 	public ResponseEntity<SecurityAlert> updateSecurityAlertMessage(@Valid @PathVariable Long id,
-			@RequestParam String newMessage, @RequestParam String newAlert)
+			@RequestBody SecurityAlert securityAlert)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateSecurityAlertMessage URL is opened");
 		LOGGER.info("updateSecurityAlertMessage() is initiated");
 		return new ResponseEntity<SecurityAlert>(
-				securityAlertService.updateSecurityAlertById(id, newMessage, newAlert), HttpStatus.OK);
+				securityAlertService.updateSecurityAlertById(id, securityAlert), HttpStatus.OK);
 	}
 
 	/**

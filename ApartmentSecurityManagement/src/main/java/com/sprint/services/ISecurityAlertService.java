@@ -31,7 +31,7 @@ public interface ISecurityAlertService {
      * @return
      * @throws RecordNotFoundException
      */
-    public SecurityAlert updateSecurityAlertById(Long Id,String newMessage,String newAlert) throws RecordNotFoundException;
+    public SecurityAlert updateSecurityAlertById(Long Id,SecurityAlert securityAlert) throws RecordNotFoundException;
     
 	/**
 	 * @param Id

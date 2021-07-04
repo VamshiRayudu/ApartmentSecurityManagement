@@ -45,14 +45,14 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService {
 	}
 
 	@Override
-	public SecurityAlert updateSecurityAlertById(Long id, String newMessage, String newAlert)
+	public SecurityAlert updateSecurityAlertById(Long id, SecurityAlert securityAlert)
 			throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-		Optional<SecurityAlert> securityAlert = securityAlertRepository.findById(id);
-		if (securityAlert != null) {
-			securityAlert.get().setMessage(newMessage);
-			securityAlert.get().setAlert(newAlert);
-			return securityAlertRepository.save(securityAlert.get());
+		Optional<SecurityAlert> securityAlertDb = securityAlertRepository.findById(id);
+		if (securityAlertDb != null) {
+			securityAlertDb.get().setMessage(securityAlert.getAlert());
+			securityAlertDb.get().setAlert(securityAlert.getMessage());
+			return securityAlertRepository.save(securityAlertDb.get());
 		} else {
 			throw new RecordNotFoundException("Record Not Found");
 		}
