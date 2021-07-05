@@ -71,7 +71,8 @@ public class DeliveryServiceImpl implements IDeliveryService{
 		Optional<Delivery> delivery1 = deliveryRepository.findById(delivery.getDeliveryId());
 		if(delivery1 != null)
 		{
-			return deliveryRepository.save(delivery);
+			delivery1.get().setStatus(delivery.getStatus());
+			return deliveryRepository.save(delivery1.get());
 		}
 		else
 		{

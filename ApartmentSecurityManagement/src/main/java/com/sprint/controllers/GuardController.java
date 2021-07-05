@@ -249,8 +249,8 @@ public class GuardController {
 	 * @throws RecordNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PutMapping("guard/delivery")
-	public ResponseEntity<Delivery> updateDelivery(@Valid @RequestBody Delivery delivery)
+	@PatchMapping("guard/delivery/updateDeliveryStatus")
+	public ResponseEntity<Delivery> updateDelivery(@RequestBody Delivery delivery)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateDelivery URL is opened");
 		LOGGER.info("updateDelivery() is initiated");
@@ -308,9 +308,9 @@ public class GuardController {
 	 * @throws DuplicateRecordException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PostMapping("guard/domesticHelps")
+	@PostMapping("guard/domesticHelps/{flatNumber}")
 	public ResponseEntity<DomesticHelp> addDomesticHelp(@Valid @RequestBody DomesticHelp domesticHelp,
-			@RequestParam Long flatNumber) throws DuplicateRecordException, MethodArgumentNotValidException {
+			@PathVariable Long flatNumber) throws DuplicateRecordException, MethodArgumentNotValidException {
 
 		LOGGER.info("addDomesticHelp URL is opened");
 		LOGGER.info("addDomesticHelp() is initiated");
@@ -343,13 +343,13 @@ public class GuardController {
 	 */
 	@PatchMapping("guard/domesticHelps/{id}")
 	public ResponseEntity<DomesticHelp> updateDomesticHelpById(@Valid @PathVariable("id") Long id,
-			@RequestParam DomesticHelpType oldHelpType, @RequestParam DomesticHelpType newHelpType)
+			@RequestBody DomesticHelp domesticHelp)
 			throws UserNotFoundException, MethodArgumentNotValidException {
 
 		LOGGER.info("updateDomesticHelpById URL is opened");
 		LOGGER.info("updateDomesticHelpById() is initiated");
 		return new ResponseEntity<DomesticHelp>(
-				domesticHelpService.updateDomesticHelpById(id, oldHelpType, newHelpType), HttpStatus.OK);
+				domesticHelpService.updateDomesticHelpById(id, domesticHelp), HttpStatus.OK);
 	}
 
 	/**
@@ -398,7 +398,7 @@ public class GuardController {
 	 * @throws RecordNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PutMapping("guard/visitor")
+	@PatchMapping("guard/visitor/updateOutTime")
 	public ResponseEntity<Visitor> updateVisitor(@Valid @RequestBody Visitor visitor, @RequestParam Long guardId)
 			throws RecordNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateVisitor URL is opened");

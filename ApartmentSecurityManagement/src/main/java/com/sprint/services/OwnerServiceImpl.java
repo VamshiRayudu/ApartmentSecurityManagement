@@ -67,7 +67,10 @@ public class OwnerServiceImpl extends UserServiceImpl implements IOwnerService{
 		// TODO Auto-generated method stub
 		if(owner1 != null)
 		{
-			return ownerRepository.save(owner);
+			owner1.get().setMobileNumber(owner.getMobileNumber());
+			owner1.get().setName(owner.getName());
+			owner1.get().setUserName(owner.getUserName());
+			return ownerRepository.save(owner1.get());
 		}
 		else
 		{

@@ -46,7 +46,10 @@ public class AdminServiceImpl extends UserServiceImpl implements IAdminService{
 		Optional<Admin> user =  adminRepository.findById(admin.getId());
 		if(user != null)
 		{
-			return adminRepository.save(admin);
+			user.get().setMobileNumber(admin.getMobileNumber());
+			user.get().setName(admin.getName());
+			user.get().setUserName(admin.getUserName());
+			return adminRepository.save(user.get());
 		}
 		else
 		{

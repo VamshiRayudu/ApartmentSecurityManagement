@@ -47,7 +47,7 @@ public interface IDomesticHelpService {
 	 * @return
 	 * @throws UserNotFoundException
 	 */
-	public DomesticHelp updateDomesticHelpById(Long id, DomesticHelpType oldHelpType , DomesticHelpType newHelpType) throws UserNotFoundException;
+	public DomesticHelp updateDomesticHelpById(Long id, DomesticHelp domesticHelp) throws UserNotFoundException;
 
 	/**
 	 * @param domesticHelpId

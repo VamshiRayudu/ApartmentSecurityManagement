@@ -419,4 +419,13 @@ public class OwnerController {
 		Owner owner = ownerService.getOwnerById(id);
 		return new ResponseEntity<List<FlatDetails>>(owner.getFlatDetails(), HttpStatus.OK);
 	}
+	
+	@GetMapping("owner/getDeliveryByFlatId/{id}")
+	public ResponseEntity<List<Delivery>> getDeliveryByFlatId(@Valid @PathVariable Long id)
+			throws RecordNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("getDeliveryByFlatId URL is opened");
+		LOGGER.info("getDeliveryByFlatId() is initiated");
+		FlatDetails fd = flatDetailsRepository.getById(id);
+		return new ResponseEntity<List<Delivery>>(fd.getDeliveries(), HttpStatus.OK);
+	}
 }

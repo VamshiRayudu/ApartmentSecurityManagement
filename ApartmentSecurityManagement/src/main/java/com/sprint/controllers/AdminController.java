@@ -238,7 +238,7 @@ public class AdminController {
 	 * @throws UserNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PutMapping("admin")
+	@PatchMapping("admin")
 	public ResponseEntity<Admin> updateAdmin(@Valid @RequestBody Admin admin)
 			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateAdmin URL is opened");
@@ -377,8 +377,8 @@ public class AdminController {
 	 * @throws UserNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PatchMapping("admin/guard")
-	public ResponseEntity<Guard> updateGuardSalary(@Valid @RequestParam Long guardId,
+	@PatchMapping("admin/guard/updateSalary")
+	public ResponseEntity<Guard> updateGuardSalary(@RequestParam Long guardId,
 			@RequestBody GuardSalary guardSalary) throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateGuard URL is opened");
 		LOGGER.info("updateGuard() is initiated");
@@ -744,7 +744,7 @@ public class AdminController {
 	 * @throws UserNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PutMapping("admin/owner")
+	@PatchMapping("admin/owner")
 	public ResponseEntity<Owner> updateOwner(@Valid @RequestBody Owner owner)
 			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateOwner URL is opened");
@@ -808,5 +808,13 @@ public class AdminController {
 		LOGGER.info("getVehiclesById URL is opened");
 		LOGGER.info("getVehiclesById() is initiated");
 		return new ResponseEntity<List<Vehicle>>(vehicleService.getAllVehicles(), HttpStatus.OK);
+	}
+	
+	@PatchMapping("admin/guard/updateGuard")
+	public ResponseEntity<Guard> updateGuard(@Valid @RequestBody Guard guard)
+			throws UserNotFoundException, MethodArgumentNotValidException {
+		LOGGER.info("updateOwner URL is opened");
+		LOGGER.info("updateOwner() is initiated");
+		return new ResponseEntity<Guard>(guardService.updateGuard(guard), HttpStatus.OK);
 	}
 }

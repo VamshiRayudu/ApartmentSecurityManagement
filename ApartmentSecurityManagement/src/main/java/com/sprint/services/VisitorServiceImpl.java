@@ -49,8 +49,9 @@ public class VisitorServiceImpl implements IVisitorService{
 		// TODO Auto-generated method stub
 		if(user!=null)
 		{
-			visitor.setGuard(guard.get());
-			return visitorRepository.save(visitor);
+			user.get().setOutTime(visitor.getOutTime());
+			user.get().setGuard(guard.get());
+			return visitorRepository.save(user.get());
 		}
 		else
 		{

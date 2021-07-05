@@ -122,7 +122,10 @@ public class GuardServiceImpl extends UserServiceImpl implements IGuardService{
 		Optional<Guard> user=guardRepository.findById(guard.getId());
 		if(user!=null)
 		{
-			return guardRepository.save(guard);
+			user.get().setMobileNumber(guard.getMobileNumber());
+			user.get().setName(guard.getName());
+			user.get().setUserName(guard.getUserName());
+			return guardRepository.save(user.get());
 		}
 		else
 		{

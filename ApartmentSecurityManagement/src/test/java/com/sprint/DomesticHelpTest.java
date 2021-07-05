@@ -142,8 +142,7 @@ class DomesticHelpTest {
 
 		domesticHelp.setHelpType(DomesticHelpType.WASHING);
 		Mockito.when(domesticHelpRepository.save(domesticHelp)).thenReturn(domesticHelp);
-		assertThat(domesticService.updateDomesticHelpById(domesticHelp.getId(), DomesticHelpType.WASHING,
-				DomesticHelpType.HOUSEKEEPING)).isEqualTo(domesticHelp);
+		assertThat(domesticService.updateDomesticHelpById(domesticHelp.getId(), domesticHelp)).isEqualTo(domesticHelp);
 
 	}
 	

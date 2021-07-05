@@ -61,27 +61,17 @@ public class DomesticHelpServiceImpl implements IDomesticHelpService {
 	}
 
 	@Override
-	public DomesticHelp updateDomesticHelpById(Long id , DomesticHelpType oldHelpType , DomesticHelpType newHelpType)throws UserNotFoundException {
+	public DomesticHelp updateDomesticHelpById(Long id, DomesticHelp domesticHelp) throws UserNotFoundException {
 		// TODO Auto-generated method stub
-		Optional<DomesticHelp> domesticHelp = domesticHelpRepository.findById(id);
-		if(domesticHelp!=null)
-		{
-			if(domesticHelp.get().getHelpType().equals(oldHelpType))
-			{
-				domesticHelp.get().setHelpType(newHelpType);
-				domesticHelpRepository.save(domesticHelp.get());
-				return domesticHelp.get();
-			}
-			else
-			{
-				throw new ValidationException("Invalid helptype ");
-			}
-		}
-		else
-		{
+		Optional<DomesticHelp> dh = domesticHelpRepository.findById(id);
+		if (dh != null) {
+			dh.get().setHelpType(domesticHelp.getHelpType());
+			domesticHelpRepository.save(dh.get());
+			return dh.get();
+		} else {
 			throw new UserNotFoundException("User Not Found");
 		}
-	}	
+	}
 
 	@Override
 	public DomesticHelp updateDomesticHelp(DomesticHelp domesticHelp)throws UserNotFoundException {
