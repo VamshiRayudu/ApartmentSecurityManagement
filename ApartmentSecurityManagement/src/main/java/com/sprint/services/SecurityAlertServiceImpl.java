@@ -50,8 +50,8 @@ public class SecurityAlertServiceImpl implements ISecurityAlertService {
 		// TODO Auto-generated method stub
 		Optional<SecurityAlert> securityAlertDb = securityAlertRepository.findById(id);
 		if (securityAlertDb != null) {
-			securityAlertDb.get().setMessage(securityAlert.getAlert());
-			securityAlertDb.get().setAlert(securityAlert.getMessage());
+			securityAlertDb.get().setMessage(securityAlert.getMessage());
+			securityAlertDb.get().setAlert(securityAlert.getAlert());
 			return securityAlertRepository.save(securityAlertDb.get());
 		} else {
 			throw new RecordNotFoundException("Record Not Found");

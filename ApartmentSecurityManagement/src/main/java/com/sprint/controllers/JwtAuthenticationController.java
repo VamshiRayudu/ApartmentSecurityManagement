@@ -1,7 +1,10 @@
 package com.sprint.controllers;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -18,6 +21,7 @@ import com.sprint.entities.JwtResponse;
 import com.sprint.entities.Role;
 import com.sprint.entities.User;
 import com.sprint.exceptions.UserNotFoundException;
+import com.sprint.repositories.IUserRepository;
 import com.sprint.services.IUserService;
 import com.sprint.services.JwtUserDetailsService;
 
@@ -36,6 +40,12 @@ public class JwtAuthenticationController {
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
+	
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
+	
+	@Autowired
+	private IUserRepository userRepository;
 	
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -74,6 +84,27 @@ public class JwtAuthenticationController {
 			@RequestParam Role role) throws Exception {
 		return ResponseEntity.ok(userService.Login(emailId, password, role));
 	}
+	
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.PATCH)
+	public ResponseEntity<User> updatePassword(@RequestParam String newPassword,@RequestBody User user) throws Exception {
+		User userDb = userService.Login(user.getEmailId(), user.getPassword(), user.getRole());
+		if(userDb == null)
+		{
+			throw new UserNotFoundException("Not a Valid User");
+		}
+		authenticate(user.getEmailId(), user.getPassword());
+		List<User> u = userRepository.findByEmailId(user.getEmailId());
+		if(u.size() > 0)
+		{
+			u.get(0).setPassword(bcryptEncoder.encode(newPassword));
+			return ResponseEntity.ok(userRepository.save(u.get(0)));
+		}
+		else
+		{
+			throw new UserNotFoundException("No user found");
+		}
+	}
+
 
 	private void authenticate(String emailId, String password) throws Exception {
 		try {

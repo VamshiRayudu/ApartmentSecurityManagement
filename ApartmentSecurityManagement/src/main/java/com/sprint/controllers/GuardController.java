@@ -92,8 +92,8 @@ public class GuardController {
 	 * @throws UserNotFoundException
 	 * @throws MethodArgumentNotValidException
 	 */
-	@PutMapping("guard/{id}/Attendance")
-	public ResponseEntity<Guard> updateGuardAttendance(@Valid @PathVariable Long id, @RequestBody Attendance attendance)
+	@PatchMapping("guard/updateGuardAttendance")
+	public ResponseEntity<Guard> updateGuardAttendance(@Valid @RequestParam Long id, @RequestBody Attendance attendance)
 			throws UserNotFoundException, MethodArgumentNotValidException {
 		LOGGER.info("updateGuardAttendance URL is opened");
 		LOGGER.info("updateGuardAttendance() is initiated");
