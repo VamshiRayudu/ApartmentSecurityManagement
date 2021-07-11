@@ -21,6 +21,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Autowired
 	private IUserService userService;
 
+	/**
+	 * Load by user name
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

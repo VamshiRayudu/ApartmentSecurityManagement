@@ -48,6 +48,12 @@ public class JwtAuthenticationController {
 	private IUserRepository userRepository;
 	
 
+	/**
+	 * Authenticate with Jwt Token
+	 * @param authenticationRequest
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		
@@ -74,6 +80,12 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(new JwtResponse(token,userDb.getId()));
 	}
 
+	/**
+	 * User Registration
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
 		return ResponseEntity.ok(userService.registerUser(user));
@@ -85,6 +97,13 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(userService.Login(emailId, password, role));
 	}
 	
+	/**
+	 * Update Password
+	 * @param newPassword
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.PATCH)
 	public ResponseEntity<User> updatePassword(@RequestParam String newPassword,@RequestBody User user) throws Exception {
 		User userDb = userService.Login(user.getEmailId(), user.getPassword(), user.getRole());
@@ -106,6 +125,12 @@ public class JwtAuthenticationController {
 	}
 
 
+	/**
+	 * Authenticate
+	 * @param emailId
+	 * @param password
+	 * @throws Exception
+	 */
 	private void authenticate(String emailId, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(emailId, password));
